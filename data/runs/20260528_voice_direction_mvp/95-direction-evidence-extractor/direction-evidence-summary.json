@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-28T12:44:02+09:00",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/95-direction-evidence-extractor",
+  "sourceEvidencePath": "data/runs/20260528_voice_direction_mvp/37-device-evidence-validator-fixture.md",
+  "sourceEvidenceSha256": "085115c6e400f481cdf3f8ddc9d04923a7b405a64f671d3765a0e85128508165",
+  "fixtureEvidence": true,
+  "productionDirectionCandidate": false,
+  "directionSample": {
+    "present": true,
+    "passed": true,
+    "status": "SAMPLED",
+    "evidenceLevel": "LEFT_RIGHT_USABLE",
+    "direction": "LEFT",
+    "confidenceBucket": "medium",
+    "sampleRateHz": 16000,
+    "samplesRead": 4096,
+    "microphoneInventoryCaptured": true,
+    "availableMicrophoneCount": 2,
+    "availablePositionKnownCount": 1,
+    "availableOrientationKnownCount": 1,
+    "activeMicrophoneCaptured": true,
+    "activeMicrophoneCount": 2,
+    "activeChannelMappingCount": 2
+  },
+  "directionTrialCounts": {
+    "front": {
+      "trials": 1,
+      "matched": 0,
+      "mismatched": 0,
+      "unknownOrUnusable": 1
+    },
+    "back": {
+      "trials": 1,
+      "matched": 1,
+      "mismatched": 0,
+      "unknownOrUnusable": 0
+    },
+    "left": {
+      "trials": 1,
+      "matched": 0,
+      "mismatched": 1,
+      "unknownOrUnusable": 0
+    },
+    "right": {
+      "trials": 1,
+      "matched": 1,
+      "mismatched": 0,
+      "unknownOrUnusable": 0
+    }
+  },
+  "aggregateEvaluation": {
+    "status": "summarized_not_production_ready",
+    "totalTrials": 4,
+    "matched": 2,
+    "mismatched": 1,
+    "unknownOrUnusable": 1,
+    "frontTrials": 1,
+    "backTrials": 1,
+    "leftTrials": 1,
+    "rightTrials": 1,
+    "allDirectionMatchRate": 0.5,
+    "frontBackMatchRate": 0.5,
+    "leftRightMatchRate": 0.5,
+    "falseDirectionRate": 0.25,
+    "unknownOrUnusableRate": 0.25,
+    "p95DirectionLatencyMillis": null,
+    "latestProcessingLatencyMillis": 420,
+    "averageProcessingLatencyMillis": 510,
+    "confidenceBucketed": true,
+    "lowestTargetDevice": "fixture",
+    "wearableRouteWithControlledEvidence": null,
+    "targetProgress": {
+      "requiredTrialsPerDirection": 20,
+      "requiredTotalTrials": 80,
+      "missingTotalTrials": 76,
+      "controlledTrialTargetComplete": false,
+      "missingByDirection": {
+        "front": 19,
+        "back": 19,
+        "left": 19,
+        "right": 19
+      }
+    }
+  },
+  "targetProgress": {
+    "requiredTrialsPerDirection": 20,
+    "requiredTotalTrials": 80,
+    "missingTotalTrials": 76,
+    "controlledTrialTargetComplete": false,
+    "missingByDirection": {
+      "front": 19,
+      "back": 19,
+      "left": 19,
+      "right": 19
+    }
+  },
+  "thresholds": {
+    "totalTrialsMet": false,
+    "frontTrialsMet": false,
+    "backTrialsMet": false,
+    "leftTrialsMet": false,
+    "rightTrialsMet": false,
+    "controlledTargetProgressMet": false,
+    "allDirectionMatchRateMet": false,
+    "frontBackMatchRateMet": false,
+    "leftRightMatchRateMet": false,
+    "falseDirectionRateMet": false,
+    "unknownOrUnusableRateMet": false,
+    "p95LatencyMet": false,
+    "confidenceBucketed": true,
+    "microphoneMetadataMet": false,
+    "phoneControlledEvidence": false,
+    "wearableRouteWithControlledEvidence": false,
+    "privacyMet": true
+  },
+  "microphoneMetadata": {
+    "inventoryCaptured": true,
+    "activeMicrophonesCaptured": true,
+    "channelMappingCaptured": true,
+    "hardwarePoseOrMountingDocumented": false
+  },
+  "routeEvidence": {
+    "bluetooth": {
+      "present": true,
+      "passed": true,
+      "communicationRoutingSupported": true,
+      "recordAudioPermissionGranted": true,
+      "bluetoothConnectPermissionGranted": true,
+      "deviceCount": 2,
+      "bluetoothInputAvailable": true,
+      "bluetoothInputCandidateCount": 1,
+      "selectedBluetoothInputPresent": false,
+      "selectedBluetoothInputType": "NONE",
+      "controlledDirectionEvidence": false
+    },
+    "glassesCueSeed": {
+      "present": true,
+      "passed": true,
+      "direction": "LEFT",
+      "confidenceBucket": "medium",
+      "labelPresent": false
+    }
+  },
+  "privacy": {
+    "rawAudioPersisted": false,
+    "pcmPersisted": false,
+    "transcriptsInEvidence": false,
+    "rawEmbeddingValuesInEvidence": false,
+    "speakerNamesInEvidence": false,
+    "localOnly": true,
+    "rawOutputPersisted": false
+  },
+  "outputs": {
+    "summaryJson": "data/runs/20260528_voice_direction_mvp/95-direction-evidence-extractor/direction-evidence-summary.json",
+    "summaryMarkdown": "data/runs/20260528_voice_direction_mvp/95-direction-evidence-extractor/direction-evidence-summary.md",
+    "manifestUpdateTemplate": "data/runs/20260528_voice_direction_mvp/95-direction-evidence-extractor/manifest-update-template.json"
+  },
+  "manifestUpdateTemplate": {
+    "packageName": "com.voicedirection.glass",
+    "status": "DRAFT_DIRECTION_EVIDENCE_NOT_COLLECTED",
+    "updatedAt": "2026-05-28T12:44:02+09:00",
+    "externalSubmission": "not_performed",
+    "privacy": {
+      "rawAudioPersisted": false,
+      "pcmPersisted": false,
+      "transcriptsInEvidence": false,
+      "rawEmbeddingValuesInEvidence": false,
+      "speakerNamesInEvidence": false,
+      "localOnly": true
+    },
+    "currentAlgorithm": {
+      "id": "stereo-energy-balance-v0",
+      "implementation": "app/src/main/kotlin/com/voicedirection/glass/direction/StereoPcmDirectionEstimator.kt",
+      "claimLevel": "LEFT_RIGHT_REFERENCE_ONLY",
+      "frontBackClaim": "blocked",
+      "notes": "Summary extracted for workflow review only. Controlled production direction criteria are not satisfied."
+    },
+    "microphoneMetadata": {
+      "inventoryCaptured": true,
+      "activeMicrophonesCaptured": true,
+      "channelMappingCaptured": true,
+      "hardwarePoseOrMountingDocumented": false
+    },
+    "targetHardware": {
+      "androidPhone": {
+        "required": true,
+        "status": "missing_controlled_evidence"
+      },
+      "metaRayBanGen1BluetoothHfp": {
+        "requiredForFallback": true,
+        "status": "missing_bluetooth_route_evidence"
+      },
+      "metaRayBanDisplay": {
+        "requiredForClaim": true,
+        "status": "missing_sdk_runtime_evidence"
+      },
+      "androidXrProjected": {
+        "requiredForClaim": false,
+        "status": "missing_projected_context_evidence"
+      }
+    },
+    "claimedPlatforms": {
+      "androidPhone": false,
+      "metaRayBanGen1BluetoothHfp": false,
+      "metaRayBanDisplay": false,
+      "androidXrProjected": false
+    },
+    "aggregateEvaluation": {
+      "status": "summarized_not_production_ready",
+      "totalTrials": 4,
+      "matched": 2,
+      "mismatched": 1,
+      "unknownOrUnusable": 1,
+      "frontTrials": 1,
+      "backTrials": 1,
+      "leftTrials": 1,
+      "rightTrials": 1,
+      "allDirectionMatchRate": 0.5,
+      "frontBackMatchRate": 0.5,
+      "leftRightMatchRate": 0.5,
+      "falseDirectionRate": 0.25,
+      "unknownOrUnusableRate": 0.25,
+      "p95DirectionLatencyMillis": null,
+      "latestProcessingLatencyMillis": 420,
+      "averageProcessingLatencyMillis": 510,
+      "confidenceBucketed": true,
+      "lowestTargetDevice": "fixture",
+      "wearableRouteWithControlledEvidence": null,
+      "targetProgress": {
+        "requiredTrialsPerDirection": 20,
+        "requiredTotalTrials": 80,
+        "missingTotalTrials": 76,
+        "controlledTrialTargetComplete": false,
+        "missingByDirection": {
+          "front": 19,
+          "back": 19,
+          "left": 19,
+          "right": 19
+        }
+      },
+      "evidenceFile": null
+    }
+  },
+  "errors": [],
+  "warnings": [
+    "Fixture evidence cannot be used for production direction claims.",
+    "Controlled production direction criteria are not satisfied.",
+    "p95 direction latency is missing; strict direction readiness must fail.",
+    "No wearable route with controlled direction evidence was found."
+  ]
+}

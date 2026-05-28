@@ -1,0 +1,24 @@
+.DS_Store
+**/.DS_Store
+
+# Android / Gradle
+.gradle/
+build/
+**/build/
+local.properties
+**/local.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+*.pk8
+
+# Local IDE and environment files
+.idea/
+*.iml
+.env
+.env.*
+!.env.example
+
+# Local toolchains and SDKs should stay outside the repository.
+.toolchains/

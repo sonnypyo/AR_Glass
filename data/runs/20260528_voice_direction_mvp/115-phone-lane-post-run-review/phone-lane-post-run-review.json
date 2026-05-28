@@ -1,0 +1,96 @@
+{
+  "ok": false,
+  "generatedAt": "2026-05-28T13:34:58+09:00",
+  "packDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/115-phone-lane-post-run-review",
+  "reportPath": "data/runs/20260528_voice_direction_mvp/115-phone-lane-post-run-review/phone-lane-post-run-review.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/115-phone-lane-post-run-review/phone-lane-post-run-review.json",
+  "status": "blocked",
+  "phoneAlphaReady": false,
+  "phoneEvidence": {
+    "deviceEvidenceExists": false,
+    "deviceEvidenceValidatorOk": false,
+    "directionSummaryExists": false,
+    "directionSummaryValidatorOk": false,
+    "directionManifestApplyDryRunOk": false,
+    "directionManifestApplyReady": false,
+    "directionProductionCandidate": false,
+    "phonePrivateAlphaCandidate": false,
+    "authorizedAdbDevices": 0,
+    "allowNoDevice": true
+  },
+  "promotion": {
+    "workflowProfileOk": true,
+    "phoneAlphaProfileOk": false,
+    "strictPhoneSummaryOk": false,
+    "defaultPhoneSummaryOk": true
+  },
+  "privacy": {
+    "privacyScanOk": true,
+    "filesScanned": 18,
+    "violationCount": 0,
+    "warningCount": 0
+  },
+  "checks": [
+    {
+      "label": "Validate phone summary",
+      "ok": true,
+      "exitCode": 0,
+      "parseOk": true,
+      "command": "node scripts/validate-phone-private-alpha-evidence-runner.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/phone-alpha-runner/phone-alpha-evidence-summary.json --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Validate strict phone summary",
+      "ok": false,
+      "exitCode": 1,
+      "parseOk": true,
+      "command": "node scripts/validate-phone-private-alpha-evidence-runner.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/phone-alpha-runner/phone-alpha-evidence-summary.json --require-phone-alpha-candidate --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Validate workflow promotion",
+      "ok": true,
+      "exitCode": 0,
+      "parseOk": true,
+      "command": "node scripts/validate-hardware-test-promotion.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack --profile workflow --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Validate phone-alpha promotion",
+      "ok": false,
+      "exitCode": 1,
+      "parseOk": true,
+      "command": "node scripts/validate-hardware-test-promotion.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack --profile phone-alpha --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Scan operator pack privacy",
+      "ok": true,
+      "exitCode": 0,
+      "parseOk": true,
+      "command": "node scripts/scan-evidence-privacy.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack --json",
+      "rawOutputPersisted": false
+    }
+  ],
+  "paths": {
+    "phoneSummary": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/phone-alpha-runner/phone-alpha-evidence-summary.json",
+    "deviceEvidence": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/android-phone-smoke-dry-run/device-evidence.md",
+    "directionSummary": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/phone-alpha-runner/direction-evidence/direction-evidence-summary.json",
+    "promotionValidation": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/promotion-validation/promotion-validation.json",
+    "privacyScan": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/evidence-privacy-scan/evidence-privacy-scan.json"
+  },
+  "errors": [
+    "Real phone device-evidence.md has not been collected.",
+    "Direction evidence summary has not been generated from real phone evidence.",
+    "Strict phone-alpha promotion profile is not passing."
+  ],
+  "nextActions": [
+    "Run `scripts/run-phone-lane-hardware.mjs --execute --write-report --json` after exactly one authorized phone is attached.",
+    "Generate the direction evidence summary from the real phone `device-evidence.md`.",
+    "Run direction manifest apply dry-run after direction summary validation.",
+    "Keep phone alpha blocked until the strict phone-alpha promotion profile passes."
+  ],
+  "rawOutputPersisted": false,
+  "privacyGuardrail": "This report stores only aggregate statuses, exit codes, booleans, counts, command labels, and workspace-relative paths. It must not store raw child command output, ADB serials, Bluetooth names, MAC addresses, raw audio, transcripts, speaker names, embeddings, encrypted payload values, private alert text, exact locations, or matched privacy-scan text."
+}

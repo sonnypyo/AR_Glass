@@ -1,0 +1,542 @@
+# Voice Direction Glass MVP Integration Report
+
+Date: 2026-05-28 KST
+
+## 선택한 앱/아이디어
+
+**Voice Direction Glass**는 저장한 사람의 목소리 또는 호출 문구를 감지하고, 가능한 경우 호출 방향을 추정해 안경 또는 휴대폰으로 알려주는 Android-first 글래스 연동 앱이다.
+
+핵심 사용 장면은 사용자가 휴대폰을 보고 있거나 이동 중일 때, 신뢰한 사람이 사용자를 불렀는지와 어느 쪽을 봐야 하는지를 짧은 시각/진동/알림 신호로 알려주는 것이다.
+
+## 조사 결론
+
+- 첫 구현 대상은 Android 네이티브 앱으로 잡았다. Meta Wearables Device Access Toolkit과 Android XR projected 흐름 모두 Android 쪽 검증이 우선이기 때문이다.
+- Meta Ray-Ban Display와 Android XR은 실제 SDK 자격, 런타임, 기기 증거가 필요하다. 현재 저장소는 해당 경로를 stub adapter와 readiness gate로 분리해 두었다.
+- 방향 인식은 가장 큰 기술 리스크다. 현재는 phone-hosted stereo PCM에서 거친 left/right만 실험 가능하며, front/back은 실제 기기 마이크 배열, head pose, vision evidence가 나오기 전까지 제품 기능으로 주장하지 않는다.
+- 화자 인식은 production speaker verification model이 아니라 prototype acoustic feature path다. 현재 목적은 데이터 흐름과 자동화 bridge를 검증하는 것이다.
+
+## 핵심 가드레일
+
+- 원본 오디오와 PCM은 기본 저장하지 않는다.
+- 분석 샘플은 메모리에서 처리하고, 저장되는 것은 프로필 상태, sample count, prototype embedding reference, 이벤트 메타데이터뿐이다.
+- 전경 마이크 서비스는 Android foreground notification으로 사용자에게 항상 보이게 한다.
+- 인식 정확도, front/back 방향, 안경 haptics는 증거가 없으면 제품 완료로 표시하지 않는다.
+- Meta DAT, Android XR, glasses haptics, wearable direction은 readiness gate가 닫힌 상태로 관리한다.
+
+## 사용한 근거와 출처
+
+- `docs/01-platform-research.md`: Meta Wearables와 Android XR 공식 문서 기반 조사.
+- `docs/07-privacy-safety.md`: 음성/생체/알림/저장 가드레일.
+- `docs/08-device-test-plan.md`: 실제 Android phone, Meta Ray-Ban Display, Ray-Ban Meta Gen 1, Android XR 검증 계획.
+- `docs/10-release-readiness.md`: 내부 프로토타입, phone alpha, glasses alpha, beta, production gate.
+- `docs/15-policy-clearance-matrix.md`: Meta Wearables, Android XR, Google Play, 녹음, 음성, wearable distribution 정책 clearance 추적.
+- `docs/16-privacy-policy-data-safety-draft.md`: 현재 local-first build 기준 privacy policy와 Google Play Data Safety 초안.
+- `docs/17-store-review-submission-package-draft.md`: Play/wearable review 제출 전 listing copy, app-content declarations, reviewer instructions, blockers 초안.
+- `docs/18-release-artifact-signing-runbook.md`: release AAB, upload-key signing, Play App Signing, key hygiene 절차.
+- `docs/19-release-notes-versioning.md`: Play internal-testing release note, current Gradle version, version increment rule, unsupported-claim guardrail 초안.
+- `docs/20-play-screenshot-media-runbook.md`: Play phone screenshots, feature graphic, Android XR preview asset capture/validation 초안.
+- `docs/21-production-speaker-model-evaluation.md`: production speaker verification model, threshold, anti-spoofing, latency, privacy evidence gate 초안.
+- `docs/22-direction-accuracy-evidence.md`: controlled phone/glasses direction accuracy, microphone metadata, route proof, latency, privacy evidence gate 초안.
+- `docs/23-support-drill-evidence.md`: support deletion verification drill과 mistaken-alert incident drill evidence gate 초안.
+- `docs/26-glasses-hardware-session-runbook.md`: Ray-Ban Display, Ray-Ban Gen 1 fallback, Android XR projected, haptics/fallback hardware evidence session workflow.
+- `docs/28-private-alpha-hardware-runner.md`: phone/support/glasses/private-alpha rehearsal을 실제 하드웨어 테스트 날에 묶어 실행하는 runner workflow.
+- `docs/29-private-alpha-hardware-readiness-preflight.md`: 실제 하드웨어 테스트 전 로컬 toolchain, ADB device count, credentials, session pack, runner flag를 점검하는 preflight.
+- `docs/30-platform-source-freshness.md`: Meta Wearables와 Android XR 공식 source URL, redirect, canonical reference drift를 검증하는 freshness check.
+- `docs/31-direction-cue-output-contract.md`: 실기기 출력 점검 전 notification, vibration, TTS, glasses evidence cue 계약.
+- `docs/32-direction-validation-evidence-snapshot.md`: 실기기 방향 검증 전 per-direction outcome evidence snapshot 계약.
+- `docs/33-release-readiness-ui.md`: 앱 안에서 internal, phone alpha, glasses alpha, beta, production gate를 보여주는 readiness UI 계약.
+- `docs/34-release-readiness-next-actions.md`: 앱 안에서 phone private alpha의 열린 증거 항목과 다음 실행 액션을 보여주는 UI 계약.
+- `docs/35-phone-private-alpha-evidence-runner.md`: phone private alpha 증거 수집 runner의 실행 순서, 출력, privacy guardrail.
+- `docs/36-phone-private-alpha-runner-validator.md`: phone private alpha runner summary의 privacy shape와 strict candidate 조건 validator.
+- `docs/37-service-gate-assertions.md`: current-safe, internal prototype, phone alpha, glasses alpha, production gate assertion profile.
+- `docs/38-glasses-haptics-intent-contract.md`: glasses haptics target/intensity/pulse intent 계약과 unsupported-claim guardrail.
+- `docs/39-glasses-private-alpha-evidence-runner.md`: Ray-Ban Display, Gen 1 fallback, Android XR, haptics/fallback 증거 runner와 strict candidate 조건 validator.
+- `docs/40-hardware-test-operator-pack.md`: 실제 테스트 날 phone/glasses/support evidence lane을 한 폴더에서 실행하는 operator pack.
+- `docs/41-hardware-test-promotion-validator.md`: operator pack 결과를 workflow/current-safe/strict promotion profile로 판정하는 validator.
+- `docs/42-direction-evidence-extractor.md`: device-evidence 방향 검증 결과를 non-PII summary와 manifest update template으로 변환하는 extractor/validator.
+- `docs/43-phone-runner-direction-evidence.md`: phone runner와 operator pack이 실제 `device-evidence.md` 이후 direction summary를 자동 생성하는 계약.
+- `docs/44-android-xr-projected-contract.md`: Android XR projected preview/stub 상태와 real ProjectedContext/Glimmer 통합 증거를 분리하는 계약.
+- `docs/45-android-xr-preflight-contract-integration.md`: glasses preflight가 Android XR projected default/strict contract 상태를 함께 기록하도록 만든 통합 계약.
+- `docs/46-hardware-test-status-dashboard.md`: operator pack의 default/phone/glasses/support lane 상태를 한 번에 요약하고 no-hardware workflow pass와 실제 evidence를 분리하는 대시보드 계약.
+- `docs/47-device-evidence-redaction.md`: 생성되는 phone `device-evidence.md`와 evidence folder path에서 ADB serial, build fingerprint, MAC-like identifier, Bluetooth private field를 막는 redaction gate.
+- `docs/48-evidence-privacy-scan.md`: 생성된 evidence/report 폴더 전체에서 private voice, device, Bluetooth, account, token, raw-audio field가 남으면 promotion 전에 실패시키는 folder-level privacy scan.
+- `docs/49-operator-pack-privacy-scan-integration.md`: hardware operator pack이 pack-scoped privacy scan을 promotion validation 전에 자동 실행하도록 만든 통합 계약.
+- `docs/50-direction-validation-adb-recorder.md`: debug APK에 설치된 ADB direction trial recorder로 controlled expected-vs-observed 방향 검증 row를 비식별로 기록하는 계약.
+- `docs/51-controlled-direction-trial-session.md`: front/back/left/right 20회씩 controlled direction trial plan, ADB template, aggregate summary, privacy rule을 생성하는 세션 계약.
+- `docs/52-direction-evidence-manifest-apply.md`: strict direction summary와 direction accuracy validator가 통과하기 전 canonical direction manifest 쓰기를 막는 apply gate.
+- `docs/53-hardware-next-actions.md`: hardware status dashboard를 실제 테스트 날의 ordered command brief로 바꾸는 next-action 계약.
+- `docs/54-hardware-next-action-executor.md`: hardware next-action brief에서 첫 ready action만 allow-list로 실행하는 executor 계약.
+- `docs/55-phone-lane-collection-readiness.md`: phone lane의 실행 전 blocker와 실행 후 evidence gap을 분리하는 계약.
+- `docs/56-phone-lane-hardware-runner.md`: phone lane 상태를 새로고침하고 준비된 경우에만 `RUN_PHONE=1`을 실행하는 전용 runner 계약.
+- `docs/57-phone-lane-post-run-review.md`: phone lane 실행 후 phone-alpha review 가능 여부를 판정하는 계약.
+- `docs/58-phone-lane-ready-watcher.md`: authorized phone이 준비될 때까지 polling하고 실행/리뷰를 안전하게 이어주는 watcher 계약.
+
+## 만들어진 앱 경로
+
+- Android app: `apps/voice-direction-glass`
+- Debug APK: `apps/voice-direction-glass/app/build/outputs/apk/debug/app-debug.apk`
+- 주요 실행 화면:
+  - `MainActivity`: 세션 시작/중지, 프로필, 샘플 수집, prototype match, direction sample, readiness 카드.
+  - `GlassesProjectedActivity`: 최신 actionable cue를 projected display 형태로 렌더링하는 phone-hosted preview.
+
+## MVP 기능
+
+- 저장한 화자 프로필 생성과 명시적 동의 버전 기록.
+- 호출 문구 기반 감지.
+- 전경 서비스 기반 반복 speech recognition loop.
+- 마이크 권한/오디오 흐름 전에 확인해야 하는 `마이크 사용 안내` disclosure gate.
+- prototype voice enrollment sample capture.
+- prototype voice match diagnostic.
+- service-side prototype voice match bridge.
+- short stereo direction sample bridge.
+- audio direction evidence classifier that labels samples as left/right usable, low confidence, front/back unproven, or unavailable.
+- latest audio direction evidence snapshot for physical phone reports.
+- microphone inventory and active microphone/channel-mapping counts in latest direction evidence snapshots.
+- detection processing latency metadata and non-PII latency evidence fields.
+- alert delivery channel/status persistence without alert message text.
+- persisted alert channel preferences for isolating phone notification, vibration, TTS, Meta Display, and Android XR Display outputs.
+- direct alert output test for enabled channels without creating a detection event.
+- in-app direction cue output contract card for expected notification, vibration, TTS, and glasses evidence output.
+- app-side glasses haptics intent contract for target side, intensity, pulse count, proof requirement, and phone fallback requirement.
+- direction-coded phone vibration fallback pattern metadata for non-PII output evidence.
+- debug-only alert output test broadcast for ADB smoke evidence, storing channel/status counts, cue contract markers, glasses haptics intent markers, and `latestDeliverySource=TEST_CUE`.
+- latest alert delivery source label in the output card and non-PII evidence snapshot.
+- explicit speaker consent checkbox before local profile creation.
+- direction validation trial recorder and per-direction matched/mismatched/unknown plus 20-per-direction target progress summary for expected-vs-observed front/back/left/right evidence.
+- direction target-progress fields in generated device evidence so physical reports include 20-per-direction and remaining-row status.
+- direction evidence summaries now preserve required/missing target progress at the summary root, aggregate evaluation, and manifest update template.
+- direction evidence manifest apply gate prevents canonical direction manifest promotion until strict summary and direction accuracy validators pass.
+- phone-private-alpha runner now records direction manifest apply dry-run status without writing canonical direction files.
+- debug-only ADB direction-validation trial recorder and helper script for controlled expected-vs-observed entries without audio, transcripts, speaker names, Bluetooth names, or private alert text.
+- controlled direction-trial session generator and validator for 20-per-direction front/back/left/right plans before hardware evidence collection.
+- Bluetooth communication-device route probe and guarded route select/clear controls for Ray-Ban/Android XR HFP microphone fallback checks.
+- phone notification과 phone vibration alert.
+- Android TextToSpeech direction-only fallback alert.
+- latest glasses cue 저장과 projected cue preview.
+- shared glasses cue payload contract that separates display labels from non-PII adapter/evidence summaries.
+- AndroidKeyStore AES-GCM encrypted local string storage with legacy plaintext migration fallback.
+- Debug-only encrypted storage self-check automation for physical phone smoke tests.
+- Debug-only repository direction-validation self-check automation for encrypted trial persistence.
+- Debug-only non-PII repository evidence snapshot for physical phone smoke reports, including enabled alert channel states.
+- Debug-only non-PII repository evidence snapshot includes microphone disclosure accepted/version fields.
+- Debug-only release readiness snapshot for generated physical phone evidence reports.
+- Debug-only glasses readiness snapshot for generated physical phone evidence reports.
+- Device evidence validator for generated physical-test reports.
+- In-app tester consent and limitation copy for storage, non-storage, prototype limits, and deletion.
+- Detection feedback controls and local feedback summary for false-positive testing.
+- 30-minute false-positive test session with elapsed time, windowed feedback counts, pass/fail verdict, and false-positive rate per hour.
+- Meta DAT and Android XR glasses integration preflight evidence script.
+- Service readiness audit script for release gate, glasses gate, and local evidence aggregation.
+- Physical test session generator for grouped phone/Ray-Ban/Android XR evidence sessions.
+- Physical test session validator for grouped evidence folder structure and privacy-shape checks.
+- Support and mistaken-alert incident process with deletion verification workflow.
+- Policy clearance matrix and validator for Meta Wearables, Android XR, Google Play, recording, voice, and wearable distribution gates.
+- Privacy policy and Play Data Safety draft and validator for the current local-first build.
+- Store review submission package draft and validator for listing copy, app-content declarations, reviewer instructions, screenshots/media plan, and submission blockers.
+- Release artifact/signing runbook and validator for structural AAB generation, upload-key signing, strict upload-ready checks, and private-key hygiene.
+- Release notes/versioning draft and validator for `0.1.0`/`1`, Play per-language release-note length, and unsupported-claim guardrails.
+- Play screenshot/media package manifest, capture script, and validator for phone screenshots, feature graphic, Android XR preview assets, and strict media gate.
+- Production speaker model evaluation manifest and validator for on-device model selection, false accept/false reject metrics, anti-spoofing decision, latency, and privacy gate.
+- Direction accuracy evidence manifest and validator for controlled front/back/left/right trials, microphone metadata, route proof, latency, and privacy gate.
+- Direction evidence extractor and summary validator for turning generated device evidence into aggregate direction counts, rates, microphone metadata, route fields, and a non-writing manifest update template.
+- Phone runner direction evidence integration that writes direction summary fields into `phone-alpha-evidence-summary.json` after real phone evidence exists.
+- Android XR projected contract validator that keeps the current phone-hosted preview/stub path separate from future real ProjectedContext/Glimmer adapter proof.
+- Glasses preflight integration that records Android XR default projected contract pass and strict real projected contract manual-required rows.
+- Support drill evidence manifest and validator for configured support channel, deletion verification drill, mistaken-alert incident drill, privacy guardrails, and strict production gate.
+- Support drill session generator and validator for reusable deletion/mistaken-alert evidence packs.
+- Glasses setup readiness document, local properties template, and validator for Meta DAT/Android XR credential preparation.
+- Glasses hardware evidence manifest and validator for Ray-Ban Display, Ray-Ban Gen 1 fallback, Android XR projected runtime, and haptics/fallback proof.
+- Glasses hardware session generator, validator, and apply automation for reusable Ray-Ban Display, Ray-Ban Gen 1 fallback, Android XR projected, and haptics/fallback evidence packs.
+- Private alpha rehearsal generator and validator for linking physical phone, support drill, and glasses hardware sessions before tester-facing claims.
+- Private alpha hardware runner for coordinating phone, support, glasses, and top-level rehearsal commands while storing only non-PII command status summaries.
+- Private alpha hardware readiness preflight for checking local toolchain, ADB device counts, credentials, session packs, latest evidence, and recommended runner flags.
+- Platform source freshness checker for official Meta Wearables and Android XR source URL availability, redirect state, Last updated date, and local canonical-reference drift.
+- In-app release readiness card that mirrors the canonical checklist for internal, phone alpha, glasses alpha, beta, and production visibility.
+- In-app phone-alpha evidence next-action rows that show status, title, current evidence state, suggested action, and stable checklist id.
+- Phone-private-alpha evidence runner that wraps debug build/test, Android phone smoke evidence, device-evidence validation, service-readiness audit, and a non-PII summary.
+- Phone-private-alpha runner summary validator that keeps no-device dry runs separate from real phone-alpha candidate evidence.
+- Service gate assertion command that fails unsupported phone alpha, glasses alpha, and production promotion profiles.
+- Glasses haptics intent contract that keeps right/left/both haptic design metadata separate from physical glasses haptics proof.
+- Glasses-private-alpha evidence runner that validates the glasses session, checks strict hardware/service gates, dry-runs manifest apply, regenerates audit, and writes a non-PII summary.
+- Glasses-private-alpha runner summary validator that keeps no-hardware dry runs separate from real glasses-alpha candidate evidence.
+- Hardware test operator pack generator and validator that ties readiness preflight, current-safe gate assertion, phone runner, glasses runner, support drill lane, and service audit into one non-PII day-of-test folder.
+- Hardware test promotion validator that classifies operator-pack outputs as workflow-only, current-safe, phone alpha, glasses alpha, support-ready, or private-alpha evidence.
+- Hardware test status dashboard that summarizes default, phone, glasses, support, and controlled direction-trial lanes without treating no-hardware workflow success as release evidence.
+- Hardware next-action reporter that orders default workflow, phone lane, controlled direction rows, glasses lane, and support lane from the latest dashboard without storing private device data.
+- Hardware next-action executor that runs only ready allow-listed actions and writes a non-PII execution summary.
+- Phone lane collection readiness split that keeps authorized-device/preflight blockers separate from post-run `device-evidence.md`, direction summary, and manifest-apply gaps.
+- Phone lane hardware runner that refreshes dashboard/next-action state and gates `RUN_PHONE=1` execution without persisting raw child command output.
+- Phone lane post-run reviewer that checks generated phone evidence, strict phone summary validation, promotion profile, and privacy scan before phone-alpha claims.
+- Phone lane ready watcher that polls the guarded runner until a phone is ready, then optionally executes the lane and immediately runs the post-run reviewer.
+- Device evidence redaction gate that keeps generated phone smoke reports and default evidence folder paths from storing ADB serials or build fingerprints.
+- Evidence privacy scanner that checks generated evidence/report folders and reports only file path, line number, and rule id without echoing matched private text.
+- Operator-pack privacy scan integration that runs the pack-scoped scanner inside the generated hardware-day `commands.sh` before promotion validation.
+- Direction validation ADB recorder for repeatable controlled trial entry after a debug APK is installed.
+- Controlled direction-trial session generator for front/back/left/right evidence planning.
+- Meta DAT application ID manifest placeholder and analytics opt-out metadata.
+- non-PII diagnostic logcat.
+- release readiness checklist와 glasses integration readiness gate.
+- phone private alpha release gate now includes debug glasses cue seed, debug Bluetooth route evidence, debug local delete self-check, debug alert output, debug direction sample, microphone metadata, vibration pattern metadata, cue contract markers, glasses haptics intent markers, `latestCuePresent=true`, and `latestDeliverySource=TEST_CUE` evidence.
+
+## 구현 산출물
+
+- 제품/기술 문서: `docs/00-project-charter.md`부터 `docs/58-phone-lane-ready-watcher.md`.
+- 시행착오 로그: `docs/06-experiment-log.md`.
+- 단계별 실행 기록: `data/runs/20260528_voice_direction_mvp/01-research.md`부터 `116-phone-lane-ready-watcher.md`.
+- 서비스 준비 감사 리포트: `data/runs/20260528_voice_direction_mvp/52-service-readiness-audit/service-readiness-audit.md`.
+- 물리 테스트 세션 패키지: `data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack`.
+- 물리 테스트 세션 방향 정확도 체크리스트: `data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack/direction-accuracy-checklist.md`.
+- Support drill session pack: `data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack`.
+- Glasses setup readiness: `docs/24-glasses-setup-readiness.md`, `apps/voice-direction-glass/local.properties.example`.
+- Glasses hardware evidence: `docs/25-glasses-hardware-evidence.md`, `apps/voice-direction-glass/glasses-evidence/manifest.json`.
+- Glasses hardware session pack: `data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack`.
+- Glasses hardware session apply: `scripts/apply-glasses-hardware-session.mjs`, `data/runs/20260528_voice_direction_mvp/78-glasses-hardware-session-apply.md`.
+- Private alpha rehearsal pack: `data/runs/20260528_voice_direction_mvp/79-private-alpha-rehearsal-pack`.
+- Private alpha hardware runner summary: `data/runs/20260528_voice_direction_mvp/80-private-alpha-hardware-runner`.
+- Private alpha hardware readiness preflight: `data/runs/20260528_voice_direction_mvp/81-private-alpha-hardware-readiness`.
+- Platform source freshness report: `data/runs/20260528_voice_direction_mvp/82-platform-source-freshness`.
+- Direction cue output contract: `docs/31-direction-cue-output-contract.md`, `data/runs/20260528_voice_direction_mvp/83-direction-cue-output-contract.md`.
+- Cue contract device evidence: `data/runs/20260528_voice_direction_mvp/84-cue-contract-device-evidence.md`.
+- Direction validation evidence snapshot: `docs/32-direction-validation-evidence-snapshot.md`, `data/runs/20260528_voice_direction_mvp/85-direction-validation-evidence-snapshot.md`.
+- Release readiness UI: `docs/33-release-readiness-ui.md`, `data/runs/20260528_voice_direction_mvp/86-release-readiness-ui.md`.
+- Release readiness next actions: `docs/34-release-readiness-next-actions.md`, `data/runs/20260528_voice_direction_mvp/87-release-readiness-next-actions.md`.
+- Phone private alpha evidence runner: `docs/35-phone-private-alpha-evidence-runner.md`, `scripts/run-phone-private-alpha-evidence.mjs`, `data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner.md`.
+- Phone private alpha runner validator: `docs/36-phone-private-alpha-runner-validator.md`, `scripts/validate-phone-private-alpha-evidence-runner.mjs`, `data/runs/20260528_voice_direction_mvp/89-phone-private-alpha-runner-validator.md`.
+- Service gate assertions: `docs/37-service-gate-assertions.md`, `scripts/assert-service-gates.mjs`, `data/runs/20260528_voice_direction_mvp/90-service-gate-assertions.md`.
+- Glasses haptics intent contract: `docs/38-glasses-haptics-intent-contract.md`, `data/runs/20260528_voice_direction_mvp/91-glasses-haptics-intent-contract.md`.
+- Glasses private alpha evidence runner: `docs/39-glasses-private-alpha-evidence-runner.md`, `scripts/run-glasses-private-alpha-evidence.mjs`, `scripts/validate-glasses-private-alpha-evidence-runner.mjs`, `data/runs/20260528_voice_direction_mvp/92-glasses-private-alpha-evidence-runner.md`.
+- Hardware test operator pack: `docs/40-hardware-test-operator-pack.md`, `scripts/create-hardware-test-operator-pack.mjs`, `scripts/validate-hardware-test-operator-pack.mjs`, `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack.md`, `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack`.
+- Hardware test promotion validator: `docs/41-hardware-test-promotion-validator.md`, `scripts/validate-hardware-test-promotion.mjs`, `data/runs/20260528_voice_direction_mvp/94-hardware-test-promotion-validator.md`, `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/promotion-validation`.
+- Direction evidence extractor: `docs/42-direction-evidence-extractor.md`, `scripts/extract-direction-evidence-summary.mjs`, `scripts/validate-direction-evidence-summary.mjs`, `data/runs/20260528_voice_direction_mvp/95-direction-evidence-extractor.md`, `data/runs/20260528_voice_direction_mvp/95-direction-evidence-extractor`.
+- Direction evidence summary target progress: `data/runs/20260528_voice_direction_mvp/108-direction-evidence-summary-target-progress.md`.
+- Direction evidence manifest apply gate: `docs/52-direction-evidence-manifest-apply.md`, `scripts/apply-direction-evidence-summary.mjs`, `data/runs/20260528_voice_direction_mvp/109-direction-evidence-manifest-apply.md`.
+- Phone runner direction apply dry-run integration: `data/runs/20260528_voice_direction_mvp/110-phone-runner-direction-apply-dry-run.md`.
+- Hardware next actions: `docs/53-hardware-next-actions.md`, `scripts/recommend-hardware-next-actions.mjs`, `data/runs/20260528_voice_direction_mvp/111-hardware-next-actions.md`, `data/runs/20260528_voice_direction_mvp/111-hardware-next-actions`.
+- Hardware next action executor: `docs/54-hardware-next-action-executor.md`, `scripts/run-hardware-next-action.mjs`, `data/runs/20260528_voice_direction_mvp/112-hardware-next-action-executor.md`, `data/runs/20260528_voice_direction_mvp/112-hardware-next-action-executor`.
+- Phone lane collection readiness: `docs/55-phone-lane-collection-readiness.md`, `data/runs/20260528_voice_direction_mvp/113-phone-lane-collection-readiness.md`.
+- Phone lane hardware runner: `docs/56-phone-lane-hardware-runner.md`, `scripts/run-phone-lane-hardware.mjs`, `data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner.md`, `data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner`.
+- Phone lane post-run review: `docs/57-phone-lane-post-run-review.md`, `scripts/review-phone-lane-evidence.mjs`, `data/runs/20260528_voice_direction_mvp/115-phone-lane-post-run-review.md`, `data/runs/20260528_voice_direction_mvp/115-phone-lane-post-run-review`.
+- Phone lane ready watcher: `docs/58-phone-lane-ready-watcher.md`, `scripts/run-phone-lane-when-ready.mjs`, `data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher.md`, `data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher`.
+- Phone runner direction evidence integration: `docs/43-phone-runner-direction-evidence.md`, `data/runs/20260528_voice_direction_mvp/96-phone-runner-direction-evidence.md`.
+- Android XR projected contract validation: `docs/44-android-xr-projected-contract.md`, `scripts/validate-android-xr-projected-contract.mjs`, `data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract.md`, `data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract`.
+- Android XR preflight contract integration: `docs/45-android-xr-preflight-contract-integration.md`, `data/runs/20260528_voice_direction_mvp/98-android-xr-preflight-contract-integration.md`, `data/runs/20260528_voice_direction_mvp/30-glasses-preflight-evidence/glasses-preflight.md`.
+- Hardware test status dashboard: `docs/46-hardware-test-status-dashboard.md`, `scripts/summarize-hardware-test-status.mjs`, `data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard.md`, `data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard`, `data/runs/20260528_voice_direction_mvp/105-hardware-dashboard-controlled-direction-session.md`.
+- Device evidence redaction: `docs/47-device-evidence-redaction.md`, `scripts/android-device-smoke-test.sh`, `scripts/validate-device-evidence.mjs`, `data/runs/20260528_voice_direction_mvp/100-device-evidence-redaction.md`.
+- Evidence privacy scan: `docs/48-evidence-privacy-scan.md`, `scripts/scan-evidence-privacy.mjs`, `data/runs/20260528_voice_direction_mvp/101-evidence-privacy-scan.md`, `data/runs/20260528_voice_direction_mvp/101-evidence-privacy-scan`.
+- Operator-pack privacy scan integration: `docs/49-operator-pack-privacy-scan-integration.md`, `data/runs/20260528_voice_direction_mvp/102-operator-pack-privacy-scan-integration.md`, `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/evidence-privacy-scan`.
+- Direction validation ADB recorder: `docs/50-direction-validation-adb-recorder.md`, `scripts/record-direction-validation-trial.sh`, `data/runs/20260528_voice_direction_mvp/103-direction-validation-adb-recorder.md`.
+- Controlled direction-trial session: `docs/51-controlled-direction-trial-session.md`, `scripts/create-controlled-direction-trial-session.mjs`, `scripts/validate-controlled-direction-trial-session.mjs`, `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session.md`, `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session`.
+- QA canonical report: `data/canonical/voice-direction-glass.qa-report.json`.
+- 구현 lock: `apps/voice-direction-glass/agent-output/implementation.lock.json`.
+
+## 기술 스택
+
+- Kotlin, Android Gradle Plugin, Jetpack Compose.
+- Android `SpeechRecognizer`, Android `TextToSpeech`, foreground service, notifications, vibration.
+- Android `AudioRecord` capability probe and transient sample capture.
+- Direction validation trial storage and aggregate/per-direction outcome plus 20-per-direction target progress summary over encrypted local preferences.
+- Debug non-PII evidence snapshot fields for controlled direction required trials, missing total, missing per-direction rows, and target-complete status.
+- Release readiness checklist and in-app readiness UI for evidence-gated promotion visibility and phone-alpha next actions.
+- Android `AudioManager` communication-device probe plus guarded route selection for Bluetooth HFP fallback evidence.
+- Local repository abstraction with AndroidKeyStore AES-GCM encrypted string storage over app-private `SharedPreferences`.
+- Meta DAT and Android XR adapter boundaries, currently stubbed.
+- Shared `GlassesCuePayload` contract for future real display adapters.
+- Bash preflight automation for glasses setup evidence.
+- Node phone-private-alpha evidence runner for phone-first evidence collection summaries.
+- Node phone-private-alpha runner summary validator for privacy guardrails and strict phone-alpha candidate checks.
+- Node glasses-private-alpha evidence runner and summary validator for Ray-Ban/Android XR lane summaries.
+- Node hardware test operator pack generator and validator for phone/glasses/support test-day orchestration.
+- Node hardware test promotion validator for operator-pack workflow and strict promotion profiles.
+- Node direction evidence extractor and summary validator for non-PII direction count/rate summaries plus controlled target-progress propagation before manifest promotion.
+- Node direction evidence manifest apply gate for strict summary validation, strict canonical direction validation, rollback, and no-fixture write refusal.
+- Node phone-private-alpha runner now invokes direction extraction/validation and direction manifest apply dry-run after real device evidence exists.
+- Node Android XR projected contract validator for default phone-preview/stub checks and strict real ProjectedContext/Glimmer checks.
+- Bash glasses preflight now invokes the Android XR projected contract validator in default and strict modes without storing secrets or private device data.
+- Node hardware test status dashboard over operator-pack summaries, promotion validator output, current-safe gate assertions, glasses preflight, Android XR contract state, and controlled direction-trial session readiness.
+- Node hardware next-action reporter over the dashboard for ordered real-test commands, blockers, and non-PII decision summaries.
+- Node hardware next-action executor for allow-listed ready actions and non-PII execution summaries.
+- Node hardware dashboard collection-readiness model for separating phone pre-run blockers from post-run evidence gaps.
+- Node phone-lane hardware runner for refreshed readiness checks and guarded `RUN_PHONE=1` execution.
+- Node phone-lane post-run reviewer for strict phone evidence and promotion validation after `RUN_PHONE=1`.
+- Bash phone smoke evidence generation with default redaction for ADB serial and build fingerprint.
+- Node evidence privacy scanner over generated operator-pack, dashboard, audit, phone, glasses, support, and summary folders.
+- Generated operator-pack shell workflow that invokes the evidence privacy scanner before workflow promotion validation.
+- Bash debug ADB direction-trial recorder over `DirectionValidationTrialReceiver`.
+- Node controlled direction-trial session generator and validator.
+- Node service gate assertion profiles over service-readiness audit JSON.
+- Manifest placeholders for secret-free Meta DAT configuration.
+- Unit tests for event fusion, storage codec, speaker verification contracts, prototype embeddings, direction estimator, direction cue output contracts, glasses haptics intent mapping, release readiness, and glasses readiness.
+
+## 검증 결과
+
+2026-05-28 KST 기준 실행한 검증:
+
+```bash
+export JAVA_HOME=/Users/sonjunpyo/.codex/toolchains/jdk-17/Contents/Home
+export ANDROID_HOME=/Users/sonjunpyo/Library/Android/sdk
+./gradlew --no-daemon test assembleDebug
+./gradlew --no-daemon test assembleDebug bundleRelease
+```
+
+결과:
+
+- Gradle unit tests passed.
+- Debug APK assembled.
+- Structural release AAB build passed, but upload signing remains blocked.
+- Detection latency summarizer, session latency recording, prototype voice latency recording, and legacy event codec tests passed.
+- Alert delivery snapshot codec and repository tests passed.
+- Speaker consent gate compiles into the host app.
+- Alert channel preference filtering and storage codec tests passed.
+- Alert output test button compiles into the host app and uses the shared alert router.
+- Direction cue output contract tests passed, including glasses haptics intent mapping, and the host app compiles with the `방향 큐 계약` card.
+- Debug alert output test broadcast receiver compiles into the debug APK, records cue contract and glasses haptics intent markers, and is wired into the ADB smoke script before evidence snapshot collection.
+- Debug direction sample test broadcast receiver compiles into the debug APK and is wired into the ADB smoke script before evidence snapshot collection.
+- Debug direction validation trial receiver compiles into the debug APK, and `scripts/record-direction-validation-trial.sh` syntax/help passed for controlled expected-vs-observed ADB entries.
+- `aapt2 dump xmltree` confirmed `DirectionValidationTrialReceiver` and `DEBUG_DIRECTION_VALIDATION_TRIAL` are present in the debug APK manifest.
+- `node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/52-service-readiness-audit` passed and now tracks the direction validation ADB recorder doc, script, and receiver as local artifacts.
+- `scripts/create-controlled-direction-trial-session.mjs --run-dir data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session --force --json` generated an 80-row controlled direction trial session.
+- `scripts/validate-controlled-direction-trial-session.mjs data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session --json` passed.
+- `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh` passed in no-hardware mode, including Gradle test/assembleDebug, draft direction gate validation, session validation, and session-scoped service audit generation.
+- `scripts/scan-evidence-privacy.mjs --write-report --json` passed with 31 generated files scanned and zero violations after adding the controlled direction-trial session target.
+- `scripts/summarize-hardware-test-status.mjs --write-report --json` now validates the controlled direction session, reports `plannedRows=80`, `recordedRows=0`, and keeps the `Controlled direction trials` lane `manual-required`.
+- `scripts/recommend-hardware-next-actions.mjs --write-report --json` generated the hardware next-action brief with decision `default_workflow_ready_attach_phone_next`, default workflow ready, phone blocked at authorized ADB devices `0`, controlled direction rows `0/80`, glasses blocked, and support manual-required.
+- `scripts/run-hardware-next-action.mjs --execute --write-report --json` selected `refresh-default-workflow`, ran the default no-hardware operator pack, and exited `0` while storing no raw command output in its summary.
+- `scripts/summarize-hardware-test-status.mjs --write-report --json` now reports `collectionReadiness.phoneCollectionBlockers` separately from `collectionReadiness.phoneEvidenceGaps`.
+- `scripts/run-hardware-next-action.mjs --action run-phone-lane --write-report --json` fails as expected in the current no-phone state, with the phone lane blocked only by authorized ADB device count `0`.
+- `scripts/run-phone-lane-hardware.mjs --write-report --json` fails as expected in the current no-phone state after refreshing dashboard and next-action state, with raw output persisted `false`.
+- `scripts/review-phone-lane-evidence.mjs --write-report --json` fails as expected in the current no-phone state: workflow validation and privacy scan pass, strict phone-alpha validation fails.
+- `scripts/run-phone-lane-when-ready.mjs --timeout-ms 0 --interval-ms 250 --write-report --json` fails as expected in the current no-phone state with status `timed-out` and no hardware execution.
+- `scripts/scan-evidence-privacy.mjs data/runs/20260528_voice_direction_mvp/final-report.md --json` passed after replacing the old negative-test example with rule-focused wording.
+- `scripts/summarize-hardware-test-status.mjs --write-report --json` passed; default no-hardware lane remains ready, phone/glasses evidence lanes remain blocked, and support remains manual-required.
+- `node scripts/create-physical-test-session.mjs --run-dir data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack --force --json` regenerated the physical session pack with ADB direction trial recorder checklist markers.
+- `node scripts/validate-physical-test-session.mjs data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack --json` passed with expected missing-hardware-output warnings.
+- Phone private alpha release checklist now requires debug glasses cue seed script-pass, debug Bluetooth route evidence script-pass, debug local delete self-check script-pass, debug alert output script-pass with cue contract and glasses haptics intent markers, debug direction sample script-pass, microphone metadata snapshot fields, `latestCuePresent=true`, and `latestDeliverySource=TEST_CUE` device evidence.
+- Release readiness card compiles into the host app and shows internal, phone alpha, glasses alpha, beta, and production gate status from `VoiceDirectionReleaseChecklist`.
+- Release readiness card now exposes first phone-alpha blocker evidence state and next action from `VoiceDirectionReleaseChecklist`, and `VoiceDirectionReleaseChecklistTest` verifies those fields are non-empty.
+- Release readiness snapshot receiver compiles into the debug APK and is wired into the ADB smoke report path.
+- Glasses readiness snapshot receiver compiles into the debug APK and is wired into the ADB smoke report path.
+- Non-PII evidence snapshot now includes enabled alert channel states for physical device reports.
+- Non-PII evidence snapshot now labels latest delivery source as test cue, detection event, missing, or unknown.
+- Alert delivery source label compiles into the `알림 출력` card.
+- Phone vibration fallback patterns are direction-specific in unit tests, and debug alert output now reports non-PII vibration pattern metadata.
+- Glasses haptics intent maps left/right to side targets, front/back to both-side targets, unknown to no target, and keeps `requiresOfficialApiProof=true` for directional haptic intents.
+- Glasses cue payload tests passed; display labels stay available for projected UI while adapter/evidence summaries omit actual speaker labels.
+- Debug glasses cue seed receiver compiles into the debug APK path and seeds a generic projected cue before smoke-script projected launch.
+- Debug Bluetooth route evidence receiver compiles into the debug APK path and reports route support/count/type metadata without Bluetooth product names.
+- Debug local delete self-check receiver compiles into the debug APK path and verifies post-delete counts on a separate encrypted debug store.
+- TTS direction-only cue formatter test passed, and TTS adapter is compiled into the debug APK.
+- Direction validation trial aggregate/per-direction summary, codec, repository, and UI compile paths passed.
+- Direction validation target progress UI and model math passed unit tests; the app now shows 20-per-direction target, 80-row progress, and remaining front/back/left/right row counts.
+- Direction target progress evidence snapshot fields passed validator fixture checks; generated device evidence now requires required-total, missing-total, per-direction missing, and target-complete markers.
+- Direction evidence summary target progress validation passed; the fixture summary records `requiredTotalTrials=80`, `missingTotalTrials=76`, missing `19` per direction, and `controlledTrialTargetComplete=false` in both summary and manifest-template aggregate output.
+- Direction evidence manifest apply dry-run passed with `applyReady=false`, while `--write` failed as expected and did not modify the draft canonical manifest.
+- Phone runner direction apply dry-run integration passed no-device workflow validation; apply dry-run is skipped until real `device-evidence.md` exists.
+- Audio direction evidence classifier and summary formatter tests passed.
+- Latest audio direction evidence snapshot codec, repository, and evidence validator fixture paths passed.
+- Debug repository self-check receiver compiles into the debug APK, and smoke script syntax/help includes the repository self-check option.
+- Debug non-PII evidence snapshot receiver compiles into the debug APK, and smoke script syntax/help includes the evidence snapshot collection path.
+- Canonical JSON files parsed successfully.
+- `scripts/validate-device-evidence.mjs` fixture validation passed, including JSON output with `"ok": true`, debug glasses cue seed script-pass, debug Bluetooth route evidence script-pass, debug local delete self-check script-pass, debug alert output test script-pass, debug direction sample test script-pass, vibration pattern markers, cue contract markers, microphone metadata markers, `latestCuePresent=true`, and `latestDeliverySource=TEST_CUE`.
+- `scripts/android-device-smoke-test.sh` syntax and help path passed, including the debug glasses cue seed, debug Bluetooth route evidence, debug local delete self-check, debug alert output, and debug direction sample broadcast paths.
+- APK manifest inspection confirmed `GlassesCueSeedReceiver` and `DEBUG_GLASSES_CUE_SEED`.
+- APK manifest inspection confirmed `BluetoothRouteEvidenceReceiver` and `DEBUG_BLUETOOTH_ROUTE_EVIDENCE`.
+- APK manifest inspection confirmed `LocalDataDeleteSelfCheckReceiver` and `DEBUG_LOCAL_DELETE_SELF_CHECK`.
+- `./gradlew --no-daemon test assembleDebug bundleRelease` passed after the debug glasses cue seed stage.
+- `./gradlew --no-daemon test assembleDebug bundleRelease` passed after the debug Bluetooth route evidence stage.
+- `./gradlew --no-daemon test assembleDebug bundleRelease` passed after the debug local delete self-check stage.
+- `./gradlew --no-daemon test assembleDebug bundleRelease` passed after the support drill evidence gate stage.
+- `./gradlew --no-daemon test assembleDebug bundleRelease` passed after the support drill session automation stage.
+- `./gradlew --no-daemon test assembleDebug bundleRelease` passed after the glasses setup readiness stage.
+- `./gradlew --no-daemon test assembleDebug bundleRelease` passed after the glasses hardware evidence gate stage.
+- `aapt2 dump xmltree`로 APK manifest 안에 `DirectionSampleTestReceiver`와 `DEBUG_DIRECTION_SAMPLE_TEST`가 들어간 것을 확인했다.
+- `scripts/android-device-smoke-test.sh --skip-build --write-evidence`는 ADB 기기가 없어서 code `2`로 종료했다. 이것은 현재 로컬 환경에서 예상되는 상태다.
+- `node scripts/validate-physical-test-session.mjs data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack --json`은 debug direction sample checklist marker를 포함해 통과했고, 하드웨어 출력 파일이 없다는 정상 경고를 냈다.
+- `scripts/glasses-integration-preflight.sh --write-evidence --evidence-dir data/runs/20260528_voice_direction_mvp/30-glasses-preflight-evidence`는 실행되어 `blocked` 상태의 setup evidence를 남겼다.
+- `node scripts/audit-service-readiness.mjs --json`은 현재 release/glasses gate를 파싱해 internal prototype만 ready이고 phone/glasses/beta/production은 evidence 또는 blocker가 남아 있음을 출력했다.
+- `node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/52-service-readiness-audit`는 서비스 준비 감사 리포트를 생성했다.
+- `node scripts/create-physical-test-session.mjs --run-dir data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack --json`은 실제 phone/Ray-Ban/Android XR evidence 수집용 session pack을 생성했다.
+- `node scripts/validate-physical-test-session.mjs data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack --json`은 현재 session pack 구조와 privacy-shape를 통과로 판정했고, 아직 hardware output file이 없다는 정상 경고를 냈다.
+- `node scripts/validate-support-incident-process.mjs --json`은 support/deletion/mistaken-alert process 문서의 필수 섹션과 privacy guardrail을 통과로 판정했다.
+- `node scripts/validate-policy-clearance-matrix.mjs --json`은 policy clearance matrix의 필수 공식 출처, blocked 상태, privacy guardrail을 통과로 판정했다.
+- `node scripts/validate-privacy-data-safety-draft.mjs --json`은 privacy policy와 Play Data Safety 초안의 필수 섹션, 공식 출처, draft-only guardrail을 통과로 판정했다.
+- `node scripts/validate-store-review-submission-package.mjs --json`은 store listing 초안, app-content declarations, reviewer instructions, 공식 출처, Play field length, draft-only guardrail을 통과로 판정했다.
+- `node scripts/validate-release-artifact-readiness.mjs --json`은 release artifact/signing runbook, Gradle signing hook, private-key hygiene, structural release AAB 상태를 통과로 판정했지만 `uploadReady=false`를 유지했다.
+- `node scripts/validate-release-artifact-readiness.mjs --require-upload-ready --json`은 upload key 환경변수와 signed AAB가 없어서 예상대로 실패했다.
+- `node scripts/validate-release-notes-versioning.mjs --json`은 Gradle `versionName=0.1.0`, `versionCode=1`, internal-testing release note, 500 Unicode character limit, unsupported-claim guardrail을 통과로 판정했다.
+- `node scripts/validate-play-screenshot-package.mjs --json`은 screenshot/media draft manifest와 공식 출처/guardrail을 통과로 판정했다.
+- `node scripts/validate-play-screenshot-package.mjs --require-assets --json`은 실제 phone screenshots와 feature graphic이 없어서 예상대로 실패했다.
+- `node scripts/validate-production-speaker-model-readiness.mjs --json`은 production speaker model draft manifest와 공식 출처/guardrail을 통과로 판정했다.
+- `node scripts/validate-production-speaker-model-readiness.mjs --require-model-ready --json`은 실제 model file, hash, thresholds, metrics, anti-spoofing decision, latency evidence가 없어서 예상대로 실패했다.
+- `node scripts/validate-direction-accuracy-evidence.mjs --json`은 direction accuracy draft manifest와 공식 출처/guardrail을 통과로 판정했다.
+- `node scripts/validate-direction-accuracy-evidence.mjs --require-production-direction-ready --json`은 controlled direction trials, microphone metadata, route proof, latency evidence가 없어서 예상대로 실패했다.
+- `scripts/extract-direction-evidence-summary.mjs data/runs/20260528_voice_direction_mvp/37-device-evidence-validator-fixture.md --report-dir data/runs/20260528_voice_direction_mvp/95-direction-evidence-extractor --json`은 fixture 기반 direction evidence summary와 manifest update template을 생성했다.
+- `scripts/validate-direction-evidence-summary.mjs data/runs/20260528_voice_direction_mvp/95-direction-evidence-extractor/direction-evidence-summary.json --json`은 default summary validation을 통과했고 `productionDirectionCandidate=false`를 유지했다.
+- `scripts/validate-direction-evidence-summary.mjs data/runs/20260528_voice_direction_mvp/95-direction-evidence-extractor/direction-evidence-summary.json --require-production-direction-candidate --json`은 fixture/control evidence 부족으로 예상대로 실패했다.
+- 같은 direction evidence summary는 target progress를 summary root, `aggregateEvaluation.targetProgress`, `manifestUpdateTemplate.aggregateEvaluation.targetProgress`에 동일하게 보존하고 validator가 이 일치를 검사한다.
+- `scripts/apply-direction-evidence-summary.mjs ... --json`은 현재 fixture에서 `applyReady=false`를 보고했고, `--write`는 `productionDirectionCandidate=false`와 target-progress 미완료 때문에 예상대로 실패했다.
+- `./gradlew --no-daemon test assembleDebug`는 direction evidence extractor 추가 후에도 통과했다.
+- `scripts/run-phone-private-alpha-evidence.mjs --skip-build --allow-no-device ... --json`은 no-device summary를 통과시키면서 `directionEvidence.exists=false`, `productionDirectionCandidate=false`를 기록했다.
+- 같은 no-device runner summary는 `directionEvidence.applyDryRunOk=false`, `applyReady=false`, `applyWroteManifest=false`, `applyWroteAggregateEvidence=false`를 기록했다.
+- `scripts/validate-phone-private-alpha-evidence-runner.mjs ... --json`은 새 directionEvidence 필드를 포함한 summary를 통과시켰고, strict phone-alpha mode는 예상대로 실패했다.
+- `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh`는 phone runner direction summary 통합 이후에도 기본 no-hardware workflow를 통과했다.
+- `scripts/validate-hardware-test-promotion.mjs --profile workflow --json`과 `--profile current-safe --json`은 `phoneDirectionSummaryValidated=false`, `phoneDirectionProductionCandidate=false`를 유지하며 통과했다.
+- `scripts/validate-hardware-test-promotion.mjs --profile phone-alpha --json`, `--profile glasses-alpha --json`, `--profile support-ready --json`은 실제 phone/glasses/support evidence 부족으로 예상대로 실패했다.
+- `./gradlew --no-daemon test assembleDebug`는 phone runner direction evidence 통합 이후에도 통과했다.
+- `scripts/validate-android-xr-projected-contract.mjs --write-report --json`은 현재 Android XR 경로를 `phone_preview_stub`으로 판정하며 default validation을 통과했다.
+- `scripts/validate-android-xr-projected-contract.mjs --require-real-android-xr --json`은 Jetpack XR, Glimmer, ProjectedContext launch/device context, real adapter가 없어 예상대로 실패했다.
+- `scripts/glasses-integration-preflight.sh --write-evidence --evidence-dir data/runs/20260528_voice_direction_mvp/30-glasses-preflight-evidence`는 Android XR default projected contract를 pass로, strict real projected contract를 manual-required로 기록했다.
+- `node scripts/check-private-alpha-hardware-readiness.mjs --write-report --json`은 갱신된 glasses preflight를 반영해 `pass=11`, `manual=5`, `blocked=5`를 기록했다.
+- `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh`는 Android XR preflight contract 통합 이후에도 기본 no-hardware workflow를 통과했다.
+- `./gradlew --no-daemon test assembleDebug`는 Android XR preflight contract 통합 이후에도 통과했다.
+- `node --check scripts/summarize-hardware-test-status.mjs`는 통과했다.
+- `scripts/summarize-hardware-test-status.mjs --write-report --json`은 current-safe workflow를 `true`, private alpha candidate를 `false`로 판정하고 default lane ready, phone/glasses blocked, support manual-required 상태를 기록했다.
+- `node --check scripts/validate-device-evidence.mjs`, `bash -n scripts/android-device-smoke-test.sh`, `scripts/android-device-smoke-test.sh --help`는 redaction gate 추가 후 통과했다.
+- `node scripts/validate-device-evidence.mjs data/runs/20260528_voice_direction_mvp/37-device-evidence-validator-fixture.md --json`은 redacted metadata fixture로 통과했다.
+- unredacted `Device serial`을 넣은 임시 fixture와 legacy `<timestamp>_<adb-device-label>_android_phone_smoke` 경로의 임시 fixture는 예상대로 실패했다.
+- `node --check scripts/scan-evidence-privacy.mjs`는 통과했다.
+- 초기 `scripts/scan-evidence-privacy.mjs --write-report --json`은 기본 evidence/report 대상 20개 파일을 검사했고 violation 0, warning 0으로 통과했다. 최신 기본 scan은 아래 기록처럼 31개 파일을 검사한다.
+- private speaker-field fixture와 legacy ADB-labeled evidence path 임시 검사는 예상대로 실패했고, 출력에는 matched private value를 싣지 않았다.
+- `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh`는 pack-scoped evidence privacy scan 단계를 포함해 no-hardware 기본 실행을 통과했고, pack scan은 16개 파일 violation 0으로 통과했다.
+- `scripts/summarize-hardware-test-status.mjs --write-report --json`은 operator-pack privacy scan과 controlled direction session validation을 기본 check에 포함했고, `evidencePrivacyScan.ok=true`, `violationCount=0`, `controlledDirection.recordedRows=0`, `controlledDirection.todoRows=80`을 기록했다.
+- `scripts/scan-evidence-privacy.mjs --write-report --json`은 controlled direction-trial session까지 포함한 기본 evidence/report 대상 31개 파일을 검사했고 violation 0, warning 0으로 통과했다.
+- `node scripts/validate-support-drill-evidence.mjs --json`은 support drill draft manifest와 privacy guardrail을 통과로 판정했고, deletion/mistaken-alert drill 미실행 경고를 냈다.
+- `node scripts/validate-support-drill-evidence.mjs --require-drills-ready --json`은 support channel, deletion drill, mistaken-alert drill, evidence path, regenerated audit가 없어서 예상대로 실패했다.
+- `node scripts/create-support-drill-session.mjs --run-dir data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack --force --json`은 support drill session pack을 생성했다.
+- `data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack/commands.sh`는 support process/draft gate/session validator/service audit 흐름을 통과했고 strict support drill validation이 evidence 전에는 막히는 것을 확인했다.
+- `node scripts/validate-glasses-setup-readiness.mjs --json`은 glasses setup 문서, secret-free template, 최신 Android XR `glasses/first-activity` source reference를 통과로 판정했다.
+- `node scripts/validate-glasses-setup-readiness.mjs --require-credentials --json`은 Meta application ID와 GitHub token이 없어서 예상대로 실패했다.
+- `node scripts/validate-glasses-hardware-evidence.mjs --json`은 glasses hardware draft manifest와 privacy guardrail을 통과로 판정했고, Meta/Ray-Ban/Android XR evidence 미수집 경고를 냈다.
+- `node scripts/validate-glasses-hardware-evidence.mjs --require-glasses-alpha-ready --json`은 real adapter, credential proof, Ray-Ban Display cue, Gen 1 fallback, Android XR projected runtime, evidence path가 없어서 예상대로 실패했다.
+- `node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/52-service-readiness-audit`를 다시 실행해 glasses hardware evidence 산출물이 service audit에 포함되는 것을 확인했다.
+- `node --check scripts/create-glasses-hardware-session.mjs && node --check scripts/validate-glasses-hardware-session.mjs`는 통과했다.
+- `node scripts/create-glasses-hardware-session.mjs --run-dir data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack --force --json`은 glasses hardware session pack을 생성했다.
+- `data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack/commands.sh`는 Gradle test/assembleDebug, setup gate, hardware draft gate, strict expected-failure check, preflight evidence, session validator, service audit 흐름을 통과했다.
+- `node --check scripts/apply-glasses-hardware-session.mjs`는 통과했다.
+- `node scripts/apply-glasses-hardware-session.mjs data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack --json`은 dry-run 통과했다.
+- `node scripts/apply-glasses-hardware-session.mjs data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack --write --json`은 current draft session이라 canonical manifest 쓰기를 예상대로 거부했다.
+- `node --check scripts/create-private-alpha-rehearsal.mjs && node --check scripts/validate-private-alpha-rehearsal.mjs`는 통과했다.
+- `node scripts/create-private-alpha-rehearsal.mjs --run-dir data/runs/20260528_voice_direction_mvp/79-private-alpha-rehearsal-pack --force --json`은 private alpha rehearsal pack을 생성했다.
+- `data/runs/20260528_voice_direction_mvp/79-private-alpha-rehearsal-pack/commands.sh`는 Gradle test/assembleDebug, physical/support/glasses session validation, glasses apply dry-run, expected strict gate failures, service audit, rehearsal validation 흐름을 통과했다.
+- `node --check scripts/run-private-alpha-hardware-rehearsal.mjs`는 통과했다.
+- `node scripts/run-private-alpha-hardware-rehearsal.mjs --json`은 physical/support/glasses session validation, glasses apply dry-run, top-level private-alpha rehearsal command, runner service audit, rehearsal validator 흐름을 통과했고 `data/runs/20260528_voice_direction_mvp/80-private-alpha-hardware-runner/hardware-run-summary.md`를 생성했다.
+- `node --check scripts/check-private-alpha-hardware-readiness.mjs`는 통과했다.
+- `node scripts/check-private-alpha-hardware-readiness.mjs --write-report --json`은 JDK/Android SDK/debug APK/ADB/session pack 상태를 확인하고, authorized ADB device count가 0이라 `--run-phone`을 추천하지 않는 preflight report를 생성했다.
+- `node --check scripts/check-platform-source-freshness.mjs`는 통과했다.
+- `node scripts/check-platform-source-freshness.mjs --write-report --json`은 Meta Wearables, Meta DAT GitHub, Meta lifecycle, Android XR SDK/first-activity/projected hardware/support-different-glasses source freshness를 통과했고, deprecated Android XR `ai-glasses/first-activity` alias가 canonical `glasses/first-activity`로 redirect되는 것을 기록했다.
+- `scripts/glasses-integration-preflight.sh --write-evidence --evidence-dir data/runs/20260528_voice_direction_mvp/30-glasses-preflight-evidence`는 canonical source URL로 preflight evidence를 다시 생성했다.
+- `node scripts/validate-physical-test-session.mjs data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack --json`은 direction accuracy checklist를 포함한 세션 구조를 통과로 판정했고, 하드웨어 출력 파일이 없다는 정상 경고를 냈다.
+- Direction sample 경로에 microphone inventory/active microphone/channel-mapping count가 추가됐고, debug evidence fixture 검증과 Gradle test가 통과했다.
+- `./gradlew --no-daemon bundleRelease`는 구조적 release AAB를 생성했지만, `signingReport`의 release config는 `null`이므로 Play upload-ready가 아니다.
+- `마이크 사용 안내` disclosure gate가 앱에 추가됐고, `./gradlew --no-daemon test assembleDebug`가 통과했다.
+- `scripts/validate-device-evidence.mjs` fixture는 microphone disclosure accepted/version 필드를 포함한 snapshot으로 통과했다.
+- `aapt2 dump xmltree`로 APK manifest 안에 `AlertOutputTestReceiver`, `EvidenceSnapshotReceiver`, debug self-check receivers, Meta DAT `APPLICATION_ID`, Meta DAT `ANALYTICS_OPT_OUT`, `xr_projected`, `BLUETOOTH_CONNECT`, `MODIFY_AUDIO_SETTINGS` 항목이 들어간 것을 확인했다.
+- `./gradlew --no-daemon test assembleDebug`는 release readiness UI 추가 후에도 통과했고, `릴리스 준비` 카드가 host app에 컴파일됐다.
+- `node scripts/audit-service-readiness.mjs --json`은 `docs/33-release-readiness-ui.md`를 필수 local artifact로 포함하는 것을 확인했다.
+- `./gradlew --no-daemon test assembleDebug`는 release readiness next-action row 추가 후에도 통과했고, 감사 리포트는 `docs/34-release-readiness-next-actions.md`를 필수 local artifact로 추적한다.
+- `scripts/run-phone-private-alpha-evidence.mjs --skip-build --allow-no-device --json`은 로컬 no-device workflow summary를 작성했고 `phonePrivateAlphaCandidate=false`, authorized ADB device count `0`, raw output persisted `false`를 기록했다.
+- `scripts/validate-phone-private-alpha-evidence-runner.mjs --json`은 현재 no-device summary를 비식별 workflow metadata로 통과시켰고, `--require-phone-alpha-candidate` strict 검증은 실제 phone evidence가 없어 예상대로 실패했다.
+- `scripts/assert-service-gates.mjs --profile current-safe --json`과 `--profile internal-prototype --json`은 통과했고, `--profile phone-alpha --json`은 실제 phone evidence가 없어 예상대로 실패했다.
+- `node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/52-service-readiness-audit`는 phone-private-alpha evidence runner 문서, service gate assertion, glasses haptics intent contract를 필수 artifact로 포함해 재생성됐다.
+- `scripts/run-glasses-private-alpha-evidence.mjs --json`은 현재 glasses session을 검증하고 `glassesHardwareEvidenceCandidate=false`, `glassesPrivateAlphaCandidate=false`, raw output persisted `false`를 기록했다.
+- `scripts/validate-glasses-private-alpha-evidence-runner.mjs --json`은 현재 no-hardware summary를 비식별 workflow metadata로 통과시켰고, `--require-glasses-alpha-candidate` strict 검증은 실제 glasses/phone evidence가 없어 예상대로 실패했다.
+- `scripts/create-hardware-test-operator-pack.mjs --force --json`은 `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack`을 생성했다.
+- `scripts/validate-hardware-test-operator-pack.mjs --json`은 생성 직후와 기본 실행 이후 모두 통과했다.
+- `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh`는 no-hardware 기본 실행에서 readiness preflight, `current-safe` gate, phone/glasses runner summary, service audit, pack validator를 통과했고 phone/glasses alpha candidate는 모두 `false`로 유지했다.
+- `scripts/validate-hardware-test-promotion.mjs --profile workflow --json`과 `--profile current-safe --json`은 통과했고, `--profile phone-alpha`, `--profile glasses-alpha`, `--profile support-ready`는 실제 증거가 없어 예상대로 실패했다.
+- operator pack 기본 실행은 `promotion-validation/promotion-validation.json`과 `.md`를 작성했다.
+- `./gradlew --no-daemon test assembleDebug`는 hardware test operator pack 추가 후에도 통과했다.
+
+## 남은 개발 영역
+
+- 실제 Android phone에서 APK 설치, foreground service runtime, notification stop action, enrollment/live-match, 30분 false-positive run을 evidence file로 남겨야 한다.
+- 실제 Android phone에서 `마이크 사용 안내` 미확인 상태가 OS microphone permission/audio flow를 막는지 evidence file로 남겨야 한다.
+- 실제 Android phone에서 processing latency metrics가 evidence snapshot에 기록되는지 확인해야 한다.
+- 실제 Android phone에서 alert delivery statuses가 evidence snapshot에 기록되고 수동 관찰과 맞는지 확인해야 한다.
+- 실제 Android phone에서 alert channel preference filtering이 수동 시뮬레이션과 foreground service alert output에 적용되는지 확인해야 한다.
+- 실제 Android phone에서 `알림 출력 점검`이 감지 이벤트 없이 enabled channel delivery snapshot을 남기는지 확인해야 한다.
+- 실제 Android phone에서 방향별 phone vibration pattern이 의도한 cue로 느껴지는지 수동 evidence를 남겨야 한다.
+- 실제 Android phone에서 debug alert output test broadcast가 script-pass이고 cue contract markers와 이어지는 evidence snapshot의 `latestDeliverySource=TEST_CUE`를 남기는지 확인해야 한다.
+- 실제 Android phone에서 debug direction sample test broadcast가 script-pass이고, status/evidence/microphone metadata count만 evidence에 남기는지 확인해야 한다.
+- 실제 Android phone에서 debug glasses cue seed broadcast가 script-pass이고, projected launch 전 `latestCuePresent=true` evidence를 남기는지 확인해야 한다.
+- 실제 Android phone에서 debug Bluetooth route evidence broadcast가 script-pass이고, Ray-Ban/Android XR route support/count/type metadata만 남기는지 확인해야 한다.
+- 실제 Android phone에서 debug local delete self-check broadcast가 script-pass이고, 별도 debug store의 post-delete count만 evidence에 남기는지 확인해야 한다.
+- 실제 Android phone에서 direct alert test는 `latestDeliverySource=TEST_CUE`, 실제 감지는 `latestDeliverySource=DETECTION_EVENT`로 evidence에 남는지 확인해야 한다.
+- 실제 Android phone에서 speaker consent gate가 체크 전 profile 생성을 막는지 확인해야 한다.
+- 실제 Android phone에서 방향 검증 기록의 left/right/front/back aggregate/per-direction outcome count를 evidence file로 남겨야 한다.
+- 실제 Android phone에서 `scripts/record-direction-validation-trial.sh`를 controlled setup과 함께 실행해 ADB direction trial recorder가 enums/status/confidence/counts/source label만 저장하는지 확인해야 한다.
+- 실제 direction test day 전에 `scripts/create-controlled-direction-trial-session.mjs`로 20-per-direction 세션을 생성하고, 실제 observed row를 채운 뒤 validator와 direction summary extractor를 통과시켜야 한다.
+- 앱의 `방향 검증 기록` 패널은 20-per-direction 목표와 남은 row를 보여주지만, 이 target-complete 상태만으로 production direction evidence를 대체하지 않는다.
+- 생성된 `device-evidence.md`도 동일한 target-progress count를 남기지만, 이것은 row-count milestone이며 strict direction validation 통과를 의미하지 않는다.
+- 실제 Android phone에서 latest audio direction evidence fields가 non-PII evidence snapshot에 기록되는지 확인해야 한다.
+- 실제 Android phone에서 debug repository direction-validation self-check script-pass를 evidence file에 남겨야 한다.
+- 실제 Android phone에서 debug non-PII repository evidence snapshot script-pass를 evidence file에 남기고, 출력이 counts/status/boolean/enum만 포함하는지 확인해야 한다.
+- 실제 Android phone에서 release readiness snapshot script-pass를 evidence file에 남기고, phone private alpha가 수동 evidence 전까지 `phoneReady=false`로 남는지 확인해야 한다.
+- 실제 Android phone에서 `릴리스 준비` 카드가 phone/glasses/beta/production을 증거 전까지 미준비 또는 blocked로 표시하고, phone-alpha evidence/next-action rows가 실제 테스트 순서와 맞는지 확인해야 한다.
+- 실제 Android phone에서 glasses readiness snapshot script-pass를 evidence file에 남기고, Meta DAT/Android XR open checklist ids가 들어가는지 확인해야 한다.
+- 실제 Android phone에서 생성된 `device-evidence.md`가 `scripts/validate-device-evidence.mjs`를 통과해야 한다.
+- 실제 Android phone에서 생성된 `device-evidence.md`를 `scripts/extract-direction-evidence-summary.mjs`로 요약하고, `scripts/validate-direction-evidence-summary.mjs --json`으로 non-PII summary shape를 통과시켜야 한다.
+- operator pack의 `RUN_PHONE=1` 실행 후 `phone-alpha-runner/direction-evidence/direction-evidence-summary.json`이 생성되는지 확인해야 한다.
+- 실제 Android phone을 연결한 뒤 `scripts/run-phone-private-alpha-evidence.mjs`를 `--allow-no-device` 없이 실행하고, `phone-alpha-evidence-summary.json`의 `phonePrivateAlphaCandidate`가 evidence 기준으로 판단되는지 확인해야 한다.
+- 실제 Android phone evidence가 생성된 뒤 `scripts/validate-phone-private-alpha-evidence-runner.mjs <summary.json> --require-phone-alpha-candidate --json`을 통과시켜야 한다.
+- Ray-Ban Display, Ray-Ban Gen 1 fallback, Android XR projected evidence를 채운 뒤 `scripts/run-glasses-private-alpha-evidence.mjs --run-session --json`을 실행하고, strict glasses runner validation을 통과시켜야 한다.
+- 실제 테스트 날에는 `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh`를 먼저 no-hardware로 실행한 뒤, 준비된 lane만 `RUN_PHONE=1`, `RUN_GLASSES=1`, 또는 `RUN_SUPPORT=1`로 실행해야 한다.
+- operator pack 실행 후에는 `scripts/validate-hardware-test-promotion.mjs --profile workflow --json`을 실행하고, 실제 증거가 있는 경우에만 `phone-alpha`, `glasses-alpha`, `support-ready`, `private-alpha` strict profile을 실행해야 한다.
+- release gate 변경 전후에 `scripts/assert-service-gates.mjs --profile current-safe --json` 또는 더 엄격한 target profile을 실행해 promotion claim이 증거와 맞는지 확인해야 한다.
+- 실제 Android phone/glasses evidence를 남긴 뒤 `scripts/audit-service-readiness.mjs --write-report`를 다시 실행해 gate 상태 변화를 기록해야 한다.
+- 실제 첫 hardware pass 전에 `scripts/create-physical-test-session.mjs`로 생성한 세션 폴더의 `commands.sh`와 manual checklist를 사용해야 한다.
+- 실제 첫 hardware pass 전후에 `scripts/validate-physical-test-session.mjs <session-dir> --json`을 실행해야 한다.
+- support drill session pack을 채워 support/deletion verification drill과 mistaken-alert incident drill을 실제 운영 흐름으로 실행하고 `scripts/validate-support-drill-evidence.mjs --require-drills-ready --json`을 통과시켜야 한다.
+- glasses hardware session pack을 채워 Ray-Ban Display, Gen 1 fallback, Android XR projected, haptics/fallback evidence를 실제 운영 흐름으로 실행하고 `scripts/validate-glasses-hardware-session.mjs <session-dir> --json` 및 `scripts/apply-glasses-hardware-session.mjs <session-dir> --json`을 통과시켜야 한다.
+- private alpha rehearsal pack을 실제 phone/support/glasses 증거가 채워진 뒤 다시 실행해 tester-facing private alpha claim 전 종합 게이트를 확인해야 한다.
+- hardware-day private alpha runner는 기본 no-hardware 모드에서 통과했지만, 실제 readiness 증거는 `--run-phone`, `--run-support`, `--run-glasses`를 실제 기기/운영 증거와 함께 실행해야 생긴다.
+- hardware test operator pack은 기본 no-hardware 모드에서 통과했지만, 실제 readiness 증거는 `RUN_PHONE=1`, `RUN_GLASSES=1`, `RUN_SUPPORT=1`을 실제 기기/운영 증거와 함께 실행하고 각 strict validator를 통과해야 생긴다.
+- hardware test promotion validator의 `workflow`/`current-safe` profile은 release approval이 아니며, strict profile 실패가 현재 올바른 상태다.
+- hardware test status dashboard는 lane 상태 요약일 뿐 release approval이 아니다. default lane `ready`는 실제 phone/glasses/support evidence가 준비됐다는 뜻이 아니다.
+- hardware next-action brief는 현재 dashboard 기준 실행 순서만 제안한다. 지금 판정은 `default_workflow_ready_attach_phone_next`이며, 실제 phone lane은 authorized ADB device가 `1`개가 될 때까지 blocked다.
+- hardware next-action executor는 현재 `refresh-default-workflow`만 실행했다. 이 성공은 no-hardware workflow refresh일 뿐 실제 기기 증거가 아니다.
+- phone lane collection readiness는 현재 실행 전 blocker를 authorized ADB device count로만 좁혀두었지만, `device-evidence.md`, direction summary, manifest apply readiness는 실제 phone run 이후에도 별도 evidence gap으로 닫아야 한다.
+- phone lane hardware runner는 실제 폰 실행 순서를 자동화하지만, 현재는 authorized ADB device가 0이라 blocked report만 남긴 상태다.
+- phone lane post-run reviewer는 실제 폰 증거 이후 승격 판단을 자동화하지만, 현재는 `device-evidence.md`가 없어 blocked report만 남긴 상태다.
+- hardware readiness preflight는 현재 authorized ADB device 0, Meta application id 미설정, GitHub Packages token 미설정으로 보고하므로 실제 hardware runner flag를 붙이기 전 이 상태를 먼저 닫아야 한다.
+- generated `device-evidence.md`와 기본 evidence folder path는 이제 ADB serial과 build fingerprint를 redacted value/path로 남겨야 한다. validator가 이 값을 검사하지만, tester는 여전히 전체 evidence file을 공유/승격 전에 검토해야 한다.
+- 실제 phone/glasses/support/operator/dashboard/audit evidence folder가 새로 생길 때마다 `scripts/scan-evidence-privacy.mjs <folder> --write-report --json`을 실행하고 violation 0을 확인해야 한다.
+- operator pack은 이제 pack-scoped privacy scan을 자동 실행하지만, 외부로 공유하거나 승격할 evidence folder는 여전히 사람이 전체 내용을 검토해야 한다.
+- platform source freshness는 source availability와 canonical URL alignment만 증명한다. Meta account approval, DAT package access, Android XR runtime, Ray-Ban Display rendering, microphone direction behavior는 여전히 실제 증거가 필요하다.
+- policy clearance matrix는 만들어졌지만 Meta logged-in review, Google Play Console review, Android XR packaging review, voice/recording legal review, store submission은 아직 실행되지 않았다.
+- privacy policy/Data Safety 초안은 만들어졌지만 개발자 법적 이름, 연락처, public non-PDF URL, Play Console 제출, 법무/정책 리뷰는 아직 완료되지 않았다.
+- store review submission package 초안은 만들어졌지만 release AAB/signing, non-private screenshots, Play Console app-content declarations, reviewer submission, Meta/Android XR review는 아직 완료되지 않았다.
+- release AAB/signing runbook과 구조적 `app-release.aab`는 생겼지만 upload-key signing, Play App Signing, strict upload-ready validation은 아직 완료되지 않았다.
+- release notes/versioning 초안은 만들어졌지만 Play internal-testing upload, tester availability, release-track evidence는 아직 완료되지 않았다.
+- Play screenshot/media runbook과 draft manifest는 만들어졌지만 실제 non-private screenshots, feature graphic, Android XR preview assets는 아직 캡처되지 않았다.
+- Production speaker model evaluation gate는 만들어졌지만 실제 on-device model, aggregate metrics, anti-spoofing decision, latency evidence는 아직 없다.
+- Direction accuracy evidence gate는 만들어졌지만 실제 controlled phone/glasses direction trials, microphone metadata, route proof, latency evidence는 아직 없다.
+- Direction evidence extractor는 fixture summary와 target-progress propagation까지만 검증됐다. `productionDirectionCandidate=true`는 실제 controlled phone/wearable direction evidence와 strict summary validation 전까지 금지된다.
+- Direction evidence manifest apply gate는 fixture dry-run과 write-refusal까지만 검증됐다. 실제 적용은 strict summary validation과 strict direction accuracy validation이 둘 다 통과할 때만 허용된다.
+- Phone runner direction evidence/apply integration은 no-device mode까지만 검증됐다. 실제 phone evidence에서 extractor, validator, apply dry-run이 자동 실행되는지 확인해야 한다.
+- Android XR projected contract validator는 default phone-preview/stub mode까지만 통과했다. `--require-real-android-xr`는 Jetpack XR, Glimmer, ProjectedContext launch/device context, real adapter, runtime evidence가 없어 예상대로 실패해야 한다.
+- Glasses preflight는 Android XR projected contract default pass와 strict manual-required를 보여주지만, 이것은 real Android XR runtime proof가 아니다.
+- Ray-Ban/Android XR 기기를 연결한 상태에서 `블루투스 마이크 경로 점검`, `블루투스 입력 선택`, `통신 경로 해제` 결과를 evidence file에 남겨야 한다.
+- 실제 Android phone 또는 Bluetooth glasses route에서 TTS direction-only cue가 들리는지 evidence file에 남겨야 한다.
+- `local.properties.example`을 `local.properties`로 복사하거나 환경변수를 사용해 Meta DAT credentials/package access를 설정하고 `MetaDatDisplayStubAdapter`를 실제 adapter로 교체해야 한다.
+- `scripts/glasses-integration-preflight.sh`에서 Meta DAT 관련 blocked row가 사라진 뒤 DAT adapter 작업을 시작해야 한다.
+- Meta Ray-Ban Display에서 최신 cue 렌더링 증거를 남겨야 한다.
+- Ray-Ban Meta Gen 1 fallback 가능/불가능 범위를 문서화해야 한다.
+- Android XR hardware 또는 emulator에서 projected activity 실행 증거를 남겨야 한다.
+- Glasses hardware manifest를 실제 evidence path와 pass field로 채운 뒤 strict glasses hardware validation을 통과시켜야 한다.
+- Canonical glasses manifest를 업데이트하기 전에 `data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack`의 redaction rules와 manifest update template을 검토하고 apply script dry-run을 통과해야 한다.
+- `scripts/glasses-integration-preflight.sh`에서 Android XR dependency/runtime blocked row가 사라진 뒤 Android XR adapter 작업을 시작해야 한다.
+- production speaker verification model 또는 검증된 on-device embedding path가 필요하다.
+- encrypted local storage와 repository self-check 자동화는 구현됐지만, 실제 Android phone에서 script-pass와 real app data restart 증거가 필요하다.
+- 테스터 동의/한계 문구는 앱에 들어갔지만, 실제 테스터/정책 리뷰가 필요하다.
+- 30분 false-positive 테스트를 기록할 피드백 기능은 들어갔지만, 실제 방 테스트 증거가 필요하다.
+- 앱 내 30분 오탐 테스트 세션은 들어갔지만, 실제 폰에서 실행한 room-test evidence가 필요하다.
+- front/back 방향은 아직 미검증이며, left/right도 실제 하드웨어 evidence가 필요하다.
+- `front-back-direction-evidence`는 strict direction accuracy validation 전까지 blocked다.
+- glasses-side per-side haptics API는 아직 확인되지 않아 phone vibration만 MVP 출력으로 사용한다.
+
+## 현재 판정
+
+- **Internal prototype**: build/test 기준 준비됨.
+- **Phone private alpha**: 실제 Android phone evidence 전까지 미준비.
+- **Glasses private alpha**: Meta DAT/Android XR 실제 adapter와 하드웨어 증거 전까지 blocked.
+- **External beta/production**: privacy public URL/review, upload-signed release AAB, store review package submission, production model, strict direction evidence, policy clearance, strict support drill validation 전까지 blocked.

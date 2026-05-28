@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "generatedAt": "2026-05-28T13:08:08+09:00",
+  "targets": [
+    "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack"
+  ],
+  "filesScanned": 18,
+  "violations": [],
+  "warnings": [],
+  "reportPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/evidence-privacy-scan/evidence-privacy-scan.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/evidence-privacy-scan/evidence-privacy-scan.json",
+  "privacyGuardrail": "Scanner output includes only file paths, line numbers, rule ids, counts, and missing-target warnings. It does not print matched private strings, transcripts, speaker names, embeddings, encrypted payloads, Bluetooth names, MAC addresses, tokens, or raw audio values."
+}

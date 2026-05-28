@@ -1,0 +1,25 @@
+{
+  "app_name": "Voice Direction Glass",
+  "slug": "voice-direction-glass",
+  "created_at": "2026-05-28T01:06:37+09:00",
+  "decision": "proceed_with_constrained_mvp",
+  "description": "A glasses-linked Android app that detects an enrolled speaker calling the user and emits a directional cue through phone and glasses outputs.",
+  "target_devices": [
+    "Meta Ray-Ban Display",
+    "Ray-Ban Meta Gen 1",
+    "Android XR audio glasses",
+    "Android XR display glasses"
+  ],
+  "primary_platform": "Android native Kotlin",
+  "core_risk": "Reliable direction detection may require raw multi-microphone access that is not confirmed in public SDK docs.",
+  "source_refs": [
+    "https://github.com/facebook/meta-wearables-dat-android",
+    "https://wearables.developer.meta.com/docs/develop/dat/lifecycle-events/",
+    "https://wearables.developer.meta.com/docs/mock-device-kit/",
+    "https://developer.android.com/develop/xr",
+    "https://developer.android.com/develop/xr/jetpack-xr-sdk",
+    "https://developer.android.com/develop/xr/jetpack-xr-sdk/glasses/first-activity",
+    "https://developer.android.com/develop/xr/jetpack-xr-sdk/asr",
+    "https://developer.android.com/develop/xr/jetpack-xr-sdk/access-hardware-projected-context"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "packageName": "com.voicedirection.glass",
+  "status": "DRAFT_GLASSES_HARDWARE_EVIDENCE_NOT_COLLECTED",
+  "externalSubmission": "not_performed",
+  "metaRayBanDisplay": {
+    "status": "not_collected",
+    "evidencePath": "data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack/meta-rayban-display-evidence.md",
+    "adapterStatus": "stub",
+    "datCredentialsConfigured": false,
+    "datPackageAccessVerified": false,
+    "sessionLifecycleObserved": false,
+    "cueRenderedOnDisplay": false,
+    "directionVisible": false,
+    "displayLabelPrivacyReviewed": false,
+    "failureStateDocumented": false
+  },
+  "rayBanGen1BluetoothFallback": {
+    "status": "not_collected",
+    "evidencePath": "data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack/rayban-gen1-fallback-evidence.md",
+    "routeProbeRun": false,
+    "bluetoothInputCandidateVisible": null,
+    "routeSelectClearTested": false,
+    "ttsDirectionCueHeard": false,
+    "phoneVibrationFallbackObserved": false,
+    "displayUnavailableDocumented": false,
+    "privateRouteNamesRedacted": false
+  },
+  "androidXrProjected": {
+    "status": "not_collected",
+    "evidencePath": "data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack/android-xr-projected-evidence.md",
+    "adapterStatus": "stub",
+    "runtimeAvailable": false,
+    "jetpackProjectedDependenciesResolved": false,
+    "projectedActivityLaunched": false,
+    "projectedContextUsed": false,
+    "cueVisibleOnProjectedDisplay": false,
+    "emptyStateVisible": false,
+    "microphoneAccessTested": false,
+    "bluetoothFallbackTested": false,
+    "failureStateDocumented": false
+  },
+  "haptics": {
+    "status": "documented_not_available",
+    "evidencePath": "data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack/haptics-fallback-evidence.md",
+    "officialApiVerified": false,
+    "glassesSideHapticsVerified": false,
+    "perSideHapticsVerified": false,
+    "phoneVibrationFallbackRemainsMvp": true
+  },
+  "privacy": {
+    "rawAudioSaved": false,
+    "pcmSaved": false,
+    "transcriptsIncluded": false,
+    "speakerNamesIncluded": false,
+    "contactNamesIncluded": false,
+    "voiceEmbeddingsIncluded": false,
+    "encryptedPayloadsIncluded": false,
+    "bluetoothOwnerNamesIncluded": false,
+    "bluetoothProductNamesIncluded": false,
+    "macAddressesIncluded": false,
+    "privateAlertTextIncluded": false,
+    "privateLocationsIncluded": false
+  },
+  "serviceReadinessAuditRegenerated": false
+}

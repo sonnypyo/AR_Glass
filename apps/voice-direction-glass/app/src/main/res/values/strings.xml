@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Voice Direction Glass</string>
+    <string name="glasses_activity_label">Voice Direction Glasses Cue</string>
+</resources>

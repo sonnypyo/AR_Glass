@@ -1,0 +1,13 @@
+{
+  "slug": "voice-direction-glass",
+  "locked_at": "2026-05-28T11:56:30+09:00",
+  "reason": "Manual native Android implementation exists and should not be overwritten by generic app-factory scaffolding.",
+  "protected_paths": [
+    "app/src/main/kotlin/com/voicedirection/glass",
+    "app/src/main/AndroidManifest.xml",
+    "app/build.gradle.kts",
+    "README.md"
+  ],
+  "current_stage": "phone_lane_ready_watcher_added",
+  "generated_at": "2026-05-28T13:44:31+09:00"
+}

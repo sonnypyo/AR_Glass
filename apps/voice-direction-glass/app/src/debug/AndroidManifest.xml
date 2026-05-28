@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <receiver
+            android:name=".qa.StorageSelfCheckReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_STORAGE_SELF_CHECK" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".qa.RepositorySelfCheckReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_REPOSITORY_SELF_CHECK" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".qa.EvidenceSnapshotReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_EVIDENCE_SNAPSHOT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".qa.AlertOutputTestReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_ALERT_OUTPUT_TEST" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".qa.DirectionSampleTestReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_DIRECTION_SAMPLE_TEST" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".qa.DirectionValidationTrialReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_DIRECTION_VALIDATION_TRIAL" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".qa.GlassesCueSeedReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_GLASSES_CUE_SEED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".qa.BluetoothRouteEvidenceReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_BLUETOOTH_ROUTE_EVIDENCE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".qa.LocalDataDeleteSelfCheckReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_LOCAL_DELETE_SELF_CHECK" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".qa.ReleaseReadinessSnapshotReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_RELEASE_READINESS_SNAPSHOT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".qa.GlassesReadinessSnapshotReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.voicedirection.glass.qa.DEBUG_GLASSES_READINESS_SNAPSHOT" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

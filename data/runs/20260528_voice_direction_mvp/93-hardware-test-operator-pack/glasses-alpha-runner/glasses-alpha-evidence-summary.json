@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "generatedAt": "2026-05-28T13:08:07+09:00",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner",
+  "reportPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/glasses-alpha-evidence-summary.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/glasses-alpha-evidence-summary.json",
+  "serviceReadinessAuditPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/service-readiness-audit/service-readiness-audit.md",
+  "sessionDir": "data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack",
+  "flags": {
+    "runSession": false
+  },
+  "manifest": {
+    "status": "DRAFT_GLASSES_HARDWARE_EVIDENCE_NOT_COLLECTED",
+    "metaRayBanDisplayReady": false,
+    "rayBanGen1FallbackReady": false,
+    "androidXrProjectedReady": false,
+    "hapticsReadyOrFallbackDocumented": true,
+    "privacyGuardrailsClear": true
+  },
+  "strictHardwareValidationOk": false,
+  "strictServiceGateOk": false,
+  "glassesHardwareEvidenceCandidate": false,
+  "glassesPrivateAlphaCandidate": false,
+  "rawOutputPersisted": false,
+  "commands": [
+    {
+      "label": "Validate glasses hardware session",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T13:08:07+09:00",
+      "endedAt": "2026-05-28T13:08:07+09:00",
+      "command": "node scripts/validate-glasses-hardware-session.mjs data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Validate glasses hardware evidence draft",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T13:08:07+09:00",
+      "endedAt": "2026-05-28T13:08:07+09:00",
+      "command": "node scripts/validate-glasses-hardware-evidence.mjs --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Check strict glasses hardware validation",
+      "status": "expected-fail",
+      "exitCode": 1,
+      "startedAt": "2026-05-28T13:08:07+09:00",
+      "endedAt": "2026-05-28T13:08:07+09:00",
+      "command": "node scripts/validate-glasses-hardware-evidence.mjs --require-glasses-alpha-ready --json",
+      "rawOutputPersisted": false,
+      "expectedFailure": true
+    },
+    {
+      "label": "Dry-run glasses hardware manifest apply",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T13:08:07+09:00",
+      "endedAt": "2026-05-28T13:08:07+09:00",
+      "command": "node scripts/apply-glasses-hardware-session.mjs data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Check glasses-alpha service gate",
+      "status": "expected-fail",
+      "exitCode": 1,
+      "startedAt": "2026-05-28T13:08:07+09:00",
+      "endedAt": "2026-05-28T13:08:07+09:00",
+      "command": "node scripts/assert-service-gates.mjs --profile glasses-alpha --json",
+      "rawOutputPersisted": false,
+      "expectedFailure": true
+    },
+    {
+      "label": "Write service readiness audit",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T13:08:07+09:00",
+      "endedAt": "2026-05-28T13:08:08+09:00",
+      "command": "node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/service-readiness-audit",
+      "rawOutputPersisted": false
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "nextActions": [
+    "Run this script with `--run-session` only when the Ray-Ban Display, Ray-Ban Gen 1, or Android XR hardware evidence can actually be collected.",
+    "Configure Meta DAT credentials outside source control, replace the Meta stub adapter, and collect Ray-Ban Display cue proof.",
+    "Pair Ray-Ban Meta Gen 1, run Bluetooth route proof, and record TTS or phone-vibration fallback evidence without device names.",
+    "Run Android XR projected runtime proof and record projected cue visibility plus microphone or Bluetooth fallback status.",
+    "Do not claim glasses private alpha until strict glasses hardware validation and the glasses-alpha service gate both pass.",
+    "Regenerate the service readiness audit after every reviewed hardware evidence change."
+  ]
+}

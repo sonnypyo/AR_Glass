@@ -1,0 +1,117 @@
+{
+  "ok": false,
+  "generatedAt": "2026-05-28T13:47:38+09:00",
+  "packDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review",
+  "reportPath": "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review/glasses-lane-post-run-review.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review/glasses-lane-post-run-review.json",
+  "status": "blocked",
+  "glassesAlphaReady": false,
+  "glassesEvidence": {
+    "summaryExists": true,
+    "metaRayBanDisplayReady": false,
+    "rayBanGen1FallbackReady": false,
+    "androidXrProjectedReady": false,
+    "hapticsReadyOrFallbackDocumented": true,
+    "privacyGuardrailsClear": true,
+    "strictHardwareValidationOk": false,
+    "strictServiceGateOk": false,
+    "glassesHardwareEvidenceCandidate": false,
+    "glassesPrivateAlphaCandidate": false,
+    "runSession": false,
+    "rawOutputPersisted": false
+  },
+  "promotion": {
+    "workflowProfileOk": true,
+    "glassesAlphaProfileOk": false,
+    "strictGlassesSummaryOk": false,
+    "defaultGlassesSummaryOk": true,
+    "androidXrDefaultOk": true,
+    "androidXrStrictOk": false
+  },
+  "privacy": {
+    "privacyScanOk": true,
+    "filesScanned": 18,
+    "violationCount": 0,
+    "warningCount": 0
+  },
+  "checks": [
+    {
+      "label": "Validate glasses summary",
+      "ok": true,
+      "exitCode": 0,
+      "parseOk": true,
+      "command": "node scripts/validate-glasses-private-alpha-evidence-runner.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/glasses-alpha-evidence-summary.json --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Validate strict glasses summary",
+      "ok": false,
+      "exitCode": 1,
+      "parseOk": true,
+      "command": "node scripts/validate-glasses-private-alpha-evidence-runner.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/glasses-alpha-evidence-summary.json --require-glasses-alpha-candidate --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Validate workflow promotion",
+      "ok": true,
+      "exitCode": 0,
+      "parseOk": true,
+      "command": "node scripts/validate-hardware-test-promotion.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack --profile workflow --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Validate glasses-alpha promotion",
+      "ok": false,
+      "exitCode": 1,
+      "parseOk": true,
+      "command": "node scripts/validate-hardware-test-promotion.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack --profile glasses-alpha --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Validate Android XR projected contract",
+      "ok": true,
+      "exitCode": 0,
+      "parseOk": true,
+      "command": "node scripts/validate-android-xr-projected-contract.mjs --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Validate strict Android XR projected contract",
+      "ok": false,
+      "exitCode": 1,
+      "parseOk": true,
+      "command": "node scripts/validate-android-xr-projected-contract.mjs --require-real-android-xr --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Scan operator pack privacy",
+      "ok": true,
+      "exitCode": 0,
+      "parseOk": true,
+      "command": "node scripts/scan-evidence-privacy.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack --json",
+      "rawOutputPersisted": false
+    }
+  ],
+  "paths": {
+    "glassesSummary": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/glasses-alpha-evidence-summary.json",
+    "promotionValidation": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/promotion-validation/promotion-validation.json",
+    "privacyScan": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/evidence-privacy-scan/evidence-privacy-scan.json",
+    "androidXrContract": "data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract/android-xr-projected-contract.json"
+  },
+  "errors": [
+    "Meta Ray-Ban Display evidence is not ready.",
+    "Ray-Ban Gen 1 fallback evidence is not ready.",
+    "Android XR projected evidence is not ready.",
+    "Strict Android XR projected contract is not passing.",
+    "Strict glasses-alpha promotion profile is not passing."
+  ],
+  "nextActions": [
+    "Collect reviewed Meta Ray-Ban Display cue proof through the glasses hardware evidence session.",
+    "Collect or document Ray-Ban Gen 1 Bluetooth/TTS/phone-vibration fallback evidence without device names.",
+    "Collect Android XR projected runtime proof and keep strict Android XR contract blocked until ProjectedContext/Glimmer evidence exists.",
+    "Keep glasses alpha blocked until strict glasses-alpha promotion profile passes."
+  ],
+  "rawOutputPersisted": false,
+  "privacyGuardrail": "This report stores only aggregate statuses, exit codes, booleans, counts, command labels, and workspace-relative paths. It must not store raw child command output, ADB serials, Bluetooth names, MAC addresses, raw audio, transcripts, speaker names, embeddings, encrypted payload values, private alert text, exact locations, or matched privacy-scan text."
+}

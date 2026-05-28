@@ -1,0 +1,50 @@
+{
+  "packageName": "com.voicedirection.glass",
+  "status": "DRAFT_MODEL_NOT_SELECTED",
+  "externalSubmission": "not_performed",
+  "source": "docs/21-production-speaker-model-evaluation.md",
+  "candidate": {
+    "modelName": "TBD_ON_DEVICE_SPEAKER_VERIFIER",
+    "runtime": "tflite_or_equivalent_on_device",
+    "modelFile": "speaker-verifier.tflite",
+    "modelFileStatus": "missing",
+    "sha256": "",
+    "modelVersion": "",
+    "inputContract": {
+      "sampleRateHz": null,
+      "channelCount": null,
+      "windowMillis": null,
+      "normalization": "TBD",
+      "embeddingDimensions": null
+    }
+  },
+  "thresholds": {
+    "acceptAtOrAbove": null,
+    "rejectBelow": null,
+    "operatingPointStatus": "not_calibrated"
+  },
+  "evaluation": {
+    "status": "not_run",
+    "sameSpeakerTrials": 0,
+    "differentSpeakerTrials": 0,
+    "replayOrSpoofTrials": 0,
+    "falseAcceptRate": null,
+    "falseRejectRate": null,
+    "equalErrorRate": null,
+    "noMatchRate": null,
+    "p95LatencyMillis": null,
+    "lowestTargetDevice": ""
+  },
+  "antiSpoofing": {
+    "status": "required_before_external_beta",
+    "decision": "not_selected",
+    "notes": "Replay, synthetic speech, and voice conversion risk must be tested or explicitly mitigated before identity-related claims."
+  },
+  "privacy": {
+    "rawAudioPersisted": false,
+    "pcmPersisted": false,
+    "transcriptsInEvidence": false,
+    "rawEmbeddingValuesInEvidence": false,
+    "localOnly": true
+  }
+}

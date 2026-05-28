@@ -1,0 +1,63 @@
+{
+  "slug": "voice-direction-glass",
+  "backend_decision": "no_backend_for_mvp",
+  "reason": "Voice profiles and detection events should remain local until the product proves value and privacy requirements are settled.",
+  "local_storage": {
+    "speaker_profiles": "Encrypted local storage; embeddings only, no raw audio by default.",
+    "consent_records": "Local consent version and timestamp.",
+    "settings": "Trigger phrase, sensitivity, output preferences.",
+    "detection_events": "Metadata only: confidence bucket, direction, adapter, timestamp."
+  },
+  "tables": [],
+  "stored_vs_not_stored_data": {
+    "stored": [
+      "speaker embedding reference",
+      "speaker verification mode",
+      "prototype enrollment embedding reference",
+      "speaker display label",
+      "enrollment sample count",
+      "enrollment status",
+      "consent timestamp",
+      "detection metadata",
+      "device adapter status"
+    ],
+    "not_stored_by_default": [
+      "raw audio",
+      "full transcripts",
+      "exact GPS",
+      "contact list",
+      "photos or video"
+    ]
+  },
+  "external_apis": [
+    "Meta Wearables Device Access Toolkit",
+    "Android XR Jetpack Projected",
+    "Android SpeechRecognizer",
+    "Android TextToSpeech"
+  ],
+  "secrets_env_vars": [
+    "GITHUB_TOKEN for Meta DAT GitHub Packages during Android builds",
+    "Meta Wearables application ID in AndroidManifest metadata"
+  ],
+  "failure_modes": [
+    "No glasses connected",
+    "SDK registration unavailable",
+    "Permission denied",
+    "Listening session paused/stopped",
+    "Direction confidence too low",
+    "Speaker match confidence too low"
+  ],
+  "privacy_risks": [
+    "Voice profile misuse",
+    "Accidental recording",
+    "False identification",
+    "Overly precise or misleading direction output"
+  ],
+  "future_production_requirements": [
+    "Account deletion/export if backend is added",
+    "RLS if Supabase is added",
+    "PII-safe telemetry",
+    "Opt-in encrypted backup",
+    "App store privacy disclosures"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-05-28T12:14:30+09:00",
+  "sessionDir": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session",
+  "packageName": "com.voicedirection.glass",
+  "status": "CONTROLLED_DIRECTION_TRIALS_NOT_RUN",
+  "source": "controlled-phone",
+  "route": "phone-built-in-microphones",
+  "expected": {
+    "trialsPerDirection": 20,
+    "totalTrials": 80
+  },
+  "aggregateEvaluation": {
+    "totalTrials": 0,
+    "matched": 0,
+    "mismatched": 0,
+    "unknownOrUnusable": 0,
+    "frontTrials": 0,
+    "backTrials": 0,
+    "leftTrials": 0,
+    "rightTrials": 0,
+    "allDirectionMatchRate": null,
+    "frontBackMatchRate": null,
+    "leftRightMatchRate": null,
+    "falseDirectionRate": null,
+    "unknownOrUnusableRate": null,
+    "p95DirectionLatencyMillis": null,
+    "confidenceBucketed": false
+  },
+  "microphoneMetadata": {
+    "inventoryCaptured": false,
+    "activeMicrophonesCaptured": false,
+    "channelMappingCaptured": false,
+    "hardwarePoseOrMountingDocumented": false
+  },
+  "privacy": {
+    "rawAudioPersisted": false,
+    "pcmPersisted": false,
+    "transcriptsInEvidence": false,
+    "rawEmbeddingValuesInEvidence": false,
+    "speakerNamesInEvidence": false,
+    "bluetoothNamesInEvidence": false,
+    "privateAlertTextInEvidence": false
+  },
+  "productionDirectionCandidate": false,
+  "notes": "Review aggregate counts only. Do not copy TODO rows into canonical direction evidence."
+}

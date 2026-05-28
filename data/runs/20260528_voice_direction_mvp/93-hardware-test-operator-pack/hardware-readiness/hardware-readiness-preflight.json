@@ -1,0 +1,137 @@
+{
+  "ok": true,
+  "generatedAt": "2026-05-28T13:08:07+09:00",
+  "reportDir": "/Users/sonjunpyo/Documents/Project/glass/data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness",
+  "reportPath": "/Users/sonjunpyo/Documents/Project/glass/data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.md",
+  "summaryJsonPath": "/Users/sonjunpyo/Documents/Project/glass/data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.json",
+  "local": {
+    "javaHomePresent": true,
+    "androidHomePresent": true,
+    "debugApkPresent": true,
+    "debugApk": "apps/voice-direction-glass/app/build/outputs/apk/debug/app-debug.apk"
+  },
+  "adb": {
+    "adbPathConfigured": true,
+    "adbExecutable": true,
+    "attachedDeviceCount": 0,
+    "unauthorizedCount": 0,
+    "offlineCount": 0,
+    "otherCount": 0
+  },
+  "sessions": [
+    {
+      "label": "Physical phone",
+      "path": "data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack",
+      "exists": true,
+      "commandsExecutable": true,
+      "validatorOk": true,
+      "validatorWarnings": [
+        "No android-phone-smoke/device-evidence.md exists yet; run commands.sh with an attached phone.",
+        "No glasses-preflight/glasses-preflight.md exists yet.",
+        "No service-readiness-audit/service-readiness-audit.md exists yet."
+      ],
+      "validatorErrors": []
+    },
+    {
+      "label": "Support drill",
+      "path": "data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack",
+      "exists": true,
+      "commandsExecutable": true,
+      "validatorOk": true,
+      "validatorWarnings": [],
+      "validatorErrors": []
+    },
+    {
+      "label": "Glasses hardware",
+      "path": "data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack",
+      "exists": true,
+      "commandsExecutable": true,
+      "validatorOk": true,
+      "validatorWarnings": [],
+      "validatorErrors": []
+    },
+    {
+      "label": "Private alpha rehearsal",
+      "path": "data/runs/20260528_voice_direction_mvp/79-private-alpha-rehearsal-pack",
+      "exists": true,
+      "commandsExecutable": true,
+      "validatorOk": true,
+      "validatorWarnings": [],
+      "validatorErrors": []
+    }
+  ],
+  "canRunPhoneSession": false,
+  "latestDeviceEvidence": {
+    "path": "",
+    "validatorOk": false,
+    "validatorWarnings": [],
+    "validatorErrors": [
+      "No device-evidence.md exists yet."
+    ]
+  },
+  "glassesSetup": {
+    "defaultOk": true,
+    "hasMetaApplicationId": false,
+    "hasGithubToken": false,
+    "localPropertiesPresent": false
+  },
+  "glassesPreflight": {
+    "available": true,
+    "status": "blocked",
+    "pass": 11,
+    "manual": 5,
+    "blocked": 5
+  },
+  "runnerSummary": {
+    "available": true,
+    "ok": true,
+    "path": "data/runs/20260528_voice_direction_mvp/80-private-alpha-hardware-runner/hardware-run-summary.json",
+    "generatedAt": "2026-05-28T08:12:11+09:00",
+    "commands": [
+      {
+        "label": "Validate physical phone session",
+        "status": "pass",
+        "exitCode": 0
+      },
+      {
+        "label": "Validate support drill session",
+        "status": "pass",
+        "exitCode": 0
+      },
+      {
+        "label": "Validate glasses hardware session",
+        "status": "pass",
+        "exitCode": 0
+      },
+      {
+        "label": "Dry-run glasses hardware session apply",
+        "status": "pass",
+        "exitCode": 0
+      },
+      {
+        "label": "Run top-level private alpha rehearsal commands",
+        "status": "pass",
+        "exitCode": 0
+      },
+      {
+        "label": "Write service readiness audit for runner",
+        "status": "pass",
+        "exitCode": 0
+      },
+      {
+        "label": "Validate private alpha rehearsal session",
+        "status": "pass",
+        "exitCode": 0
+      }
+    ]
+  },
+  "recommendedRunnerCommand": "scripts/run-private-alpha-hardware-rehearsal.mjs --json",
+  "nextActions": [
+    "Connect exactly one authorized Android phone over ADB before using `--run-phone`.",
+    "Configure Meta Wearables application id and GitHub Packages token outside source control before DAT work.",
+    "Rerun `scripts/glasses-integration-preflight.sh --write-evidence` after credentials, dependencies, or device availability change.",
+    "Run `scripts/android-device-smoke-test.sh --write-evidence` with a connected phone to create `device-evidence.md`.",
+    "Use the recommended runner command below, then fill only aggregate/manual rows in the linked session checklists.",
+    "Regenerate `scripts/audit-service-readiness.mjs --write-report` after every evidence change."
+  ]
+}

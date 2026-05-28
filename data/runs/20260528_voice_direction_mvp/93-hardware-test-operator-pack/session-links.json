@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-28T11:52:15+09:00",
+  "tester": "hardware operator",
+  "packDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
+  "physicalSession": "data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack",
+  "supportSession": "data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack",
+  "glassesSession": "data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack",
+  "rehearsalSession": "data/runs/20260528_voice_direction_mvp/79-private-alpha-rehearsal-pack",
+  "defaultCommands": {
+    "noHardware": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+    "phoneHardware": "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+    "glassesHardware": "RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+    "supportHardware": "RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh"
+  },
+  "privacy": {
+    "rawAudioSaved": false,
+    "transcriptsIncluded": false,
+    "speakerNamesIncluded": false,
+    "bluetoothDeviceNamesIncluded": false,
+    "macAddressesIncluded": false,
+    "privateAlertTextIncluded": false
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "app_name": "Voice Direction Glass",
+  "slug": "voice-direction-glass",
+  "description": "Detect a trusted enrolled person's voice when they call the user and notify direction through smart glasses and phone cues.",
+  "pattern": "local_first_assistive_wearable_companion",
+  "decision": "proceed_with_constrained_mvp",
+  "customer_segment": "Smart-glasses users who want subtle awareness cues from trusted people nearby.",
+  "core_job": "Tell me who called me and where to look without forcing me to check my phone.",
+  "mvp_scope": [
+    "Android native companion app",
+    "Speaker enrollment with consent",
+    "Speaker profile states for label simulation versus on-device voice embedding readiness",
+    "Enrollment sample quality capture without raw audio persistence",
+    "Embedding verifier contract for future on-device speaker matching",
+    "Prototype enrollment embedding reference generation without PCM persistence",
+    "Prototype live voice match diagnostic without alert delivery",
+    "Trigger phrase configuration",
+    "Foreground listening session",
+    "Speaker and phrase detection interfaces",
+    "Simulated direction estimator",
+    "Phone notification and vibration",
+    "Meta DAT adapter plan",
+    "Android XR projected adapter plan",
+    "Local event history without raw audio"
+  ],
+  "excluded_scope": [
+    "Public app-store launch",
+    "Secret identification of non-enrolled people",
+    "Cloud audio processing by default",
+    "Guaranteed front/back direction before hardware proof",
+    "Glasses-side haptics before official API confirmation"
+  ],
+  "risks": [
+    "SDK preview instability",
+    "Unconfirmed multi-microphone access",
+    "Background audio permission limits",
+    "False positives in noisy spaces",
+    "Biometric privacy requirements"
+  ],
+  "source_refs": [
+    "https://developer.android.com/develop/xr/jetpack-xr-sdk",
+    "https://github.com/facebook/meta-wearables-dat-android"
+  ],
+  "success_metrics": [
+    "Detection latency under 1.5 seconds in controlled tests",
+    "False positives below 1 per hour in quiet indoor tests",
+    "At least 80 percent left/right accuracy on supported hardware",
+    "No raw audio leaves the phone by default"
+  ],
+  "analytics_events": [
+    "session_started",
+    "session_stopped",
+    "speaker_enrollment_started",
+    "speaker_enrollment_completed",
+    "alert_emitted",
+    "alert_user_marked_correct",
+    "alert_user_marked_incorrect",
+    "device_adapter_connected",
+    "device_adapter_disconnected"
+  ],
+  "monetization_mode": "internal_free_until_hardware_validation",
+  "feature_scaffold": [
+    "session",
+    "enrollment",
+    "trigger_phrase",
+    "speaker_verification",
+    "speaker_profile_state",
+    "enrollment_sample_quality",
+    "voice_embedding_verifier",
+    "prototype_enrollment_embedding",
+    "prototype_voice_match_diagnostic",
+    "direction_estimation",
+    "alert_router",
+    "meta_dat_adapter",
+    "android_xr_adapter",
+    "privacy_settings"
+  ]
+}

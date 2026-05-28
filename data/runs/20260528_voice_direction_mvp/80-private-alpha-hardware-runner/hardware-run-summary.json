@@ -1,0 +1,103 @@
+{
+  "ok": true,
+  "generatedAt": "2026-05-28T08:12:11+09:00",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/80-private-alpha-hardware-runner",
+  "reportPath": "data/runs/20260528_voice_direction_mvp/80-private-alpha-hardware-runner/hardware-run-summary.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/80-private-alpha-hardware-runner/hardware-run-summary.json",
+  "serviceReadinessAuditPath": "data/runs/20260528_voice_direction_mvp/80-private-alpha-hardware-runner/service-readiness-audit/service-readiness-audit.md",
+  "flags": {
+    "runPhone": false,
+    "runSupport": false,
+    "runGlasses": false,
+    "skipPrivateRehearsal": false
+  },
+  "sessions": {
+    "rehearsalSession": "data/runs/20260528_voice_direction_mvp/79-private-alpha-rehearsal-pack",
+    "physicalSession": "data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack",
+    "supportSession": "data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack",
+    "glassesSession": "data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack"
+  },
+  "commands": [
+    {
+      "label": "Validate physical phone session",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T08:12:11+09:00",
+      "endedAt": "2026-05-28T08:12:11+09:00",
+      "command": "node scripts/validate-physical-test-session.mjs data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack --json",
+      "rawOutputPersisted": false,
+      "outputPreview": ""
+    },
+    {
+      "label": "Validate support drill session",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T08:12:11+09:00",
+      "endedAt": "2026-05-28T08:12:11+09:00",
+      "command": "node scripts/validate-support-drill-session.mjs data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack --json",
+      "rawOutputPersisted": false,
+      "outputPreview": ""
+    },
+    {
+      "label": "Validate glasses hardware session",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T08:12:11+09:00",
+      "endedAt": "2026-05-28T08:12:11+09:00",
+      "command": "node scripts/validate-glasses-hardware-session.mjs data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack --json",
+      "rawOutputPersisted": false,
+      "outputPreview": ""
+    },
+    {
+      "label": "Dry-run glasses hardware session apply",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T08:12:11+09:00",
+      "endedAt": "2026-05-28T08:12:11+09:00",
+      "command": "node scripts/apply-glasses-hardware-session.mjs data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack --json",
+      "rawOutputPersisted": false,
+      "outputPreview": ""
+    },
+    {
+      "label": "Run top-level private alpha rehearsal commands",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T08:12:11+09:00",
+      "endedAt": "2026-05-28T08:12:15+09:00",
+      "command": "data/runs/20260528_voice_direction_mvp/79-private-alpha-rehearsal-pack/commands.sh",
+      "rawOutputPersisted": false,
+      "outputPreview": ""
+    },
+    {
+      "label": "Write service readiness audit for runner",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T08:12:15+09:00",
+      "endedAt": "2026-05-28T08:12:15+09:00",
+      "command": "node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/80-private-alpha-hardware-runner/service-readiness-audit",
+      "rawOutputPersisted": false,
+      "outputPreview": ""
+    },
+    {
+      "label": "Validate private alpha rehearsal session",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T08:12:15+09:00",
+      "endedAt": "2026-05-28T08:12:15+09:00",
+      "command": "node scripts/validate-private-alpha-rehearsal.mjs data/runs/20260528_voice_direction_mvp/79-private-alpha-rehearsal-pack --json",
+      "rawOutputPersisted": false,
+      "outputPreview": ""
+    }
+  ],
+  "warnings": [],
+  "errors": [],
+  "nextActions": [
+    "Connect a physical Android phone, then rerun this script with `--run-phone` and fill the physical session manual rows.",
+    "Run the support drill session with real deletion and mistaken-alert rehearsal evidence before any external beta claim.",
+    "Configure Meta DAT credentials outside source control, run glasses preflight, and fill Ray-Ban Display evidence.",
+    "Collect Ray-Ban Gen 1 fallback and Android XR projected runtime evidence before attempting glasses private alpha.",
+    "Rerun service readiness audit after every evidence change.",
+    "Phone private alpha remains blocked because this run did not execute physical phone evidence collection.",
+    "Glasses private alpha remains blocked because this run did not execute real glasses hardware evidence collection."
+  ]
+}

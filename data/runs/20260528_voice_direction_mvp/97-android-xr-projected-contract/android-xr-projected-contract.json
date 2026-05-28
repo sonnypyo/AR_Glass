@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "generatedAt": "2026-05-28T11:13:15+09:00",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract",
+  "strictRealAndroidXrRequired": false,
+  "currentMode": "phone_preview_stub",
+  "phonePreviewOnly": true,
+  "realAndroidXrCandidate": false,
+  "platformFreshness": {
+    "exists": true,
+    "ok": true,
+    "generatedAt": "2026-05-28T11:13:05+09:00",
+    "androidXrLastUpdatedUtc": "2026-05-19",
+    "requiredSourcesOk": true,
+    "canonicalFirstActivity": "https://developer.android.com/develop/xr/jetpack-xr-sdk/glasses/first-activity",
+    "errors": []
+  },
+  "localContract": {
+    "manifest": "apps/voice-direction-glass/app/src/main/AndroidManifest.xml",
+    "projectedActivity": "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/app/GlassesProjectedActivity.kt",
+    "mainActivity": "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/app/MainActivity.kt",
+    "stubAdapter": "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/devices/AndroidXrDisplayStubAdapter.kt",
+    "engineFactory": "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/session/AndroidListeningEngineFactory.kt",
+    "manifestDeclaresProjectedActivity": true,
+    "manifestHasProjectedCategory": true,
+    "projectedActivityExists": true,
+    "localPreviewLaunchExists": true,
+    "projectedOptionsUsed": false,
+    "projectedDeviceContextUsed": false,
+    "xrDependencyConfigured": false,
+    "glimmerDependencyConfigured": false,
+    "stubAdapterExists": true,
+    "factoryUsesStubAdapter": true
+  },
+  "strictRealAndroidXrMissing": [
+    "Jetpack XR dependency is not configured.",
+    "Compose Glimmer dependency is not configured.",
+    "ProjectedContext.createProjectedActivityOptions is not used by the app launch path.",
+    "ProjectedContext.createProjectedDeviceContext is not used for projected-device hardware access.",
+    "AndroidXrDisplayStubAdapter is still active in AndroidListeningEngineFactory."
+  ],
+  "warnings": [
+    "Current Android XR path is phone-hosted preview plus stub adapter; it is valid workflow evidence, not real XR runtime proof.",
+    "Real projected launch must use ProjectedContext.createProjectedActivityOptions before Android XR alpha claims.",
+    "Real glasses microphone/camera access must use ProjectedContext.createProjectedDeviceContext or a documented Bluetooth fallback before Android XR hardware claims."
+  ],
+  "errors": [],
+  "privacyGuardrail": "This summary stores only booleans, paths, source ids, and dates. It must not include raw audio, transcripts, speaker names, Bluetooth names, MAC addresses, private alert text, embeddings, or projected display screenshots.",
+  "reportPath": "data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract/android-xr-projected-contract.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract/android-xr-projected-contract.json"
+}

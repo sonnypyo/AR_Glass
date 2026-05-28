@@ -1,0 +1,14 @@
+# Voice Direction Glass local development secrets template.
+# Copy to local.properties and fill values locally. Do not commit local.properties.
+
+# Meta Wearables DAT.
+# Required before replacing MetaDatDisplayStubAdapter.
+meta_wearables_application_id=
+github_token=
+
+# Optional Play upload signing.
+# Required only before strict release artifact validation / Play upload.
+voice_direction_release_store_file=
+voice_direction_release_store_password=
+voice_direction_release_key_alias=
+voice_direction_release_key_password=

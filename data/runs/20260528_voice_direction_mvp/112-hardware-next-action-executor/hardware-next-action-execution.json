@@ -1,0 +1,33 @@
+{
+  "ok": false,
+  "generatedAt": "2026-05-28T13:20:56+09:00",
+  "sourceNextActions": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.json",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/112-hardware-next-action-executor",
+  "reportPath": "data/runs/20260528_voice_direction_mvp/112-hardware-next-action-executor/hardware-next-action-execution.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/112-hardware-next-action-executor/hardware-next-action-execution.json",
+  "mode": "dry-run",
+  "requestedActionId": "run-phone-lane",
+  "selectedAction": {
+    "id": "run-phone-lane",
+    "priority": 2,
+    "status": "blocked",
+    "title": "Run Android phone evidence lane",
+    "command": "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+    "blockers": [
+      "authorized ADB devices must be exactly 1, current=0"
+    ]
+  },
+  "laneType": "phone-hardware",
+  "executionAllowed": false,
+  "executed": false,
+  "execution": {
+    "exitCode": null,
+    "signal": null,
+    "durationMs": 0
+  },
+  "errors": [
+    "Action is not ready: run-phone-lane status=blocked"
+  ],
+  "rawOutputPersisted": false,
+  "privacyGuardrail": "This report stores only action id, status, command recommendation, blocker text, exit code, duration, and workspace-relative paths. It does not persist raw command output, ADB serials, Bluetooth names, MAC addresses, raw audio, transcripts, speaker names, embeddings, private alert text, exact locations, tokens, or application id values."
+}

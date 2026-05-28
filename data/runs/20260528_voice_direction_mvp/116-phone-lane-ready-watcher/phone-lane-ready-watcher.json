@@ -1,0 +1,90 @@
+{
+  "ok": false,
+  "generatedAt": "2026-05-28T13:39:30+09:00",
+  "mode": "dry-run",
+  "status": "timed-out",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher",
+  "reportPath": "data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher/phone-lane-ready-watcher.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher/phone-lane-ready-watcher.json",
+  "timeoutMs": 0,
+  "intervalMs": 250,
+  "elapsedMs": 349,
+  "pollAttempts": 1,
+  "timedOut": true,
+  "readyObserved": false,
+  "executed": false,
+  "reviewAttempted": false,
+  "phoneAlphaReady": false,
+  "latestPoll": {
+    "status": "blocked",
+    "phoneReadyToCollect": false,
+    "executionAllowed": false,
+    "phoneActionStatus": "blocked",
+    "authorizedAdbDevices": 0,
+    "unauthorizedAdbDevices": 0,
+    "offlineAdbDevices": 0,
+    "collectionBlockerCount": 1,
+    "evidenceGapCount": 4
+  },
+  "pollSnapshots": [
+    {
+      "attempt": 1,
+      "observedAt": "2026-05-28T13:39:30+09:00",
+      "status": "blocked",
+      "phoneReadyToCollect": false,
+      "executionAllowed": false,
+      "phoneActionStatus": "blocked",
+      "authorizedAdbDevices": 0,
+      "unauthorizedAdbDevices": 0,
+      "offlineAdbDevices": 0,
+      "collectionBlockerCount": 1,
+      "evidenceGapCount": 4
+    }
+  ],
+  "phoneRunner": {
+    "status": "blocked",
+    "ok": false,
+    "phoneReadyToCollect": false,
+    "executionAllowed": false,
+    "executed": false,
+    "phoneActionStatus": "blocked",
+    "counts": {
+      "authorizedAdbDevices": 0,
+      "unauthorizedAdbDevices": 0,
+      "offlineAdbDevices": 0
+    },
+    "phoneCollectionBlockers": [
+      "authorized ADB devices must be exactly 1, current=0"
+    ],
+    "phoneEvidenceGaps": [
+      "real phone device-evidence.md not collected yet",
+      "direction summary will be generated only after real phone device-evidence.md exists",
+      "direction manifest apply is not ready for canonical promotion",
+      "phone private alpha candidate false until manual device evidence rows pass"
+    ],
+    "reportPath": "data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner/phone-lane-hardware-runner.md",
+    "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner/phone-lane-hardware-runner.json"
+  },
+  "phoneReview": null,
+  "steps": [
+    {
+      "label": "Poll phone lane readiness",
+      "status": "fail",
+      "exitCode": 1,
+      "parseOk": true,
+      "startedAt": "2026-05-28T13:39:30+09:00",
+      "endedAt": "2026-05-28T13:39:30+09:00",
+      "durationMs": 338,
+      "command": "node scripts/run-phone-lane-hardware.mjs --json",
+      "rawOutputPersisted": false
+    }
+  ],
+  "errors": [
+    "Phone lane readiness was not observed before timeout."
+  ],
+  "nextActions": [
+    "Attach exactly one authorized Android phone before rerunning the watcher."
+  ],
+  "rawOutputPersisted": false,
+  "privacyGuardrail": "This report stores only aggregate readiness booleans, counts, exit codes, timestamps, command labels, and workspace-relative report paths. It must not store raw child command output, ADB serials, Bluetooth names, MAC addresses, raw audio, transcripts, speaker names, embeddings, encrypted payload values, private alert text, exact locations, tokens, or matched privacy-scan text."
+}

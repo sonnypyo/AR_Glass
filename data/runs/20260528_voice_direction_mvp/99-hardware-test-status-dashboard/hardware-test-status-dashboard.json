@@ -1,0 +1,207 @@
+{
+  "ok": true,
+  "generatedAt": "2026-05-28T13:39:30+09:00",
+  "packDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard",
+  "reportPath": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.json",
+  "currentSafeWorkflow": true,
+  "privateAlphaCandidate": false,
+  "candidates": {
+    "phonePrivateAlphaCandidate": false,
+    "phoneDirectionSummaryValidated": false,
+    "phoneDirectionManifestApplyDryRunOk": false,
+    "phoneDirectionManifestApplyReady": false,
+    "phoneDirectionProductionCandidate": false,
+    "glassesPrivateAlphaCandidate": false,
+    "glassesHardwareEvidenceCandidate": false,
+    "supportStrictRequested": false
+  },
+  "collectionReadiness": {
+    "phoneReadyToCollect": false,
+    "phoneCollectionBlockers": [
+      "authorized ADB devices must be exactly 1, current=0"
+    ],
+    "phoneEvidenceGaps": [
+      "real phone device-evidence.md not collected yet",
+      "direction summary will be generated only after real phone device-evidence.md exists",
+      "direction manifest apply is not ready for canonical promotion",
+      "phone private alpha candidate false until manual device evidence rows pass"
+    ]
+  },
+  "counts": {
+    "authorizedAdbDevices": 0,
+    "unauthorizedAdbDevices": 0,
+    "offlineAdbDevices": 0
+  },
+  "glassesPreflight": {
+    "available": true,
+    "status": "blocked",
+    "pass": 11,
+    "manual": 5,
+    "blocked": 5
+  },
+  "androidXr": {
+    "currentMode": "phone_preview_stub",
+    "phonePreviewOnly": true,
+    "realAndroidXrCandidate": false,
+    "strictMissingCount": 5
+  },
+  "controlledDirection": {
+    "sessionDir": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session",
+    "exists": true,
+    "validatorOk": true,
+    "validatorExitCode": 0,
+    "validatorWarnings": [],
+    "validatorErrors": [],
+    "commandsPath": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
+    "aggregateSummaryPath": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/aggregate-summary-template.json",
+    "trialPlanPath": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/trial-plan.csv",
+    "status": "CONTROLLED_DIRECTION_TRIALS_NOT_RUN",
+    "source": "controlled-phone",
+    "route": "phone-built-in-microphones",
+    "trialsPerDirection": 20,
+    "totalPlannedRows": 80,
+    "plannedByDirection": {
+      "FRONT": 20,
+      "BACK": 20,
+      "LEFT": 20,
+      "RIGHT": 20
+    },
+    "recordedRows": 0,
+    "todoRows": 80,
+    "recorderCommandRows": 0,
+    "productionDirectionCandidate": false,
+    "planningReady": true,
+    "observedRowsComplete": false
+  },
+  "evidencePrivacyScan": {
+    "ok": true,
+    "exitCode": 0,
+    "filesScanned": 18,
+    "violationCount": 0,
+    "warningCount": 0
+  },
+  "checks": [
+    {
+      "label": "Validate operator pack",
+      "ok": true,
+      "exitCode": 0,
+      "parsedOk": true
+    },
+    {
+      "label": "Validate workflow promotion",
+      "ok": true,
+      "exitCode": 0,
+      "parsedOk": true
+    },
+    {
+      "label": "Assert current-safe gate",
+      "ok": true,
+      "exitCode": 0,
+      "parsedOk": true
+    },
+    {
+      "label": "Scan operator pack privacy",
+      "ok": true,
+      "exitCode": 0,
+      "parsedOk": true
+    },
+    {
+      "label": "Validate controlled direction trial session",
+      "ok": true,
+      "exitCode": 0,
+      "parsedOk": true
+    }
+  ],
+  "lanes": [
+    {
+      "label": "Default no-hardware workflow",
+      "status": "ready",
+      "command": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+      "blockers": [],
+      "nextActions": [
+        "Run before every hardware session."
+      ],
+      "evidenceGaps": []
+    },
+    {
+      "label": "Phone evidence",
+      "status": "blocked",
+      "command": "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+      "blockers": [
+        "authorized ADB devices must be exactly 1, current=0"
+      ],
+      "nextActions": [
+        "Attach exactly one authorized Android phone, then run the phone lane.",
+        "After the run, validate device evidence, direction summary, and promotion profiles before making any alpha claim."
+      ],
+      "evidenceGaps": [
+        "real phone device-evidence.md not collected yet",
+        "direction summary will be generated only after real phone device-evidence.md exists",
+        "direction manifest apply is not ready for canonical promotion",
+        "phone private alpha candidate false until manual device evidence rows pass"
+      ]
+    },
+    {
+      "label": "Glasses evidence",
+      "status": "blocked",
+      "command": "RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+      "blockers": [
+        "Meta application id missing",
+        "GitHub Packages token missing",
+        "glasses preflight blocked=5",
+        "real Android XR projected contract not ready",
+        "glasses private alpha candidate false"
+      ],
+      "nextActions": [
+        "Collect Ray-Ban Display, Gen 1 fallback, Android XR, and haptics/fallback evidence before strict validation."
+      ],
+      "evidenceGaps": []
+    },
+    {
+      "label": "Support evidence",
+      "status": "manual-required",
+      "command": "RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+      "blockers": [
+        "support strict evidence not requested or not complete"
+      ],
+      "nextActions": [
+        "Run only when deletion and mistaken-alert drill owners can fill reviewed evidence."
+      ],
+      "evidenceGaps": []
+    },
+    {
+      "label": "Controlled direction trials",
+      "status": "manual-required",
+      "command": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
+      "blockers": [
+        "observed direction rows incomplete: 0/80",
+        "production direction candidate false until aggregate evidence is reviewed"
+      ],
+      "nextActions": [
+        "Run the session commands after installing the debug APK, then fill only aggregate direction counts and reviewed observed rows."
+      ],
+      "evidenceGaps": []
+    }
+  ],
+  "paths": {
+    "hardwareReadinessSummary": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.json",
+    "phoneSummary": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/phone-alpha-runner/phone-alpha-evidence-summary.json",
+    "glassesSummary": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/glasses-alpha-evidence-summary.json",
+    "promotionReport": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/promotion-validation/promotion-validation.json",
+    "evidencePrivacyScan": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/evidence-privacy-scan/evidence-privacy-scan.json",
+    "androidXrContract": "data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract/android-xr-projected-contract.json",
+    "controlledDirectionSession": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session"
+  },
+  "nextActions": [
+    "Run the default no-hardware workflow before attaching real evidence lanes.",
+    "Attach exactly one authorized Android phone before `RUN_PHONE=1`.",
+    "Use data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/trial-plan.csv for the next controlled direction run; recorded rows are 0/80.",
+    "Keep phone/glasses/support strict promotion profiles blocked until matching real evidence exists.",
+    "Use `scripts/validate-hardware-test-promotion.mjs --profile workflow --json` after every operator-pack run.",
+    "Regenerate this dashboard after any phone, glasses, support, Android XR, or preflight evidence change."
+  ],
+  "errors": [],
+  "privacyGuardrail": "This dashboard stores only booleans, counts, statuses, command recommendations, and workspace-relative paths. It must not include raw command output, ADB serials, Bluetooth names, MAC addresses, raw audio, transcripts, speaker names, embeddings, private alert text, exact locations, tokens, or application id values."
+}

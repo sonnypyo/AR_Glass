@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "generatedAt": "2026-05-28T13:43:26+09:00",
+  "targets": [
+    "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
+    "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard",
+    "data/runs/20260528_voice_direction_mvp/52-service-readiness-audit",
+    "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session",
+    "data/runs/20260528_voice_direction_mvp/37-device-evidence-validator-fixture.md"
+  ],
+  "filesScanned": 31,
+  "violations": [],
+  "warnings": [],
+  "reportPath": "data/runs/20260528_voice_direction_mvp/101-evidence-privacy-scan/evidence-privacy-scan.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/101-evidence-privacy-scan/evidence-privacy-scan.json",
+  "privacyGuardrail": "Scanner output includes only file paths, line numbers, rule ids, counts, and missing-target warnings. It does not print matched private strings, transcripts, speaker names, embeddings, encrypted payloads, Bluetooth names, MAC addresses, tokens, or raw audio values."
+}

@@ -1,0 +1,112 @@
+{
+  "ok": true,
+  "generatedAt": "2026-05-28T12:53:21+09:00",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner",
+  "evidenceDir": "data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/android-phone-smoke",
+  "deviceEvidencePath": "data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/android-phone-smoke/device-evidence.md",
+  "serviceReadinessAuditPath": "data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/service-readiness-audit/service-readiness-audit.md",
+  "adb": {
+    "adbExecutable": true,
+    "authorizedDeviceCount": 0,
+    "unauthorizedDeviceCount": 0,
+    "offlineDeviceCount": 0,
+    "otherDeviceCount": 0
+  },
+  "flags": {
+    "skipBuild": true,
+    "mainOnly": false,
+    "allowNoDevice": true
+  },
+  "commands": [
+    {
+      "label": "Android phone smoke evidence",
+      "status": "fail",
+      "exitCode": 2,
+      "startedAt": "2026-05-28T12:53:21+09:00",
+      "endedAt": "2026-05-28T12:53:21+09:00",
+      "command": "scripts/android-device-smoke-test.sh --skip-build --write-evidence --evidence-dir data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/android-phone-smoke",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Device evidence validator",
+      "status": "skipped",
+      "exitCode": null,
+      "startedAt": "2026-05-28T12:53:21+09:00",
+      "endedAt": "2026-05-28T12:53:21+09:00",
+      "command": "node scripts/validate-device-evidence.mjs data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/android-phone-smoke/device-evidence.md --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Direction evidence summary extraction",
+      "status": "skipped",
+      "exitCode": null,
+      "startedAt": "2026-05-28T12:53:21+09:00",
+      "endedAt": "2026-05-28T12:53:21+09:00",
+      "command": "node scripts/extract-direction-evidence-summary.mjs data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/android-phone-smoke/device-evidence.md --report-dir data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/direction-evidence --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Direction evidence summary validator",
+      "status": "skipped",
+      "exitCode": null,
+      "startedAt": "2026-05-28T12:53:21+09:00",
+      "endedAt": "2026-05-28T12:53:21+09:00",
+      "command": "node scripts/validate-direction-evidence-summary.mjs data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/direction-evidence/direction-evidence-summary.json --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Direction evidence manifest apply dry-run",
+      "status": "skipped",
+      "exitCode": null,
+      "startedAt": "2026-05-28T12:53:21+09:00",
+      "endedAt": "2026-05-28T12:53:21+09:00",
+      "command": "node scripts/apply-direction-evidence-summary.mjs data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/direction-evidence/direction-evidence-summary.json --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Service readiness audit",
+      "status": "pass",
+      "exitCode": 0,
+      "startedAt": "2026-05-28T12:53:21+09:00",
+      "endedAt": "2026-05-28T12:53:21+09:00",
+      "command": "node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/service-readiness-audit",
+      "rawOutputPersisted": false
+    }
+  ],
+  "deviceEvidence": {
+    "exists": false,
+    "validatorOk": false,
+    "validatorExitCode": null
+  },
+  "directionEvidence": {
+    "exists": false,
+    "extractorOk": false,
+    "extractorExitCode": null,
+    "validatorOk": false,
+    "validatorExitCode": null,
+    "applyDryRunOk": false,
+    "applyDryRunExitCode": null,
+    "applyReady": false,
+    "applyWroteManifest": false,
+    "applyWroteAggregateEvidence": false,
+    "productionDirectionCandidate": false,
+    "fixtureEvidence": null,
+    "totalTrials": null,
+    "reportDir": "data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/direction-evidence",
+    "summaryPath": "data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/direction-evidence/direction-evidence-summary.json",
+    "summaryMarkdownPath": "data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/direction-evidence/direction-evidence-summary.md",
+    "manifestUpdateTemplatePath": "data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner/direction-evidence/manifest-update-template.json",
+    "canonicalManifestPath": "apps/voice-direction-glass/direction-evidence/manifest.json",
+    "aggregateEvidencePath": "apps/voice-direction-glass/direction-evidence/aggregate-direction-evidence-summary.json"
+  },
+  "phonePrivateAlphaCandidate": false,
+  "nextActions": [
+    "Connect exactly one authorized Android phone over ADB, then rerun this runner without `--allow-no-device`.",
+    "Create `device-evidence.md` by running this runner with a connected phone or by running `scripts/android-device-smoke-test.sh --write-evidence` directly.",
+    "Extract direction evidence with `scripts/extract-direction-evidence-summary.mjs <device-evidence.md> --json` after a real phone report exists.",
+    "Keep front/back and production direction claims blocked until strict direction summary and direction accuracy validation pass.",
+    "Observe the app's `릴리스 준비` card on the phone and confirm phone/glasses/beta/production stay not-ready or blocked until matching evidence exists.",
+    "Run 30-minute false-positive testing and controlled direction trials before any tester-facing alpha claim.",
+    "Regenerate the service-readiness audit after every phone evidence update."
+  ]
+}

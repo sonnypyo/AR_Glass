@@ -1,0 +1,102 @@
+# Service Readiness Audit
+
+Generated: 2026-05-28T07:58:37+09:00
+
+## Purpose
+
+This audit ties the implemented app, release checklist, glasses readiness checklist, and local evidence files into one service-readiness view. It is meant to be regenerated after every physical phone or glasses test.
+
+## Target Summary
+
+| Target | Ready | Total | Pass | Manual | Blocked | Open Blocking IDs |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| INTERNAL_PROTOTYPE | yes | 3 | 3 | 0 | 0 | - |
+| PHONE_PRIVATE_ALPHA | no | 18 | 4 | 14 | 0 | physical-phone-smoke, foreground-service-runtime-loop, tts-direction-device-qa, direction-validation-device-qa, repository-self-check-device-qa, evidence-snapshot-device-qa, debug-alert-output-device-qa, debug-direction-sample-device-qa, debug-glasses-cue-seed-device-qa, debug-bluetooth-route-evidence-device-qa, debug-local-delete-self-check-device-qa, alert-channel-preferences-device-qa, prototype-enrollment-device-qa, false-positive-run |
+| GLASSES_PRIVATE_ALPHA | no | 21 | 4 | 14 | 3 | physical-phone-smoke, foreground-service-runtime-loop, tts-direction-device-qa, direction-validation-device-qa, repository-self-check-device-qa, evidence-snapshot-device-qa, debug-alert-output-device-qa, debug-direction-sample-device-qa, debug-glasses-cue-seed-device-qa, debug-bluetooth-route-evidence-device-qa, debug-local-delete-self-check-device-qa, alert-channel-preferences-device-qa, prototype-enrollment-device-qa, false-positive-run, meta-dat-credentials, meta-display-cue, android-xr-device-proof |
+| EXTERNAL_BETA | no | 24 | 4 | 16 | 4 | physical-phone-smoke, foreground-service-runtime-loop, tts-direction-device-qa, direction-validation-device-qa, repository-self-check-device-qa, evidence-snapshot-device-qa, debug-alert-output-device-qa, debug-direction-sample-device-qa, debug-glasses-cue-seed-device-qa, debug-bluetooth-route-evidence-device-qa, debug-local-delete-self-check-device-qa, alert-channel-preferences-device-qa, prototype-enrollment-device-qa, false-positive-run, meta-dat-credentials, meta-display-cue, android-xr-device-proof, encrypted-local-storage, production-speaker-model, privacy-consent-copy |
+| PRODUCTION_SERVICE | no | 27 | 4 | 17 | 6 | physical-phone-smoke, foreground-service-runtime-loop, tts-direction-device-qa, direction-validation-device-qa, repository-self-check-device-qa, evidence-snapshot-device-qa, debug-alert-output-device-qa, debug-direction-sample-device-qa, debug-glasses-cue-seed-device-qa, debug-bluetooth-route-evidence-device-qa, debug-local-delete-self-check-device-qa, alert-channel-preferences-device-qa, prototype-enrollment-device-qa, false-positive-run, meta-dat-credentials, meta-display-cue, android-xr-device-proof, encrypted-local-storage, production-speaker-model, privacy-consent-copy, front-back-direction-evidence, store-and-sdk-policy-clearance, support-incident-process |
+
+## Glasses Summary
+
+| Platform | Ready For Glasses Alpha | Total | Pass | Manual | Blocked | Open Blocking IDs |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| META_DAT | no | 6 | 0 | 2 | 4 | meta-dat-credentials, meta-dat-real-adapter, meta-rayban-display-proof, rayban-bluetooth-hfp-route-proof, wearable-direction-evidence, glasses-haptics-api-proof |
+| ANDROID_XR | no | 4 | 1 | 2 | 1 | android-xr-runtime-proof, android-xr-real-adapter, android-xr-bluetooth-hfp-route-proof |
+
+## Local Evidence
+
+| Evidence | Status | Notes |
+| --- | --- | --- |
+| Debug APK | present | apps/voice-direction-glass/app/build/outputs/apk/debug/app-debug.apk |
+| Project charter | present | docs/00-project-charter.md |
+| Service development process | present | docs/05-service-development-process.md |
+| Device test plan | present | docs/08-device-test-plan.md |
+| Release readiness checklist | present | docs/10-release-readiness.md |
+| Glasses preflight guide | present | docs/11-glasses-integration-preflight.md |
+| Canonical QA report | present | data/canonical/voice-direction-glass.qa-report.json |
+| Support incident process | present | docs/14-support-incident-process.md |
+| Policy clearance matrix | present | docs/15-policy-clearance-matrix.md |
+| Privacy/Data Safety draft | present | docs/16-privacy-policy-data-safety-draft.md |
+| Store review submission package | present | docs/17-store-review-submission-package-draft.md |
+| Release artifact signing runbook | present | docs/18-release-artifact-signing-runbook.md |
+| Release notes versioning | present | docs/19-release-notes-versioning.md |
+| Play screenshot media runbook | present | docs/20-play-screenshot-media-runbook.md |
+| Production speaker model evaluation | present | docs/21-production-speaker-model-evaluation.md |
+| Direction accuracy evidence | present | docs/22-direction-accuracy-evidence.md |
+| Support drill evidence | present | docs/23-support-drill-evidence.md |
+| Support drill manifest | present | apps/voice-direction-glass/support-drills/manifest.json |
+| Support drill session generator | present | scripts/create-support-drill-session.mjs |
+| Support drill session validator | present | scripts/validate-support-drill-session.mjs |
+| Glasses setup readiness | present | docs/24-glasses-setup-readiness.md |
+| Glasses setup validator | present | scripts/validate-glasses-setup-readiness.mjs |
+| Local properties example | present | apps/voice-direction-glass/local.properties.example |
+| Glasses hardware evidence | present | docs/25-glasses-hardware-evidence.md |
+| Glasses hardware manifest | present | apps/voice-direction-glass/glasses-evidence/manifest.json |
+| Glasses hardware validator | present | scripts/validate-glasses-hardware-evidence.mjs |
+| Glasses hardware session runbook | present | docs/26-glasses-hardware-session-runbook.md |
+| Glasses hardware session generator | present | scripts/create-glasses-hardware-session.mjs |
+| Glasses hardware session validator | present | scripts/validate-glasses-hardware-session.mjs |
+| Glasses hardware session apply | present | scripts/apply-glasses-hardware-session.mjs |
+| Latest glasses preflight evidence | present | data/runs/20260528_voice_direction_mvp/30-glasses-preflight-evidence/glasses-preflight.md |
+| Latest device evidence report | missing | Run scripts/android-device-smoke-test.sh --write-evidence with a phone attached. |
+| Device evidence validator | not-run | No device-evidence.md file found under data/runs. |
+| Latest glasses preflight | blocked | pass=10, manual=4, blocked=5 |
+
+## Current Promotion Decision
+
+- Internal prototype: ready.
+- Phone private alpha: not ready; physical phone evidence is still required when open ids remain.
+- Glasses private alpha: blocked; Meta DAT credentials, real adapters, and wearable proof must close first.
+- External beta: blocked; production speaker verification, tester/policy review, and public privacy-policy hosting remain outside the current prototype.
+- Production service: blocked; front/back direction evidence, policy clearance, Play/privacy submission package, upload-signed release artifact, release-track notes, strict screenshot package, strict speaker model evaluation, strict direction accuracy evaluation, support/incident drills, and real glasses hardware proof are not proven yet.
+
+## Next Execution Path
+
+1. Connect a physical Android phone and run `scripts/android-device-smoke-test.sh --write-evidence`.
+2. Fill the manual rows in the generated `device-evidence.md`, then run `scripts/validate-device-evidence.mjs <device-evidence.md> --json`.
+3. Keep `docs/16-privacy-policy-data-safety-draft.md` valid after every SDK or data-flow change.
+4. Keep `docs/17-store-review-submission-package-draft.md` valid after every listing, media, SDK, release-track, or review-instruction change.
+5. Keep `docs/18-release-artifact-signing-runbook.md` valid after every release artifact, signing, or Play App Signing change.
+6. Keep `docs/19-release-notes-versioning.md` valid after every Gradle version, release-note, or Play track change.
+7. Keep `docs/20-play-screenshot-media-runbook.md` valid after every screenshot, feature graphic, Android XR media, or Play preview-asset change.
+8. Keep `docs/21-production-speaker-model-evaluation.md` valid after every model candidate, threshold, evaluation, latency, or anti-spoofing change.
+9. Keep `docs/22-direction-accuracy-evidence.md` valid after every direction algorithm, microphone metadata, controlled trial, route evidence, or platform claim change.
+10. Keep `docs/23-support-drill-evidence.md` valid after every support channel, deletion drill, mistaken-alert drill, or support evidence change.
+11. Keep `docs/24-glasses-setup-readiness.md` valid after every Meta DAT, Android XR, credential-template, or projected-source change.
+12. Keep `docs/25-glasses-hardware-evidence.md` valid after every Ray-Ban Display, Ray-Ban Gen 1 fallback, Android XR projected, or haptics proof change.
+13. Generate a glasses hardware session with `scripts/create-glasses-hardware-session.mjs` before copying hardware proof into the canonical manifest.
+14. Validate filled glasses hardware sessions with `scripts/validate-glasses-hardware-session.mjs <session-dir> --json`.
+15. Dry-run reviewed glasses hardware manifest updates with `scripts/apply-glasses-hardware-session.mjs <session-dir> --json` before using `--write`.
+16. Add Meta DAT credentials outside source control and rerun `scripts/glasses-integration-preflight.sh --write-evidence`.
+17. Replace stub glasses adapters one platform at a time only after preflight blockers close.
+18. Keep this audit report with the run artifacts after every phone/glasses/support session.
+
+## Privacy Guardrail
+
+This audit intentionally reports only checklist ids, counts, statuses, file presence, and validator errors/warnings. It must not include raw audio, transcripts, speaker names, embedding values, encrypted payload values, Bluetooth owner names, or private alert text.
+
+## Source Files
+
+- apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/qa/ReleaseReadiness.kt
+- apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/devices/GlassesIntegrationReadiness.kt
+- scripts/validate-device-evidence.mjs

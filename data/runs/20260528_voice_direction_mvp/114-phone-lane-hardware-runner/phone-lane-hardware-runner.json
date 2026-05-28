@@ -1,0 +1,70 @@
+{
+  "ok": false,
+  "generatedAt": "2026-05-28T13:25:05+09:00",
+  "mode": "dry-run",
+  "status": "blocked",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner",
+  "reportPath": "data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner/phone-lane-hardware-runner.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner/phone-lane-hardware-runner.json",
+  "dashboardJsonPath": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.json",
+  "nextActionsJsonPath": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.json",
+  "phoneReadyToCollect": false,
+  "phoneActionStatus": "blocked",
+  "phoneActionCommand": "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+  "phoneCollectionBlockers": [
+    "authorized ADB devices must be exactly 1, current=0"
+  ],
+  "phoneEvidenceGaps": [
+    "real phone device-evidence.md not collected yet",
+    "direction summary will be generated only after real phone device-evidence.md exists",
+    "direction manifest apply is not ready for canonical promotion",
+    "phone private alpha candidate false until manual device evidence rows pass"
+  ],
+  "counts": {
+    "authorizedAdbDevices": 0,
+    "unauthorizedAdbDevices": 0,
+    "offlineAdbDevices": 0
+  },
+  "executionAllowed": false,
+  "executed": false,
+  "execution": {
+    "attempted": false,
+    "status": "not-run",
+    "exitCode": null,
+    "signal": null,
+    "durationMs": 0,
+    "rawOutputPersisted": false
+  },
+  "steps": [
+    {
+      "label": "Refresh hardware dashboard",
+      "status": "pass",
+      "exitCode": 0,
+      "parseOk": true,
+      "startedAt": "2026-05-28T13:25:04+09:00",
+      "endedAt": "2026-05-28T13:25:05+09:00",
+      "command": "node scripts/summarize-hardware-test-status.mjs --write-report --json",
+      "rawOutputPersisted": false
+    },
+    {
+      "label": "Refresh hardware next actions",
+      "status": "pass",
+      "exitCode": 0,
+      "parseOk": true,
+      "startedAt": "2026-05-28T13:25:05+09:00",
+      "endedAt": "2026-05-28T13:25:05+09:00",
+      "command": "node scripts/recommend-hardware-next-actions.mjs --write-report --json",
+      "rawOutputPersisted": false
+    }
+  ],
+  "errors": [
+    "Phone lane is not ready: blocked.",
+    "Phone collection blockers remain: authorized ADB devices must be exactly 1, current=0"
+  ],
+  "nextActions": [
+    "Attach exactly one authorized Android phone and rerun this runner.",
+    "Close post-run evidence gaps before changing phone alpha or direction promotion status."
+  ],
+  "rawOutputPersisted": false,
+  "privacyGuardrail": "This report stores only aggregate statuses, exit codes, booleans, counts, timestamps, command labels, and workspace-relative paths. It must not store raw child command output, ADB serials, Bluetooth names, MAC addresses, raw audio, transcripts, speaker names, embeddings, encrypted payload values, private alert text, or exact locations."
+}

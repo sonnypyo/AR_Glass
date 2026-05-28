@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "packageName": "com.voicedirection.glass",
+  "status": "DRAFT_PRIVATE_ALPHA_REHEARSAL_NOT_RUN",
+  "generatedAt": "2026-05-28T08:01:28+09:00",
+  "externalSubmission": "not_performed",
+  "sessions": {
+    "physicalSession": "data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack",
+    "supportDrillSession": "data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack",
+    "glassesHardwareSession": "data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack"
+  },
+  "expectedStrictFailuresUntilEvidence": [
+    "support_drills_ready",
+    "glasses_setup_credentials",
+    "glasses_hardware_alpha_ready",
+    "production_direction_ready",
+    "production_speaker_model_ready",
+    "release_upload_ready"
+  ],
+  "privacy": {
+    "rawAudioSaved": false,
+    "pcmSaved": false,
+    "transcriptsIncluded": false,
+    "speakerNamesIncluded": false,
+    "contactNamesIncluded": false,
+    "voiceEmbeddingsIncluded": false,
+    "encryptedPayloadsIncluded": false,
+    "bluetoothOwnerNamesIncluded": false,
+    "bluetoothProductNamesIncluded": false,
+    "macAddressesIncluded": false,
+    "privateAlertTextIncluded": false,
+    "privateLocationsIncluded": false
+  },
+  "serviceReadinessAuditRegenerated": false
+}

@@ -1,0 +1,82 @@
+{
+  "packageName": "com.voicedirection.glass",
+  "versionName": "0.1.0",
+  "versionCode": 1,
+  "status": "DRAFT_MISSING_PHYSICAL_CAPTURE",
+  "externalSubmission": "not_performed",
+  "source": "docs/20-play-screenshot-media-runbook.md",
+  "assets": [
+    {
+      "id": "phone-main-screen",
+      "type": "phone_screenshot",
+      "path": "phone/main-screen.png",
+      "status": "missing",
+      "requiredFor": "play_store_submission",
+      "expectedContent": "Main phone screen with microphone disclosure and generic local prototype state.",
+      "privacyGuardrail": "No real names, transcripts, private notifications, exact location, or Bluetooth owner names."
+    },
+    {
+      "id": "phone-alert-output",
+      "type": "phone_screenshot",
+      "path": "phone/alert-output.png",
+      "status": "missing",
+      "requiredFor": "play_store_submission",
+      "expectedContent": "Generic direction cue and enabled phone notification, vibration, and TTS output state.",
+      "privacyGuardrail": "Generic cue only; no production speaker ID, front/back proof, or glasses haptics claim."
+    },
+    {
+      "id": "phone-local-data-delete",
+      "type": "phone_screenshot",
+      "path": "phone/local-data-delete.png",
+      "status": "missing",
+      "requiredFor": "play_store_submission",
+      "expectedContent": "Local data deletion and limitation language using non-private test state.",
+      "privacyGuardrail": "No raw audio, PCM, embedding values, encrypted payloads, or private profile labels."
+    },
+    {
+      "id": "feature-graphic",
+      "type": "feature_graphic",
+      "path": "feature/feature-graphic.png",
+      "status": "missing",
+      "requiredFor": "play_store_submission",
+      "expectedContent": "1024x500 graphic representing local-first direction cues without unsupported hardware claims.",
+      "privacyGuardrail": "No production Meta DAT, Android XR, front/back accuracy, safety, or surveillance claim."
+    },
+    {
+      "id": "xr-projected-preview-1",
+      "type": "android_xr_screenshot",
+      "path": "android-xr/projected-preview-1.png",
+      "status": "blocked_until_xr_runtime_proof",
+      "requiredFor": "android_xr_claimed_submission",
+      "expectedContent": "Projected cue preview on Android XR runtime with generic direction data.",
+      "privacyGuardrail": "Use only after XR runtime proof; no production XR support claim before review evidence."
+    },
+    {
+      "id": "xr-projected-preview-2",
+      "type": "android_xr_screenshot",
+      "path": "android-xr/projected-preview-2.png",
+      "status": "blocked_until_xr_runtime_proof",
+      "requiredFor": "android_xr_claimed_submission",
+      "expectedContent": "Projected cue alternate direction state on Android XR runtime.",
+      "privacyGuardrail": "Use only after XR runtime proof; no private rooms, names, or transcripts."
+    },
+    {
+      "id": "xr-projected-preview-3",
+      "type": "android_xr_screenshot",
+      "path": "android-xr/projected-preview-3.png",
+      "status": "blocked_until_xr_runtime_proof",
+      "requiredFor": "android_xr_claimed_submission",
+      "expectedContent": "Projected cue fallback or idle state on Android XR runtime.",
+      "privacyGuardrail": "Use only after XR runtime proof and reviewer-safe setup."
+    },
+    {
+      "id": "xr-projected-preview-4",
+      "type": "android_xr_screenshot",
+      "path": "android-xr/projected-preview-4.png",
+      "status": "blocked_until_xr_runtime_proof",
+      "requiredFor": "android_xr_claimed_submission",
+      "expectedContent": "Projected cue state with local-first limitation language visible only if it is part of the app UI.",
+      "privacyGuardrail": "Use only after XR runtime proof; no unsupported glasses haptics or production claim."
+    }
+  ]
+}
