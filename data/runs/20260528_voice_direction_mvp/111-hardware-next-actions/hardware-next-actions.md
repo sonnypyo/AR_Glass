@@ -1,11 +1,11 @@
 # Hardware Next Actions
 
-Generated: 2026-06-01T15:45:43+09:00
+Generated: 2026-06-01T15:55:36+09:00
 Source dashboard: data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.json
 
 ## Decision
 
-- Recommendation: pre_phone_preparation_current_hardware_blocked
+- Recommendation: phone_lane_blocked_attach_phone
 - Current safe workflow: true
 - Authorized ADB devices: 0
 - Phone manifest apply ready: false
@@ -16,10 +16,10 @@ Source dashboard: data/runs/20260528_voice_direction_mvp/99-hardware-test-status
 | Priority | Status | Action | Command | Blockers |
 | ---: | --- | --- | --- | --- |
 | 1 | current | Refresh default no-hardware workflow | `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
-| 2 | current | Prepare controlled direction rows | `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh` | - |
-| 3 | blocked | Prepare glasses evidence lane | `RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | Meta application id missing; GitHub Packages token missing; glasses preflight blocked=2; real Android XR projected contract not ready; glasses private alpha candidate false |
-| 4 | current | Prepare support drill lane | `RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
-| 5 | blocked | Run Android phone evidence lane last | `RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | authorized ADB devices must be exactly 1, current=0 |
+| 2 | blocked | Run Android phone evidence lane | `RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | authorized ADB devices must be exactly 1, current=0 |
+| 3 | current | Prepare controlled direction rows | `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh` | - |
+| 4 | blocked | Prepare glasses evidence lane | `RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | Meta application id missing; GitHub Packages token missing; glasses preflight blocked=2; real Android XR projected contract not ready; glasses private alpha candidate false |
+| 5 | current | Prepare support drill lane | `RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
 
 ## Privacy Guardrail
 

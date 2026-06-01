@@ -269,7 +269,7 @@ function deriveNextActions(summary) {
     actions.push("Rerun `scripts/glasses-integration-preflight.sh --write-evidence` after credentials, dependencies, or device availability change.");
   }
   if (!summary.latestDeviceEvidence.path) {
-    actions.push("Create phone `device-evidence.md` only during the final phone hardware step with `scripts/android-device-smoke-test.sh --write-evidence`.");
+    actions.push("Create phone `device-evidence.md` only during a real phone hardware step with `scripts/android-device-smoke-test.sh --write-evidence`.");
   }
   actions.push("Use the recommended runner command below, then fill only aggregate/manual rows in the linked session checklists.");
   actions.push("Regenerate `scripts/audit-service-readiness.mjs --write-report` after every evidence change.");

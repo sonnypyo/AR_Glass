@@ -4638,3 +4638,25 @@ The next-action workflow already ranks phone evidence last, but the handoff sequ
 - This does not claim real Meta DAT, Android XR, or glasses haptics support.
 - Actual Android XR readiness remains blocked until a real runtime/device or emulator session supplies non-PII evidence.
 - No raw audio, transcript, speaker name, device id, token, or exact location evidence was generated.
+
+## 2026-06-01 KST: Restore Phone Lane As First Real Hardware Step
+
+### Decision
+
+Use the Android phone lane as the first real hardware step after the local no-hardware workflow is current.
+
+### Reasoning
+
+The active project objective prioritizes Android phone install/run, phone notification/vibration/TTS proof, and controlled direction rows before Meta Ray-Ban Display, Ray-Ban Gen 1 fallback, and Android XR evidence. The previous handoff and next-action ordering still treated direct phone integration as the final hardware step, which could send the next run toward glasses preparation before the required phone MVP proof.
+
+### Implemented
+
+- Updated the hardware next-action recommender so `run-phone-lane` is priority 2 after the local workflow refresh.
+- Updated phone runner/watcher wording from "final phone hardware step" to "real phone hardware step".
+- Updated the current handoff and root README so phone install/run evidence is the first real hardware milestone while still not claiming glasses support from phone output.
+
+### Trial/Error Notes
+
+- The phone lane remains blocked in this workspace until exactly one authorized ADB phone is attached.
+- No fake direction rows or device evidence were generated.
+- Meta DAT, Android XR, and glasses haptics remain unclaimed until real hardware evidence exists.

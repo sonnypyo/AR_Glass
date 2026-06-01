@@ -126,6 +126,7 @@ function buildActions(dashboard) {
   const directionLane = laneByLabel(dashboard, "Controlled direction trials");
   const glassesLane = laneByLabel(dashboard, "Glasses evidence");
   const supportLane = laneByLabel(dashboard, "Support evidence");
+  const authorizedCount = dashboard?.counts?.authorizedAdbDevices ?? 0;
 
   actions.push(action(
     "refresh-default-workflow",
@@ -140,28 +141,38 @@ function buildActions(dashboard) {
   ));
 
   actions.push(action(
-    "run-controlled-direction-session",
+    "run-phone-lane",
     2,
+    authorizedCount === 1 && phoneLane?.status !== "blocked" ? "ready" : "blocked",
+    "Run Android phone evidence lane",
+    phoneLane?.command ?? "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+    "Run this as the first real hardware lane after the no-hardware workflow is current; it installs/runs the app and collects phone alert evidence.",
+    phoneLane?.blockers ?? [`authorized ADB devices must be exactly 1, current=${authorizedCount}`],
+  ));
+
+  actions.push(action(
+    "run-controlled-direction-session",
+    3,
     directionLane?.status ?? "blocked",
     "Prepare controlled direction rows",
     directionLane?.command ?? "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
-    "Keep the 20-per-direction front/back/left/right evidence plan ready; collect observed rows only during the final phone hardware step.",
+    "Keep the 20-per-direction front/back/left/right evidence plan ready; collect observed rows after the phone app run is proven.",
     directionLane?.blockers ?? [],
   ));
 
   actions.push(action(
     "run-glasses-lane",
-    3,
+    4,
     glassesLane?.status ?? "blocked",
     "Prepare glasses evidence lane",
     glassesLane?.command ?? "RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-    "Keep glasses preflight, Meta DAT, Ray-Ban fallback, Android XR, and haptics/fallback gates explicit before any hardware claim.",
+    "Run after the phone MVP and direction evidence path are proven; keep Meta DAT, Ray-Ban fallback, Android XR, and haptics/fallback gates explicit before any hardware claim.",
     glassesLane?.blockers ?? [],
   ));
 
   actions.push(action(
     "run-support-lane",
-    4,
+    5,
     supportLane?.status ?? "manual-required",
     "Prepare support drill lane",
     supportLane?.command ?? "RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
@@ -169,31 +180,17 @@ function buildActions(dashboard) {
     supportLane?.blockers ?? [],
   ));
 
-  const authorizedCount = dashboard?.counts?.authorizedAdbDevices ?? 0;
-  actions.push(action(
-    "run-phone-lane",
-    5,
-    authorizedCount === 1 && phoneLane?.status !== "blocked" ? "ready" : "blocked",
-    "Run Android phone evidence lane last",
-    phoneLane?.command ?? "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-    "Run this only after pre-phone local workflow, controlled-direction planning, glasses preflight, and support-drill preparation are current.",
-    phoneLane?.blockers ?? [`authorized ADB devices must be exactly 1, current=${authorizedCount}`],
-  ));
-
   return actions;
 }
 
 function summarizeDecision(dashboard, actions) {
   const readyActions = actions.filter((item) => item.status === "ready");
-  const manualActions = actions.filter((item) => item.status === "manual-required");
   const phoneReady = actions.find((item) => item.id === "run-phone-lane")?.status === "ready";
-  const prePhoneManual = manualActions.some((item) => item.id !== "run-phone-lane");
+  const phoneBlocked = actions.find((item) => item.id === "run-phone-lane")?.status === "blocked";
   const currentActions = actions.filter((item) => item.status === "current");
-  if (actions.find((item) => item.id === "refresh-default-workflow")?.status === "current" && prePhoneManual) return "pre_phone_manual_preparation_available";
-  if (readyActions.some((item) => item.id === "refresh-default-workflow")) return "pre_phone_workflow_ready_keep_phone_last";
-  if (prePhoneManual) return "pre_phone_manual_preparation_available";
-  if (phoneReady) return "phone_lane_ready_last";
-  if (currentActions.length > 0 && dashboard?.ok) return "pre_phone_preparation_current_hardware_blocked";
+  if (readyActions.some((item) => item.id === "refresh-default-workflow")) return "refresh_workflow_before_phone";
+  if (phoneReady) return "phone_lane_ready_next";
+  if (phoneBlocked && currentActions.length > 0 && dashboard?.ok) return "phone_lane_blocked_attach_phone";
   return dashboard?.ok ? "workflow_ok_no_hardware_lane_ready" : "workflow_attention_required";
 }
 

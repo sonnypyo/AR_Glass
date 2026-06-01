@@ -217,7 +217,7 @@ function renderMarkdown(summary) {
 function deriveNextActions(summary) {
   const next = [];
   if (!summary.phoneReadyToCollect) {
-    next.push("Keep this runner for the final phone hardware step; attach exactly one authorized Android phone and rerun it.");
+    next.push("Keep this runner for the next real phone hardware step; attach exactly one authorized Android phone and rerun it.");
   }
   if (summary.phoneReadyToCollect && !summary.executed) {
     next.push("Rerun with `--execute --write-report --json` only if the attached phone is the intended test device.");
