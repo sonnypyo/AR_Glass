@@ -200,6 +200,7 @@ Generated: ${generatedAt}
 
 ## Phone Evidence
 
+- [ ] Treat this as the final hardware step after pre-phone gates are current.
 - [ ] Attach exactly one authorized Android phone.
 - [ ] Run \`RUN_PHONE=1 ${runDir.relative}/commands.sh\`.
 - [ ] Validate generated \`phone-alpha-evidence-summary.json\`.

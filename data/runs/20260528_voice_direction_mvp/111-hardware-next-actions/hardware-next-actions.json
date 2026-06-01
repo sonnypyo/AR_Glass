@@ -1,11 +1,11 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T12:52:29+09:00",
+  "generatedAt": "2026-06-01T14:43:53+09:00",
   "sourceDashboard": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.json",
   "reportDir": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions",
   "reportPath": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.md",
   "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.json",
-  "decision": "default_workflow_ready_attach_phone_next",
+  "decision": "pre_phone_workflow_ready_keep_phone_last",
   "currentSafeWorkflow": true,
   "privateAlphaCandidate": false,
   "counts": {
@@ -40,23 +40,12 @@
       "blockers": []
     },
     {
-      "id": "run-phone-lane",
-      "priority": 2,
-      "status": "blocked",
-      "title": "Run Android phone evidence lane",
-      "command": "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-      "reason": "This creates real device evidence, direction summary, and direction manifest apply dry-run status.",
-      "blockers": [
-        "authorized ADB devices must be exactly 1, current=0"
-      ]
-    },
-    {
       "id": "run-controlled-direction-session",
-      "priority": 3,
+      "priority": 2,
       "status": "manual-required",
-      "title": "Run controlled direction rows",
+      "title": "Prepare controlled direction rows",
       "command": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
-      "reason": "This is the 20-per-direction front/back/left/right evidence plan needed before production direction claims.",
+      "reason": "Keep the 20-per-direction front/back/left/right evidence plan ready; collect observed rows only during the final phone hardware step.",
       "blockers": [
         "observed direction rows incomplete: 0/80",
         "production direction candidate false until aggregate evidence is reviewed"
@@ -64,11 +53,11 @@
     },
     {
       "id": "run-glasses-lane",
-      "priority": 4,
+      "priority": 3,
       "status": "blocked",
-      "title": "Run glasses evidence lane",
+      "title": "Prepare glasses evidence lane",
       "command": "RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-      "reason": "Use only after Meta DAT credentials, GitHub Packages token, and Android XR real runtime proof are ready.",
+      "reason": "Keep glasses preflight, Meta DAT, Ray-Ban fallback, Android XR, and haptics/fallback gates explicit before any hardware claim.",
       "blockers": [
         "Meta application id missing",
         "GitHub Packages token missing",
@@ -79,13 +68,24 @@
     },
     {
       "id": "run-support-lane",
-      "priority": 5,
+      "priority": 4,
       "status": "manual-required",
-      "title": "Run support drill lane",
+      "title": "Prepare support drill lane",
       "command": "RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
       "reason": "Use when deletion and mistaken-alert drill owners can record reviewed non-PII evidence.",
       "blockers": [
         "support strict evidence not requested or not complete"
+      ]
+    },
+    {
+      "id": "run-phone-lane",
+      "priority": 5,
+      "status": "blocked",
+      "title": "Run Android phone evidence lane last",
+      "command": "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+      "reason": "Run this only after pre-phone local workflow, controlled-direction planning, glasses preflight, and support-drill preparation are current.",
+      "blockers": [
+        "authorized ADB devices must be exactly 1, current=0"
       ]
     }
   ],

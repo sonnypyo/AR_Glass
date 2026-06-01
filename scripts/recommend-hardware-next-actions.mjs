@@ -129,45 +129,45 @@ function buildActions(dashboard) {
     defaultLane?.blockers ?? [],
   ));
 
-  const authorizedCount = dashboard?.counts?.authorizedAdbDevices ?? 0;
-  actions.push(action(
-    "run-phone-lane",
-    2,
-    authorizedCount === 1 && phoneLane?.status !== "blocked" ? "ready" : "blocked",
-    "Run Android phone evidence lane",
-    phoneLane?.command ?? "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-    "This creates real device evidence, direction summary, and direction manifest apply dry-run status.",
-    phoneLane?.blockers ?? [`authorized ADB devices must be exactly 1, current=${authorizedCount}`],
-  ));
-
   actions.push(action(
     "run-controlled-direction-session",
-    3,
+    2,
     directionLane?.status === "manual-required" ? "manual-required" : (directionLane?.status ?? "blocked"),
-    "Run controlled direction rows",
+    "Prepare controlled direction rows",
     directionLane?.command ?? "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
-    "This is the 20-per-direction front/back/left/right evidence plan needed before production direction claims.",
+    "Keep the 20-per-direction front/back/left/right evidence plan ready; collect observed rows only during the final phone hardware step.",
     directionLane?.blockers ?? [],
   ));
 
   actions.push(action(
     "run-glasses-lane",
-    4,
+    3,
     glassesLane?.status ?? "blocked",
-    "Run glasses evidence lane",
+    "Prepare glasses evidence lane",
     glassesLane?.command ?? "RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-    "Use only after Meta DAT credentials, GitHub Packages token, and Android XR real runtime proof are ready.",
+    "Keep glasses preflight, Meta DAT, Ray-Ban fallback, Android XR, and haptics/fallback gates explicit before any hardware claim.",
     glassesLane?.blockers ?? [],
   ));
 
   actions.push(action(
     "run-support-lane",
-    5,
+    4,
     supportLane?.status ?? "manual-required",
-    "Run support drill lane",
+    "Prepare support drill lane",
     supportLane?.command ?? "RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
     "Use when deletion and mistaken-alert drill owners can record reviewed non-PII evidence.",
     supportLane?.blockers ?? [],
+  ));
+
+  const authorizedCount = dashboard?.counts?.authorizedAdbDevices ?? 0;
+  actions.push(action(
+    "run-phone-lane",
+    5,
+    authorizedCount === 1 && phoneLane?.status !== "blocked" ? "ready" : "blocked",
+    "Run Android phone evidence lane last",
+    phoneLane?.command ?? "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+    "Run this only after pre-phone local workflow, controlled-direction planning, glasses preflight, and support-drill preparation are current.",
+    phoneLane?.blockers ?? [`authorized ADB devices must be exactly 1, current=${authorizedCount}`],
   ));
 
   return actions;
@@ -177,9 +177,10 @@ function summarizeDecision(dashboard, actions) {
   const readyActions = actions.filter((item) => item.status === "ready");
   const manualActions = actions.filter((item) => item.status === "manual-required");
   const phoneReady = actions.find((item) => item.id === "run-phone-lane")?.status === "ready";
-  if (phoneReady) return "phone_lane_ready";
-  if (readyActions.some((item) => item.id === "refresh-default-workflow")) return "default_workflow_ready_attach_phone_next";
-  if (manualActions.length > 0) return "manual_evidence_available_but_not_release_ready";
+  const prePhoneManual = manualActions.some((item) => item.id !== "run-phone-lane");
+  if (readyActions.some((item) => item.id === "refresh-default-workflow")) return "pre_phone_workflow_ready_keep_phone_last";
+  if (prePhoneManual) return "pre_phone_manual_preparation_available";
+  if (phoneReady) return "phone_lane_ready_last";
   return dashboard?.ok ? "workflow_ok_no_hardware_lane_ready" : "workflow_attention_required";
 }
 

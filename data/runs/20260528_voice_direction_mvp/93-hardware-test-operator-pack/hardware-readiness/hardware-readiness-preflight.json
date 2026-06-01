@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-05-28T13:08:07+09:00",
+  "generatedAt": "2026-06-01T14:42:46+09:00",
   "reportDir": "/Users/sonjunpyo/Documents/Project/glass/data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness",
   "reportPath": "/Users/sonjunpyo/Documents/Project/glass/data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.md",
   "summaryJsonPath": "/Users/sonjunpyo/Documents/Project/glass/data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.json",
@@ -73,7 +73,7 @@
     "defaultOk": true,
     "hasMetaApplicationId": false,
     "hasGithubToken": false,
-    "localPropertiesPresent": false
+    "localPropertiesPresent": true
   },
   "glassesPreflight": {
     "available": true,
@@ -127,10 +127,10 @@
   },
   "recommendedRunnerCommand": "scripts/run-private-alpha-hardware-rehearsal.mjs --json",
   "nextActions": [
-    "Connect exactly one authorized Android phone over ADB before using `--run-phone`.",
+    "Keep phone collection as the final hardware step; it will need exactly one authorized Android phone before using `--run-phone`.",
     "Configure Meta Wearables application id and GitHub Packages token outside source control before DAT work.",
     "Rerun `scripts/glasses-integration-preflight.sh --write-evidence` after credentials, dependencies, or device availability change.",
-    "Run `scripts/android-device-smoke-test.sh --write-evidence` with a connected phone to create `device-evidence.md`.",
+    "Create phone `device-evidence.md` only during the final phone hardware step with `scripts/android-device-smoke-test.sh --write-evidence`.",
     "Use the recommended runner command below, then fill only aggregate/manual rows in the linked session checklists.",
     "Regenerate `scripts/audit-service-readiness.mjs --write-report` after every evidence change."
   ]

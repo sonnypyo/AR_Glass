@@ -1,6 +1,6 @@
 {
   "ok": false,
-  "generatedAt": "2026-05-28T13:39:30+09:00",
+  "generatedAt": "2026-06-01T14:43:53+09:00",
   "mode": "dry-run",
   "status": "timed-out",
   "reportDir": "data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher",
@@ -8,7 +8,7 @@
   "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher/phone-lane-ready-watcher.json",
   "timeoutMs": 0,
   "intervalMs": 250,
-  "elapsedMs": 349,
+  "elapsedMs": 346,
   "pollAttempts": 1,
   "timedOut": true,
   "readyObserved": false,
@@ -29,7 +29,7 @@
   "pollSnapshots": [
     {
       "attempt": 1,
-      "observedAt": "2026-05-28T13:39:30+09:00",
+      "observedAt": "2026-06-01T14:43:53+09:00",
       "status": "blocked",
       "phoneReadyToCollect": false,
       "executionAllowed": false,
@@ -72,9 +72,9 @@
       "status": "fail",
       "exitCode": 1,
       "parseOk": true,
-      "startedAt": "2026-05-28T13:39:30+09:00",
-      "endedAt": "2026-05-28T13:39:30+09:00",
-      "durationMs": 338,
+      "startedAt": "2026-06-01T14:43:52+09:00",
+      "endedAt": "2026-06-01T14:43:53+09:00",
+      "durationMs": 337,
       "command": "node scripts/run-phone-lane-hardware.mjs --json",
       "rawOutputPersisted": false
     }
@@ -83,7 +83,7 @@
     "Phone lane readiness was not observed before timeout."
   ],
   "nextActions": [
-    "Attach exactly one authorized Android phone before rerunning the watcher."
+    "Keep this watcher for the final phone hardware step; attach exactly one authorized Android phone before rerunning it."
   ],
   "rawOutputPersisted": false,
   "privacyGuardrail": "This report stores only aggregate readiness booleans, counts, exit codes, timestamps, command labels, and workspace-relative report paths. It must not store raw child command output, ADB serials, Bluetooth names, MAC addresses, raw audio, transcripts, speaker names, embeddings, encrypted payload values, private alert text, exact locations, tokens, or matched privacy-scan text."

@@ -257,7 +257,7 @@ function renderMarkdown(summary) {
 function deriveNextActions(summary) {
   const next = [];
   if (!summary.readyObserved) {
-    next.push("Attach exactly one authorized Android phone before rerunning the watcher.");
+    next.push("Keep this watcher for the final phone hardware step; attach exactly one authorized Android phone before rerunning it.");
   }
   if (summary.readyObserved && summary.mode === "dry-run") {
     next.push("Rerun with `--execute --write-report --json` only when the attached phone is the intended test device.");

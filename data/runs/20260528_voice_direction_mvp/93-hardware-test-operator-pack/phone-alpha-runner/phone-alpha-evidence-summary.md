@@ -1,6 +1,6 @@
 # Phone Private Alpha Evidence Runner Summary
 
-Generated: 2026-05-28T13:08:07+09:00
+Generated: 2026-06-01T14:42:47+09:00
 
 ## Purpose
 
@@ -47,8 +47,8 @@ This report summarizes the phone-private-alpha evidence run for Voice Direction 
 
 ## Next Actions
 
-- Connect exactly one authorized Android phone over ADB, then rerun this runner without `--allow-no-device`.
-- Create `device-evidence.md` by running this runner with a connected phone or by running `scripts/android-device-smoke-test.sh --write-evidence` directly.
+- Keep this runner for the final phone hardware step; it will need exactly one authorized Android phone and no `--allow-no-device`.
+- Create phone `device-evidence.md` only during the final phone hardware step with this runner or `scripts/android-device-smoke-test.sh --write-evidence`.
 - Extract direction evidence with `scripts/extract-direction-evidence-summary.mjs <device-evidence.md> --json` after a real phone report exists.
 - Keep front/back and production direction claims blocked until strict direction summary and direction accuracy validation pass.
 - Observe the app's `릴리스 준비` card on the phone and confirm phone/glasses/beta/production stay not-ready or blocked until matching evidence exists.

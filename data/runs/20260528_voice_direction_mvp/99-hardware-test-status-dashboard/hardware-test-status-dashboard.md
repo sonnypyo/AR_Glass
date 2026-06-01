@@ -1,6 +1,6 @@
 # Hardware Test Status Dashboard
 
-Generated: 2026-06-01T12:52:29+09:00
+Generated: 2026-06-01T14:43:53+09:00
 Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 
 ## Decision
@@ -60,9 +60,10 @@ Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 
 ## Next Actions
 
-- Run the default no-hardware workflow before attaching real evidence lanes.
-- Attach exactly one authorized Android phone before `RUN_PHONE=1`.
-- Use data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/trial-plan.csv for the next controlled direction run; recorded rows are 0/80.
+- Run the default no-hardware workflow before any real evidence lane.
+- Keep data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/trial-plan.csv ready; recorded rows are 0/80.
+- Prepare glasses and support evidence gates, but do not claim hardware support without real evidence.
+- Keep `RUN_PHONE=1` last; it still needs exactly one authorized Android phone.
 - Keep phone/glasses/support strict promotion profiles blocked until matching real evidence exists.
 - Use `scripts/validate-hardware-test-promotion.mjs --profile workflow --json` after every operator-pack run.
 - Regenerate this dashboard after any phone, glasses, support, Android XR, or preflight evidence change.

@@ -1,6 +1,6 @@
 # Phone Lane Ready Watcher
 
-Generated: 2026-05-28T13:39:30+09:00
+Generated: 2026-06-01T14:43:53+09:00
 
 ## Purpose
 
@@ -41,7 +41,7 @@ This watcher polls the guarded phone-lane runner until exactly one authorized An
 
 ## Next Actions
 
-- Attach exactly one authorized Android phone before rerunning the watcher.
+- Keep this watcher for the final phone hardware step; attach exactly one authorized Android phone before rerunning it.
 
 ## Privacy Guardrail
 

@@ -4340,3 +4340,44 @@ Result:
 - Syntax check passed.
 - Help output passed.
 - Current no-phone smoke result is `timed-out`, with `authorizedAdbDevices=0`, `collectionBlockerCount=1`, and `evidenceGapCount=4`.
+
+## 2026-06-01 KST: Phone Lane Deferred Until Pre-Phone Gates Are Current
+
+### Decision
+
+Keep direct Android phone integration as the final hardware step. Finish the no-hardware workflow, controlled direction planning, glasses preflight, support preparation, service audit, and privacy scans before running the phone evidence lane.
+
+### Reasoning
+
+The user asked to reduce token and work waste by avoiding early phone-integration loops. The project can still make useful progress without a connected phone by keeping local automation, evidence gates, and handoff instructions current.
+
+### Implemented
+
+- Updated `docs/60-next-goal-handoff.md`.
+- Updated `docs/53-hardware-next-actions.md`.
+- Updated hardware readiness, phone-alpha dry-run, status, and next-action recommendation scripts.
+- Regenerated operator-pack workflow summaries, hardware dashboard, and hardware next-action reports.
+
+### Trial/Error Notes
+
+- The default no-hardware operator pack still passes.
+- Controlled direction planning remains ready with `0/80` observed rows.
+- Phone evidence remains blocked only for the final hardware step because authorized ADB devices are `0`.
+- No phone, glasses, Meta DAT, Android XR, or haptics support claim was promoted.
+
+### Verification
+
+From the repository root:
+
+```bash
+data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh
+node scripts/summarize-hardware-test-status.mjs --write-report --json
+node scripts/recommend-hardware-next-actions.mjs --write-report --json
+node scripts/scan-evidence-privacy.mjs --path scripts/summarize-hardware-test-status.mjs --path scripts/recommend-hardware-next-actions.mjs --path docs/60-next-goal-handoff.md --path data/runs/20260528_voice_direction_mvp/118-next-goal-handoff.md --path data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard --path data/runs/20260528_voice_direction_mvp/111-hardware-next-actions --json
+```
+
+Result:
+
+- Operator-pack workflow completed successfully.
+- Dashboard decision is `pre_phone_workflow_ready_keep_phone_last`.
+- Targeted privacy scan passed with zero violations.

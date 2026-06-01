@@ -1,6 +1,6 @@
 # Phone Lane Hardware Runner
 
-Generated: 2026-06-01T12:52:29+09:00
+Generated: 2026-06-01T14:43:45+09:00
 
 ## Purpose
 
@@ -36,7 +36,7 @@ This runner refreshes the hardware dashboard, refreshes the next-action brief, c
 
 ## Next Actions
 
-- Attach exactly one authorized Android phone and rerun this runner.
+- Keep this runner for the final phone hardware step; attach exactly one authorized Android phone and rerun it.
 - Close post-run evidence gaps before changing phone alpha or direction promotion status.
 
 ## Privacy Guardrail

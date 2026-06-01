@@ -10,14 +10,15 @@ It summarizes only the current verified state, the unfinished work, and the exac
 
 ## Scope Control
 
-As of 2026-06-01, keep the next goal narrow.
+As of 2026-06-01, keep the next goal narrow and keep direct Android phone integration as the final hardware step.
 
 Do only work that moves one of these forward:
 
-1. Real Android phone MVP run.
-2. Phone alert proof: notification, vibration, and TTS.
-3. Controlled direction evidence: front, back, left, right.
-4. Glasses evidence only after phone evidence is real.
+1. Local no-hardware workflow stays green: build, unit tests, validators, service audit, privacy scan.
+2. Stage 117/glasses-lane review remains minimally integrated and explicitly blocked only by real hardware evidence.
+3. Controlled direction session tooling stays ready for front, back, left, and right rows.
+4. Glasses/support preflight gaps stay explicit without claiming Meta DAT, Android XR, or glasses haptics support.
+5. Android phone integration, ADB install/run, phone alert proof, and real direction-row collection happen last.
 
 Do not spend time on new broad reports, new market research, new release paperwork, extra agent documents, extra wiki expansion, or speculative Android XR/Meta abstractions unless they directly unblock the above sequence.
 
@@ -150,14 +151,14 @@ scripts/scan-evidence-privacy.mjs \
   --json
 ```
 
-5. Move to the real phone lane as soon as readiness tracking is consistent.
+5. Keep the real phone lane as the final hardware step.
 
 ```bash
 scripts/run-phone-lane-when-ready.mjs --execute --write-report --json
 scripts/review-phone-lane-evidence.mjs --write-report --json
 ```
 
-This needs an attached Android phone with USB debugging, the correct app build path, and operator review of the generated non-PII evidence.
+Do not run this until local workflow, controlled-direction planning, glasses preflight, support drill preparation, privacy scan, and service-readiness tracking are current. It then needs an attached Android phone with USB debugging, the correct app build path, and operator review of the generated non-PII evidence.
 
 6. Then collect controlled direction evidence.
 
@@ -225,6 +226,6 @@ Do not claim any of the following until the matching evidence exists:
 
 The next milestone should be:
 
-`Stage 117 fully integrated, then phone-lane real-device run prepared.`
+`Pre-phone local workflow fully current, then phone-lane real-device run as the final hardware step.`
 
-Reason: Stage 117 has already generated useful glasses-review artifacts, but leaving it half-integrated makes later progress percentages and readiness gates confusing. Closing Stage 117 first creates a clean baseline before attaching a phone or glasses.
+Reason: The user moved phone integration to the end. Keep all local workflow, controlled-direction planning, glasses preflight, support preparation, and privacy/service-readiness gates clean first, then attach a phone only for the final hardware evidence step.

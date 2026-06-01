@@ -257,7 +257,7 @@ function commandFor(summary) {
 function deriveNextActions(summary) {
   const actions = [];
   if (!summary.canRunPhoneSession) {
-    actions.push("Connect exactly one authorized Android phone over ADB before using `--run-phone`.");
+    actions.push("Keep phone collection as the final hardware step; it will need exactly one authorized Android phone before using `--run-phone`.");
   }
   if (!summary.local.debugApkPresent) {
     actions.push("Build the debug APK with `cd apps/voice-direction-glass && ./gradlew --no-daemon assembleDebug`.");
@@ -269,7 +269,7 @@ function deriveNextActions(summary) {
     actions.push("Rerun `scripts/glasses-integration-preflight.sh --write-evidence` after credentials, dependencies, or device availability change.");
   }
   if (!summary.latestDeviceEvidence.path) {
-    actions.push("Run `scripts/android-device-smoke-test.sh --write-evidence` with a connected phone to create `device-evidence.md`.");
+    actions.push("Create phone `device-evidence.md` only during the final phone hardware step with `scripts/android-device-smoke-test.sh --write-evidence`.");
   }
   actions.push("Use the recommended runner command below, then fill only aggregate/manual rows in the linked session checklists.");
   actions.push("Regenerate `scripts/audit-service-readiness.mjs --write-report` after every evidence change.");

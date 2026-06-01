@@ -255,10 +255,10 @@ function renderMarkdown(summary) {
 function deriveNextActions(summary) {
   const actions = [];
   if (summary.adb.authorizedDeviceCount !== 1) {
-    actions.push("Connect exactly one authorized Android phone over ADB, then rerun this runner without `--allow-no-device`.");
+    actions.push("Keep this runner for the final phone hardware step; it will need exactly one authorized Android phone and no `--allow-no-device`.");
   }
   if (!summary.deviceEvidence.exists) {
-    actions.push("Create `device-evidence.md` by running this runner with a connected phone or by running `scripts/android-device-smoke-test.sh --write-evidence` directly.");
+    actions.push("Create phone `device-evidence.md` only during the final phone hardware step with this runner or `scripts/android-device-smoke-test.sh --write-evidence`.");
   }
   if (summary.deviceEvidence.exists && !summary.deviceEvidence.validatorOk) {
     actions.push("Open the generated device evidence report, fill required manual rows, then rerun `scripts/validate-device-evidence.mjs <device-evidence.md> --json`.");

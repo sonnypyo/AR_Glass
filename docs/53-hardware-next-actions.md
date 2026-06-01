@@ -62,13 +62,14 @@ The source dashboard already summarizes:
 Current decision:
 
 ```text
-default_workflow_ready_attach_phone_next
+pre_phone_workflow_ready_keep_phone_last
 ```
 
 Meaning:
 
-- Run the default no-hardware operator workflow before attaching real evidence lanes.
-- Attach exactly one authorized Android phone before `RUN_PHONE=1`.
+- Run the default no-hardware operator workflow before any real evidence lane.
+- Keep controlled direction planning, glasses preflight, and support preparation current before phone hardware.
+- Keep `RUN_PHONE=1` as the final hardware step; it still needs exactly one authorized Android phone.
 - Missing phone `device-evidence.md` and direction summary are post-run evidence gaps, not pre-run blockers.
 - Keep glasses lane blocked until Meta application id, GitHub Packages token, glasses preflight blockers, and real Android XR proof are handled.
 - Controlled direction trial planning is ready, but observed rows remain `0/80`.

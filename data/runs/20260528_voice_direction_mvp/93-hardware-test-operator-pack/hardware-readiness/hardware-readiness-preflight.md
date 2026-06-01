@@ -1,6 +1,6 @@
 # Private Alpha Hardware Readiness Preflight
 
-Generated: 2026-05-28T13:08:07+09:00
+Generated: 2026-06-01T14:42:46+09:00
 
 ## Purpose
 
@@ -49,10 +49,10 @@ scripts/run-private-alpha-hardware-rehearsal.mjs --json
 
 ## Next Actions
 
-- Connect exactly one authorized Android phone over ADB before using `--run-phone`.
+- Keep phone collection as the final hardware step; it will need exactly one authorized Android phone before using `--run-phone`.
 - Configure Meta Wearables application id and GitHub Packages token outside source control before DAT work.
 - Rerun `scripts/glasses-integration-preflight.sh --write-evidence` after credentials, dependencies, or device availability change.
-- Run `scripts/android-device-smoke-test.sh --write-evidence` with a connected phone to create `device-evidence.md`.
+- Create phone `device-evidence.md` only during the final phone hardware step with `scripts/android-device-smoke-test.sh --write-evidence`.
 - Use the recommended runner command below, then fill only aggregate/manual rows in the linked session checklists.
 - Regenerate `scripts/audit-service-readiness.mjs --write-report` after every evidence change.
 
