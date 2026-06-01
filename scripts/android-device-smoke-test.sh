@@ -467,7 +467,7 @@ write_evidence_report() {
     printf '| Phone vibration pattern is felt | manual | Verify direction pattern. |\n'
     printf '| Alert delivery statuses persist | manual | Record channel/status counts only; do not paste alert message text. |\n'
     printf '| Alert channel preferences filter outputs | manual | Toggle channels and record enabled channel names plus delivered counts only. |\n'
-    printf '| Debug alert output test broadcast runs | %s | Emits a generic cue through enabled channels and stores channel/status counts plus non-PII cue contract metadata only. |\n' "$ALERT_OUTPUT_TEST_RESULT"
+    printf '| Debug alert output test broadcast runs | %s | Pass requires phone notification, vibration, and TTS delivery status plus non-PII cue contract metadata only. |\n' "$ALERT_OUTPUT_TEST_RESULT"
     printf '| Debug direction sample test broadcast runs | %s | Runs one short direction sample and stores status/evidence/microphone metadata counts only. |\n' "$DIRECTION_SAMPLE_TEST_RESULT"
     printf '| Debug glasses cue seed broadcast runs | %s | Seeds latest projected cue using direction/confidence metadata only before projected launch. |\n' "$GLASSES_CUE_SEED_RESULT"
     printf '| Debug Bluetooth route evidence broadcast runs | %s | Records communication-routing support, Bluetooth input candidate counts, and selected type without device names. |\n' "$BLUETOOTH_ROUTE_EVIDENCE_RESULT"

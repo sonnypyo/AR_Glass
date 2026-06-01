@@ -35,6 +35,7 @@ class AlertOutputTestReceiver : BroadcastReceiver() {
                     phoneNotification = AlertDeliveryStatus.MISSING.name,
                     phoneVibration = AlertDeliveryStatus.MISSING.name,
                     tts = AlertDeliveryStatus.MISSING.name,
+                    phoneAlertProofReady = false,
                     metaDisplay = AlertDeliveryStatus.MISSING.name,
                     androidXrDisplay = AlertDeliveryStatus.MISSING.name,
                     vibrationPatternDirection = vibrationSummary.direction.name,
@@ -71,17 +72,24 @@ class AlertOutputTestReceiver : BroadcastReceiver() {
             )
             repository.saveLatestAlertDeliverySnapshot(deliverySnapshot)
 
+            val phoneNotification = deliverySnapshot.statusFor(AlertChannel.PHONE_NOTIFICATION)
+            val phoneVibration = deliverySnapshot.statusFor(AlertChannel.PHONE_VIBRATION)
+            val tts = deliverySnapshot.statusFor(AlertChannel.TTS)
+            val phoneAlertProofReady = listOf(phoneNotification, phoneVibration, tts)
+                .all { status -> status == AlertDeliveryStatus.DELIVERED }
             val passed = deliverySnapshot.totalCount == enabledChannels.size &&
-                deliverySnapshot.source.name == "TEST_CUE"
+                deliverySnapshot.source.name == "TEST_CUE" &&
+                phoneAlertProofReady
             AlertOutputTestResult(
                 passed = passed,
                 enabledAlertChannelCount = enabledChannels.size,
                 deliveryCount = deliverySnapshot.totalCount,
                 deliveredCount = deliverySnapshot.deliveredCount,
                 latestDeliverySource = deliverySnapshot.source.name,
-                phoneNotification = deliverySnapshot.statusFor(AlertChannel.PHONE_NOTIFICATION).name,
-                phoneVibration = deliverySnapshot.statusFor(AlertChannel.PHONE_VIBRATION).name,
-                tts = deliverySnapshot.statusFor(AlertChannel.TTS).name,
+                phoneNotification = phoneNotification.name,
+                phoneVibration = phoneVibration.name,
+                tts = tts.name,
+                phoneAlertProofReady = phoneAlertProofReady,
                 metaDisplay = deliverySnapshot.statusFor(AlertChannel.META_DISPLAY).name,
                 androidXrDisplay = deliverySnapshot.statusFor(AlertChannel.ANDROID_XR_DISPLAY).name,
                 vibrationPatternDirection = vibrationSummary.direction.name,
@@ -100,7 +108,11 @@ class AlertOutputTestReceiver : BroadcastReceiver() {
                 cueContractGlassesHapticRequiresApiProof = cueContract.glassesHapticRequiresApiProof,
                 cueContractGlassesHapticEvidence = cueContract.resultSafeGlassesHapticEvidence,
                 cueContractDisplayEvidence = cueContract.resultSafeDisplayEvidence,
-                message = if (passed) "pass" else "delivery-count-mismatch",
+                message = when {
+                    passed -> "pass"
+                    !phoneAlertProofReady -> "phone-alert-proof-not-delivered"
+                    else -> "delivery-count-mismatch"
+                },
             )
         }.getOrElse { error ->
             val fallbackSummary = VibrationPatternMapper.summaryFor(CallerDirection.UNKNOWN)
@@ -114,6 +126,7 @@ class AlertOutputTestReceiver : BroadcastReceiver() {
                 phoneNotification = AlertDeliveryStatus.MISSING.name,
                 phoneVibration = AlertDeliveryStatus.MISSING.name,
                 tts = AlertDeliveryStatus.MISSING.name,
+                phoneAlertProofReady = false,
                 metaDisplay = AlertDeliveryStatus.MISSING.name,
                 androidXrDisplay = AlertDeliveryStatus.MISSING.name,
                 vibrationPatternDirection = fallbackSummary.direction.name,
@@ -157,6 +170,7 @@ class AlertOutputTestReceiver : BroadcastReceiver() {
         val phoneNotification: String,
         val phoneVibration: String,
         val tts: String,
+        val phoneAlertProofReady: Boolean,
         val metaDisplay: String,
         val androidXrDisplay: String,
         val vibrationPatternDirection: String,
@@ -187,6 +201,7 @@ class AlertOutputTestReceiver : BroadcastReceiver() {
                 "phoneNotification=$phoneNotification",
                 "phoneVibration=$phoneVibration",
                 "tts=$tts",
+                "phoneAlertProofReady=$phoneAlertProofReady",
                 "metaDisplay=$metaDisplay",
                 "androidXrDisplay=$androidXrDisplay",
                 "vibrationPatternDirection=$vibrationPatternDirection",
