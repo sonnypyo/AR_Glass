@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T15:11:52+09:00",
+  "generatedAt": "2026-06-01T15:20:23+09:00",
   "packDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
   "reportDir": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard",
   "reportPath": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.md",
@@ -37,9 +37,9 @@
   "glassesPreflight": {
     "available": true,
     "status": "blocked",
-    "pass": 11,
+    "pass": 13,
     "manual": 5,
-    "blocked": 5
+    "blocked": 3
   },
   "androidXr": {
     "currentMode": "phone_preview_stub",
@@ -178,7 +178,7 @@
       "blockers": [
         "Meta application id missing",
         "GitHub Packages token missing",
-        "glasses preflight blocked=5",
+        "glasses preflight blocked=3",
         "real Android XR projected contract not ready",
         "glasses private alpha candidate false"
       ],

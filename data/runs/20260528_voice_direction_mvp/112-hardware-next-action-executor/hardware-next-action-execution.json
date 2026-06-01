@@ -1,6 +1,6 @@
 {
   "ok": false,
-  "generatedAt": "2026-06-01T15:11:52+09:00",
+  "generatedAt": "2026-06-01T15:20:35+09:00",
   "sourceNextActions": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.json",
   "reportDir": "data/runs/20260528_voice_direction_mvp/112-hardware-next-action-executor",
   "reportPath": "data/runs/20260528_voice_direction_mvp/112-hardware-next-action-executor/hardware-next-action-execution.md",

@@ -5,6 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_DIR="$ROOT_DIR/apps/voice-direction-glass"
 APP_GRADLE="$APP_DIR/app/build.gradle.kts"
 ROOT_GRADLE="$APP_DIR/build.gradle.kts"
+SETTINGS_GRADLE="$APP_DIR/settings.gradle.kts"
 VERSION_CATALOG="$APP_DIR/gradle/libs.versions.toml"
 MANIFEST="$APP_DIR/app/src/main/AndroidManifest.xml"
 LOCAL_PROPERTIES="$APP_DIR/local.properties"
@@ -126,7 +127,7 @@ add_row "Meta DAT" "GitHub Packages token configured" "$(if [[ "$has_dat_token" 
 add_row "Meta DAT" "Meta Wearables application id configured" "$(if [[ "$has_meta_app_id" == true ]]; then echo pass; else echo blocked; fi)" "Use META_WEARABLES_APPLICATION_ID or app local.properties meta_wearables_application_id; value is never printed."
 add_row "Meta DAT" "Application ID manifest metadata" "$(if file_contains "$MANIFEST" "com.meta.wearable.mwdat.APPLICATION_ID"; then echo pass; else echo blocked; fi)" "Value is supplied through manifest placeholder and must not be hard-coded."
 add_row "Meta DAT" "Analytics opt-out manifest metadata" "$(if file_contains "$MANIFEST" "com.meta.wearable.mwdat.ANALYTICS_OPT_OUT"; then echo pass; else echo manual-required; fi)" "Privacy-first default for DAT analytics."
-add_row "Meta DAT" "DAT Maven repository configured" "$(if file_contains "$APP_GRADLE" "meta-wearables-dat-android" || file_contains "$ROOT_GRADLE" "meta-wearables-dat-android"; then echo pass; else echo blocked; fi)" "Needed before replacing MetaDatDisplayStubAdapter."
+add_row "Meta DAT" "DAT Maven repository configured" "$(if file_contains "$APP_GRADLE" "meta-wearables-dat-android" || file_contains "$ROOT_GRADLE" "meta-wearables-dat-android" || file_contains "$SETTINGS_GRADLE" "meta-wearables-dat-android"; then echo pass; else echo blocked; fi)" "Needed before replacing MetaDatDisplayStubAdapter."
 add_row "Meta DAT" "DAT dependency configured" "$(if file_contains "$APP_GRADLE" "com.meta.wearable" || file_contains "$VERSION_CATALOG" "com.meta.wearable"; then echo pass; else echo blocked; fi)" "Public setup lists com.meta.wearable artifacts; display cue API/module still needs account-doc confirmation."
 add_row "Meta DAT" "Stub adapter still active" "$(if [[ -f "$META_STUB_SOURCE" ]]; then echo manual-required; else echo pass; fi)" "Replace only after credentials, package access, and a device session are available."
 
@@ -170,7 +171,7 @@ generate_report() {
   printf -- '- Android XR projected microphone access needs projected-device-scoped permissions and AudioRecord with projected context: https://developer.android.com/develop/xr/jetpack-xr-sdk/access-hardware-projected-context\n\n'
   printf '## Next Actions\n\n'
   printf '1. Add Meta credentials only in environment variables or `apps/voice-direction-glass/local.properties`.\n'
-  printf '2. Add DAT Maven/dependencies after credentials are available.\n'
+  printf '2. DAT Maven hook and version-catalog aliases are staged; add credentials before enabling app dependencies or replacing the stub adapter.\n'
   printf '3. Add Jetpack Projected/Glimmer dependencies only when Android XR preview artifacts are available in this toolchain.\n'
   printf '4. Keep `scripts/validate-android-xr-projected-contract.mjs --json` passing before changing the projected screen, and use strict mode only when real Android XR runtime evidence should pass.\n'
   printf '5. Run this preflight again, then run `scripts/android-device-smoke-test.sh --write-evidence` with a physical phone.\n'

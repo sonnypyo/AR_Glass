@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T15:11:52+09:00",
+  "generatedAt": "2026-06-01T15:20:35+09:00",
   "sourceDashboard": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.json",
   "reportDir": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions",
   "reportPath": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.md",
@@ -58,7 +58,7 @@
       "blockers": [
         "Meta application id missing",
         "GitHub Packages token missing",
-        "glasses preflight blocked=5",
+        "glasses preflight blocked=3",
         "real Android XR projected contract not ready",
         "glasses private alpha candidate false"
       ]

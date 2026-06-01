@@ -1,13 +1,13 @@
 # Glasses Integration Preflight
 
-Generated: 2026-05-28T11:18:30+0900
+Generated: 2026-06-01T15:19:51+0900
 
 ## Summary
 
 - Overall status: blocked
-- Pass: 11
+- Pass: 13
 - Manual required: 5
-- Blocked: 5
+- Blocked: 3
 
 ## Checks
 
@@ -21,8 +21,8 @@ Generated: 2026-05-28T11:18:30+0900
 | Meta DAT | Meta Wearables application id configured | blocked | Use META_WEARABLES_APPLICATION_ID or app local.properties meta_wearables_application_id; value is never printed. |
 | Meta DAT | Application ID manifest metadata | pass | Value is supplied through manifest placeholder and must not be hard-coded. |
 | Meta DAT | Analytics opt-out manifest metadata | pass | Privacy-first default for DAT analytics. |
-| Meta DAT | DAT Maven repository configured | blocked | Needed before replacing MetaDatDisplayStubAdapter. |
-| Meta DAT | DAT dependency configured | blocked | Public setup lists com.meta.wearable artifacts; display cue API/module still needs account-doc confirmation. |
+| Meta DAT | DAT Maven repository configured | pass | Needed before replacing MetaDatDisplayStubAdapter. |
+| Meta DAT | DAT dependency configured | pass | Public setup lists com.meta.wearable artifacts; display cue API/module still needs account-doc confirmation. |
 | Meta DAT | Stub adapter still active | manual-required | Replace only after credentials, package access, and a device session are available. |
 | Android XR | Projected activity source exists | pass | /Users/sonjunpyo/Documents/Project/glass/apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/app/GlassesProjectedActivity.kt |
 | Android XR | Manifest declares projected display category | pass | Required for launching the cue screen as projected glasses UI. |
@@ -46,7 +46,7 @@ Generated: 2026-05-28T11:18:30+0900
 ## Next Actions
 
 1. Add Meta credentials only in environment variables or `apps/voice-direction-glass/local.properties`.
-2. Add DAT Maven/dependencies after credentials are available.
+2. DAT Maven hook and version-catalog aliases are staged; add credentials before enabling app dependencies or replacing the stub adapter.
 3. Add Jetpack Projected/Glimmer dependencies only when Android XR preview artifacts are available in this toolchain.
 4. Keep `scripts/validate-android-xr-projected-contract.mjs --json` passing before changing the projected screen, and use strict mode only when real Android XR runtime evidence should pass.
 5. Run this preflight again, then run `scripts/android-device-smoke-test.sh --write-evidence` with a physical phone.

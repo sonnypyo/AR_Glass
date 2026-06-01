@@ -1,6 +1,6 @@
 # Hardware Test Status Dashboard
 
-Generated: 2026-06-01T15:11:52+09:00
+Generated: 2026-06-01T15:20:23+09:00
 Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 
 ## Decision
@@ -18,7 +18,7 @@ Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 | --- | --- | --- | --- |
 | Default no-hardware workflow | ready | `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
 | Phone evidence | blocked | `RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | authorized ADB devices must be exactly 1, current=0 |
-| Glasses evidence | blocked | `RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | Meta application id missing; GitHub Packages token missing; glasses preflight blocked=5; real Android XR projected contract not ready; glasses private alpha candidate false |
+| Glasses evidence | blocked | `RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | Meta application id missing; GitHub Packages token missing; glasses preflight blocked=3; real Android XR projected contract not ready; glasses private alpha candidate false |
 | Support evidence | current | `RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
 | Controlled direction trials | current | `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh` | - |
 
@@ -45,7 +45,7 @@ Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 ## Current Counts
 
 - Authorized ADB devices: 0
-- Glasses preflight: blocked, pass=11, manual=5, blocked=5
+- Glasses preflight: blocked, pass=13, manual=5, blocked=3
 - Phone direction summary validated: no
 - Phone direction manifest apply dry-run: no
 - Phone direction manifest apply ready: no

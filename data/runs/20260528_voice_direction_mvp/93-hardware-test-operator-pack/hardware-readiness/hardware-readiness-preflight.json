@@ -1,9 +1,9 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T15:06:21+09:00",
-  "reportDir": "/Users/sonjunpyo/Documents/Project/glass/data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness",
-  "reportPath": "/Users/sonjunpyo/Documents/Project/glass/data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.md",
-  "summaryJsonPath": "/Users/sonjunpyo/Documents/Project/glass/data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.json",
+  "generatedAt": "2026-06-01T15:20:15+09:00",
+  "reportDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness",
+  "reportPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.md",
+  "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.json",
   "local": {
     "javaHomePresent": true,
     "androidHomePresent": true,
@@ -78,9 +78,9 @@
   "glassesPreflight": {
     "available": true,
     "status": "blocked",
-    "pass": 11,
+    "pass": 13,
     "manual": 5,
-    "blocked": 5
+    "blocked": 3
   },
   "runnerSummary": {
     "available": true,

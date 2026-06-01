@@ -4545,3 +4545,25 @@ Result:
 - `run-controlled-direction-session` is `current`.
 - `run-support-lane` is `current`.
 - `run-phone-lane` remains blocked by authorized ADB device count `0`.
+
+## 2026-06-01 KST: Stage Meta DAT Gradle Coordinates Without Activating SDK
+
+### Decision
+
+Add the official Meta DAT GitHub Packages repository hook and `mwdat` version-catalog aliases while keeping the stub adapter active and not adding DAT runtime dependencies to the app module yet.
+
+### Reasoning
+
+The glasses preflight showed DAT Gradle setup as blocked even though the remaining real blockers are credentials, device access, and hardware evidence. The repository hook is conditional on a local `GITHUB_TOKEN` or ignored `local.properties` `github_token`, and the artifact aliases do not resolve or upload anything unless a future implementation uses them.
+
+### Implemented
+
+- Updated `apps/voice-direction-glass/settings.gradle.kts` with conditional Meta DAT GitHub Packages access.
+- Updated `apps/voice-direction-glass/gradle/libs.versions.toml` with `mwdat-core`, `mwdat-camera`, and `mwdat-mockdevice` aliases.
+- Kept `MetaDatDisplayStubAdapter` active.
+
+### Trial/Error Notes
+
+- No token or application id values are stored.
+- The app build should still work without a DAT token because the aliases are not used as dependencies yet.
+- Real Meta DAT support remains blocked until account credentials, package access, and Ray-Ban Display evidence exist.
