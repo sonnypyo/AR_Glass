@@ -226,7 +226,7 @@ class MainActivity : ComponentActivity() {
                         lastEvent = null,
                         lastDeliveries = emptyList(),
                         latestAlertDeliverySnapshot = null,
-                        enabledAlertChannels = AlertChannel.entries.toSet(),
+                        enabledAlertChannels = AlertChannel.PHONE_MVP_DEFAULTS,
                         microphoneDisclosureAccepted = false,
                         microphoneDisclosureVersion = "",
                         newSpeakerConsentConfirmed = false,

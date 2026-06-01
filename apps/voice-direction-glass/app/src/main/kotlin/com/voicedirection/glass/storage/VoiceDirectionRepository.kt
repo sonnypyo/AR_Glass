@@ -19,7 +19,7 @@ data class VoiceDirectionSettings(
     val triggerPhrase: String = "준표",
     val simulatedDirection: CallerDirection = CallerDirection.RIGHT,
     val simulatedDirectionConfidence: Float = 0.82f,
-    val enabledAlertChannels: Set<AlertChannel> = AlertChannel.entries.toSet(),
+    val enabledAlertChannels: Set<AlertChannel> = AlertChannel.PHONE_MVP_DEFAULTS,
     val microphoneDisclosureAccepted: Boolean = false,
     val microphoneDisclosureVersion: String = "",
 )

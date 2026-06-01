@@ -17,7 +17,7 @@ import com.voicedirection.glass.direction.SimulatedDirectionEstimator
 object AndroidListeningEngineFactory {
     fun create(
         context: Context,
-        enabledAlertChannels: () -> Set<AlertChannel> = { AlertChannel.entries.toSet() },
+        enabledAlertChannels: () -> Set<AlertChannel> = { AlertChannel.PHONE_MVP_DEFAULTS },
     ): ListeningSessionEngine =
         ListeningSessionEngine(
             triggerPhraseDetector = SimpleTriggerPhraseDetector(),
@@ -28,7 +28,7 @@ object AndroidListeningEngineFactory {
 
     fun createPrototypeVoiceSessionEngine(
         context: Context,
-        enabledAlertChannels: () -> Set<AlertChannel> = { AlertChannel.entries.toSet() },
+        enabledAlertChannels: () -> Set<AlertChannel> = { AlertChannel.PHONE_MVP_DEFAULTS },
     ): PrototypeVoiceSessionEngine =
         PrototypeVoiceSessionEngine(
             triggerPhraseDetector = SimpleTriggerPhraseDetector(),
@@ -39,7 +39,7 @@ object AndroidListeningEngineFactory {
 
     fun createAlertRouter(
         context: Context,
-        enabledAlertChannels: () -> Set<AlertChannel> = { AlertChannel.entries.toSet() },
+        enabledAlertChannels: () -> Set<AlertChannel> = { AlertChannel.PHONE_MVP_DEFAULTS },
     ): AlertRouter =
         AlertRouter(
             listOf(

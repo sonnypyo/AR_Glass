@@ -6,4 +6,13 @@ enum class AlertChannel {
     META_DISPLAY,
     ANDROID_XR_DISPLAY,
     TTS,
+    ;
+
+    companion object {
+        val PHONE_MVP_DEFAULTS: Set<AlertChannel> = setOf(
+            PHONE_NOTIFICATION,
+            PHONE_VIBRATION,
+            TTS,
+        )
+    }
 }
