@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T15:07:33+09:00",
+  "generatedAt": "2026-06-01T15:11:52+09:00",
   "packDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
   "reportDir": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard",
   "reportPath": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.md",
@@ -189,28 +189,28 @@
     },
     {
       "label": "Support evidence",
-      "status": "manual-required",
+      "status": "current",
       "command": "RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-      "blockers": [
-        "support strict evidence not complete"
-      ],
+      "blockers": [],
       "nextActions": [
         "Support incident process, draft gate, and session pack are ready; run only when deletion and mistaken-alert drill owners can fill reviewed evidence."
       ],
-      "evidenceGaps": []
+      "evidenceGaps": [
+        "strict support evidence not complete until real owner-reviewed drills exist"
+      ]
     },
     {
       "label": "Controlled direction trials",
-      "status": "manual-required",
+      "status": "current",
       "command": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
-      "blockers": [
-        "observed direction rows incomplete: 0/80",
-        "production direction candidate false until aggregate evidence is reviewed"
-      ],
+      "blockers": [],
       "nextActions": [
         "Keep the session plan ready before phone hardware; collect observed rows only during the final phone hardware step."
       ],
-      "evidenceGaps": []
+      "evidenceGaps": [
+        "observed direction rows incomplete: 0/80",
+        "production direction candidate false until aggregate evidence is reviewed"
+      ]
     }
   ],
   "paths": {

@@ -4502,3 +4502,46 @@ Result:
 - Dashboard `support.preparationReady=true`.
 - Dashboard `support.strictReady=false`.
 - Support lane remains `manual-required`, not release-ready.
+
+## 2026-06-01 KST: Mark Prepared Pre-Phone Lanes Current
+
+### Decision
+
+Mark controlled-direction planning and support preparation as `current` when their validators pass, while keeping real observed rows and strict support drill evidence as evidence gaps.
+
+### Reasoning
+
+The previous dashboard still showed prepared lanes as `manual-required`, which made the next goal look like it should rerun preparation instead of moving toward the final phone hardware step. The new status separates preparation from real evidence collection.
+
+### Implemented
+
+- Updated `scripts/summarize-hardware-test-status.mjs`.
+- Updated `scripts/recommend-hardware-next-actions.mjs`.
+- Updated `docs/53-hardware-next-actions.md`.
+- Regenerated hardware dashboard, hardware next actions, and next-action executor report.
+
+### Trial/Error Notes
+
+- Controlled direction trial session is now `current` when the 80-row plan validates but observed rows are still `0/80`.
+- Support drill lane is now `current` when incident process, draft gate, and session pack validate.
+- Strict support evidence remains an evidence gap until real owner-reviewed deletion and mistaken-alert drills exist.
+- Executor dry-run still refuses execution with `No ready action found.`
+
+### Verification
+
+From the repository root:
+
+```bash
+node --check scripts/summarize-hardware-test-status.mjs
+node --check scripts/recommend-hardware-next-actions.mjs
+node scripts/summarize-hardware-test-status.mjs --write-report --json
+node scripts/recommend-hardware-next-actions.mjs --write-report --json
+scripts/run-hardware-next-action.mjs --write-report --json
+```
+
+Result:
+
+- Next-action decision is `pre_phone_preparation_current_hardware_blocked`.
+- `run-controlled-direction-session` is `current`.
+- `run-support-lane` is `current`.
+- `run-phone-lane` remains blocked by authorized ADB device count `0`.

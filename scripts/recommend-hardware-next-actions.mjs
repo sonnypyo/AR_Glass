@@ -142,7 +142,7 @@ function buildActions(dashboard) {
   actions.push(action(
     "run-controlled-direction-session",
     2,
-    directionLane?.status === "manual-required" ? "manual-required" : (directionLane?.status ?? "blocked"),
+    directionLane?.status ?? "blocked",
     "Prepare controlled direction rows",
     directionLane?.command ?? "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
     "Keep the 20-per-direction front/back/left/right evidence plan ready; collect observed rows only during the final phone hardware step.",
@@ -188,10 +188,12 @@ function summarizeDecision(dashboard, actions) {
   const manualActions = actions.filter((item) => item.status === "manual-required");
   const phoneReady = actions.find((item) => item.id === "run-phone-lane")?.status === "ready";
   const prePhoneManual = manualActions.some((item) => item.id !== "run-phone-lane");
+  const currentActions = actions.filter((item) => item.status === "current");
   if (actions.find((item) => item.id === "refresh-default-workflow")?.status === "current" && prePhoneManual) return "pre_phone_manual_preparation_available";
   if (readyActions.some((item) => item.id === "refresh-default-workflow")) return "pre_phone_workflow_ready_keep_phone_last";
   if (prePhoneManual) return "pre_phone_manual_preparation_available";
   if (phoneReady) return "phone_lane_ready_last";
+  if (currentActions.length > 0 && dashboard?.ok) return "pre_phone_preparation_current_hardware_blocked";
   return dashboard?.ok ? "workflow_ok_no_hardware_lane_ready" : "workflow_attention_required";
 }
 

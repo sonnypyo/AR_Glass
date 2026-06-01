@@ -62,13 +62,13 @@ The source dashboard already summarizes:
 Current decision:
 
 ```text
-pre_phone_manual_preparation_available
+pre_phone_preparation_current_hardware_blocked
 ```
 
 Meaning:
 
 - The default no-hardware operator workflow is current when the dashboard checks and privacy scan already pass.
-- Keep controlled direction planning, glasses preflight, and support preparation current before phone hardware.
+- Controlled direction planning and support preparation can be `current` even though observed direction rows and strict support evidence still require real reviewed evidence.
 - Keep `RUN_PHONE=1` as the final hardware step; it still needs exactly one authorized Android phone.
 - Missing phone `device-evidence.md` and direction summary are post-run evidence gaps, not pre-run blockers.
 - Keep glasses lane blocked until Meta application id, GitHub Packages token, glasses preflight blockers, and real Android XR proof are handled.

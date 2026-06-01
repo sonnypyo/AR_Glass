@@ -1,11 +1,11 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T15:07:33+09:00",
+  "generatedAt": "2026-06-01T15:11:52+09:00",
   "sourceDashboard": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.json",
   "reportDir": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions",
   "reportPath": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.md",
   "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.json",
-  "decision": "pre_phone_manual_preparation_available",
+  "decision": "pre_phone_preparation_current_hardware_blocked",
   "currentSafeWorkflow": true,
   "privateAlphaCandidate": false,
   "counts": {
@@ -42,14 +42,11 @@
     {
       "id": "run-controlled-direction-session",
       "priority": 2,
-      "status": "manual-required",
+      "status": "current",
       "title": "Prepare controlled direction rows",
       "command": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
       "reason": "Keep the 20-per-direction front/back/left/right evidence plan ready; collect observed rows only during the final phone hardware step.",
-      "blockers": [
-        "observed direction rows incomplete: 0/80",
-        "production direction candidate false until aggregate evidence is reviewed"
-      ]
+      "blockers": []
     },
     {
       "id": "run-glasses-lane",
@@ -69,13 +66,11 @@
     {
       "id": "run-support-lane",
       "priority": 4,
-      "status": "manual-required",
+      "status": "current",
       "title": "Prepare support drill lane",
       "command": "RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
       "reason": "Use when deletion and mistaken-alert drill owners can record reviewed non-PII evidence.",
-      "blockers": [
-        "support strict evidence not complete"
-      ]
+      "blockers": []
     },
     {
       "id": "run-phone-lane",

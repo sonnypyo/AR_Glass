@@ -434,30 +434,34 @@ function summarize() {
     ),
     lane(
       "Support evidence",
-      statusFor(supportStrictReady, !supportPreparationReady, supportPreparationReady),
+      supportStrictReady ? "ready" : (supportPreparationReady ? "current" : "blocked"),
       `RUN_SUPPORT=1 ${path.join(pack.relative, "commands.sh")}`,
       [
         ...(supportIncidentProcess.ok ? [] : ["support incident process validator failing"]),
         ...(supportDraft.ok ? [] : ["support drill draft validator failing"]),
         ...(supportSession.ok ? [] : ["support drill session validator failing"]),
-        ...(supportStrictReady ? [] : ["support strict evidence not complete"]),
       ],
       [
         supportPreparationReady
           ? "Support incident process, draft gate, and session pack are ready; run only when deletion and mistaken-alert drill owners can fill reviewed evidence."
           : "Fix support incident process, draft gate, and session pack before any support evidence run.",
       ],
+      [
+        ...(supportStrictReady ? [] : ["strict support evidence not complete until real owner-reviewed drills exist"]),
+      ],
     ),
     lane(
       "Controlled direction trials",
-      statusFor(controlledDirection.observedRowsComplete, !controlledDirection.validatorOk, controlledDirection.planningReady),
+      controlledDirection.observedRowsComplete ? "ready" : (controlledDirection.planningReady ? "current" : (controlledDirection.validatorOk ? "not-ready" : "blocked")),
       path.join(controlledDirection.sessionDir, "commands.sh"),
       [
         ...(controlledDirection.validatorOk ? [] : ["controlled direction session validator failing"]),
+      ],
+      ["Keep the session plan ready before phone hardware; collect observed rows only during the final phone hardware step."],
+      [
         ...(controlledDirection.observedRowsComplete ? [] : [`observed direction rows incomplete: ${controlledDirection.recordedRows}/${controlledDirection.totalPlannedRows}`]),
         ...(controlledDirection.productionDirectionCandidate ? [] : ["production direction candidate false until aggregate evidence is reviewed"]),
       ],
-      ["Keep the session plan ready before phone hardware; collect observed rows only during the final phone hardware step."],
     ),
   ];
 

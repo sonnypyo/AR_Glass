@@ -1,6 +1,6 @@
 # Hardware Test Status Dashboard
 
-Generated: 2026-06-01T15:07:33+09:00
+Generated: 2026-06-01T15:11:52+09:00
 Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 
 ## Decision
@@ -19,8 +19,8 @@ Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 | Default no-hardware workflow | ready | `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
 | Phone evidence | blocked | `RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | authorized ADB devices must be exactly 1, current=0 |
 | Glasses evidence | blocked | `RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | Meta application id missing; GitHub Packages token missing; glasses preflight blocked=5; real Android XR projected contract not ready; glasses private alpha candidate false |
-| Support evidence | manual-required | `RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | support strict evidence not complete |
-| Controlled direction trials | manual-required | `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh` | observed direction rows incomplete: 0/80; production direction candidate false until aggregate evidence is reviewed |
+| Support evidence | current | `RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
+| Controlled direction trials | current | `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh` | - |
 
 ## Evidence Gaps
 
@@ -29,8 +29,8 @@ Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 | Default no-hardware workflow | - |
 | Phone evidence | real phone device-evidence.md not collected yet; direction summary will be generated only after real phone device-evidence.md exists; direction manifest apply is not ready for canonical promotion; phone private alpha candidate false until manual device evidence rows pass |
 | Glasses evidence | - |
-| Support evidence | - |
-| Controlled direction trials | - |
+| Support evidence | strict support evidence not complete until real owner-reviewed drills exist |
+| Controlled direction trials | observed direction rows incomplete: 0/80; production direction candidate false until aggregate evidence is reviewed |
 
 ## Key Evidence
 
