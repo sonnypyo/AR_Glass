@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T15:27:00+09:00",
+  "generatedAt": "2026-06-01T15:37:52+09:00",
   "packDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
   "reportDir": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard",
   "reportPath": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.md",
@@ -42,10 +42,10 @@
     "blocked": 2
   },
   "androidXr": {
-    "currentMode": "phone_preview_stub",
-    "phonePreviewOnly": true,
+    "currentMode": "projected_context_stub",
+    "phonePreviewOnly": false,
     "realAndroidXrCandidate": false,
-    "strictMissingCount": 3
+    "strictMissingCount": 2
   },
   "controlledDirection": {
     "sessionDir": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session",

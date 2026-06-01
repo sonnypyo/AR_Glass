@@ -4592,3 +4592,26 @@ The preflight still had an Android XR dependency blocker before any physical pho
 - `AndroidXrDisplayStubAdapter` remains active.
 - Strict Android XR validation must still fail until ProjectedContext launch, projected-device context, adapter replacement, and runtime evidence exist.
 - No raw audio, transcript, speaker name, device id, or exact location evidence was generated.
+
+## 2026-06-01 KST: Add ProjectedContext Calls While Keeping Runtime Evidence Gate
+
+### Decision
+
+Use Jetpack Projected `ProjectedContext` APIs for projected activity launch and projected-device context probing, but keep Android XR strict validation blocked until real runtime evidence exists.
+
+### Reasoning
+
+The app can prepare the Android XR launch and device-context code path before hardware, but a code path alone is not Android XR proof. The validator now checks the code shape and the non-PII glasses evidence manifest separately so future adapter work cannot accidentally mark Android XR ready without device/emulator evidence.
+
+### Implemented
+
+- `MainActivity` launches the projected cue screen with `ProjectedContext.createProjectedActivityOptions` and falls back to normal launch if unavailable.
+- `AndroidXrDisplayStubAdapter` probes `ProjectedContext.createProjectedDeviceContext` before marking an Android XR display cue delivered.
+- `AndroidListeningEngineFactory` passes the app context into the Android XR adapter.
+- `scripts/validate-android-xr-projected-contract.mjs` now scans adapter-level projected-device context usage and requires real `glasses-evidence/manifest.json` runtime proof for strict readiness.
+
+### Trial/Error Notes
+
+- The Android XR adapter is still explicitly a stub.
+- Strict Android XR validation remains expected to fail without runtime evidence and adapter replacement.
+- No private device identifiers or audio data were generated.

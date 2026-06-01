@@ -1,6 +1,6 @@
 # Hardware Test Status Dashboard
 
-Generated: 2026-06-01T15:27:00+09:00
+Generated: 2026-06-01T15:37:52+09:00
 Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 
 ## Decision
@@ -50,7 +50,7 @@ Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 - Phone direction manifest apply dry-run: no
 - Phone direction manifest apply ready: no
 - Evidence privacy scan: pass, files=18, violations=0
-- Android XR contract mode: phone_preview_stub
+- Android XR contract mode: projected_context_stub
 - Real Android XR candidate: no
 - Controlled direction validator: pass
 - Controlled direction planned rows: 80

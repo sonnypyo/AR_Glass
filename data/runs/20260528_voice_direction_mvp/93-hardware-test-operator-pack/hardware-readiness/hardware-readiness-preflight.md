@@ -1,6 +1,6 @@
 # Private Alpha Hardware Readiness Preflight
 
-Generated: 2026-06-01T15:26:53+09:00
+Generated: 2026-06-01T15:36:16+09:00
 
 ## Purpose
 

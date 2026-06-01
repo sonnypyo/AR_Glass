@@ -11,6 +11,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.xr.projected.ProjectedContext
+import androidx.xr.projected.experimental.ExperimentalProjectedApi
 import com.voicedirection.glass.alerts.AlertChannel
 import com.voicedirection.glass.alerts.DirectionCueOutputContracts
 import com.voicedirection.glass.audio.AndroidAudioCapabilityProbe
@@ -245,7 +247,7 @@ class MainActivity : ComponentActivity() {
                 },
                 onOpenGlassesPreview = {
                     DiagnosticsLogger.info("glasses_preview_opened")
-                    startActivity(Intent(this, GlassesProjectedActivity::class.java))
+                    openGlassesPreview()
                 },
                 onRunAudioProbe = {
                     runAudioProbe()
@@ -314,6 +316,25 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         speechRecognitionController.release()
         super.onDestroy()
+    }
+
+    @OptIn(ExperimentalProjectedApi::class)
+    private fun openGlassesPreview() {
+        val intent = Intent(this, GlassesProjectedActivity::class.java)
+        runCatching {
+            val options = ProjectedContext.createProjectedActivityOptions(this)
+            startActivity(intent, options.toBundle())
+            DiagnosticsLogger.info(
+                "projected_activity_launch_requested",
+                "projectedOptions" to true,
+            )
+        }.onFailure {
+            DiagnosticsLogger.warn(
+                "projected_activity_launch_fallback",
+                "projectedOptions" to false,
+            )
+            startActivity(intent)
+        }
     }
 
     private fun requestRuntimePermissions() {

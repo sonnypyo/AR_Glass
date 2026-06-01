@@ -1,10 +1,10 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T15:26:53+09:00",
+  "generatedAt": "2026-06-01T15:37:43+09:00",
   "reportDir": "data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract",
   "strictRealAndroidXrRequired": false,
-  "currentMode": "phone_preview_stub",
-  "phonePreviewOnly": true,
+  "currentMode": "projected_context_stub",
+  "phonePreviewOnly": false,
   "realAndroidXrCandidate": false,
   "platformFreshness": {
     "exists": true,
@@ -15,32 +15,43 @@
     "canonicalFirstActivity": "https://developer.android.com/develop/xr/jetpack-xr-sdk/glasses/first-activity",
     "errors": []
   },
+  "glassesEvidence": {
+    "exists": true,
+    "path": "apps/voice-direction-glass/glasses-evidence/manifest.json",
+    "androidXrProjectedReady": false,
+    "runtimeAvailable": false,
+    "projectedActivityLaunched": false,
+    "projectedContextUsed": false,
+    "cueVisibleOnProjectedDisplay": false,
+    "privacyOk": true,
+    "errors": []
+  },
   "localContract": {
     "manifest": "apps/voice-direction-glass/app/src/main/AndroidManifest.xml",
     "projectedActivity": "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/app/GlassesProjectedActivity.kt",
     "mainActivity": "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/app/MainActivity.kt",
     "stubAdapter": "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/devices/AndroidXrDisplayStubAdapter.kt",
     "engineFactory": "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/session/AndroidListeningEngineFactory.kt",
+    "androidXrAdapter": "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/devices/AndroidXrDisplayStubAdapter.kt",
     "manifestDeclaresProjectedActivity": true,
     "manifestHasProjectedCategory": true,
     "projectedActivityExists": true,
-    "localPreviewLaunchExists": true,
-    "projectedOptionsUsed": false,
-    "projectedDeviceContextUsed": false,
+    "localPreviewLaunchExists": false,
+    "projectedOptionsUsed": true,
+    "projectedDeviceContextUsed": true,
     "xrDependencyConfigured": true,
     "glimmerDependencyConfigured": true,
+    "realRuntimeEvidenceReady": false,
     "stubAdapterExists": true,
     "factoryUsesStubAdapter": true
   },
   "strictRealAndroidXrMissing": [
-    "ProjectedContext.createProjectedActivityOptions is not used by the app launch path.",
-    "ProjectedContext.createProjectedDeviceContext is not used for projected-device hardware access.",
-    "AndroidXrDisplayStubAdapter is still active in AndroidListeningEngineFactory."
+    "AndroidXrDisplayStubAdapter is still active in AndroidListeningEngineFactory.",
+    "Real Android XR runtime evidence is not collected."
   ],
   "warnings": [
-    "Current Android XR path is phone-hosted preview plus stub adapter; it is valid workflow evidence, not real XR runtime proof.",
-    "Real projected launch must use ProjectedContext.createProjectedActivityOptions before Android XR alpha claims.",
-    "Real glasses microphone/camera access must use ProjectedContext.createProjectedDeviceContext or a documented Bluetooth fallback before Android XR hardware claims."
+    "Android XR adapter remains stubbed; do not claim Android XR support before adapter replacement and runtime evidence.",
+    "Real Android XR runtime evidence is not collected."
   ],
   "errors": [],
   "privacyGuardrail": "This summary stores only booleans, paths, source ids, and dates. It must not include raw audio, transcripts, speaker names, Bluetooth names, MAC addresses, private alert text, embeddings, or projected display screenshots.",

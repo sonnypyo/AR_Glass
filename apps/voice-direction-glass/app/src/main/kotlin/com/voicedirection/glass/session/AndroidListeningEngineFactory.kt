@@ -47,7 +47,7 @@ object AndroidListeningEngineFactory {
                 AndroidPhoneVibrationAdapter(context),
                 AndroidTextToSpeechAlertAdapter(context),
                 GlassesAlertOutputAdapter(MetaDatDisplayStubAdapter(), AlertChannel.META_DISPLAY),
-                GlassesAlertOutputAdapter(AndroidXrDisplayStubAdapter(), AlertChannel.ANDROID_XR_DISPLAY),
+                GlassesAlertOutputAdapter(AndroidXrDisplayStubAdapter(context = context), AlertChannel.ANDROID_XR_DISPLAY),
             ),
             enabledChannels = enabledAlertChannels,
         )

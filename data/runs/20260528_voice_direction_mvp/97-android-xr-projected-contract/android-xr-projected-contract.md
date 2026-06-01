@@ -1,7 +1,7 @@
 # Android XR Projected Contract Validation
 
-Generated: 2026-06-01T15:26:53+09:00
-Mode: phone_preview_stub
+Generated: 2026-06-01T15:37:43+09:00
+Mode: projected_context_stub
 Result: pass
 
 ## Decision
@@ -15,11 +15,12 @@ The local project is a phone-hosted projected preview with an Android XR stub ad
 | Manifest declares GlassesProjectedActivity | pass |
 | Manifest has android:requiredDisplayCategory="xr_projected" | pass |
 | GlassesProjectedActivity renders cue screen | pass |
-| Phone preview launch exists | pass |
-| ProjectedContext.createProjectedActivityOptions used | not ready |
-| ProjectedContext.createProjectedDeviceContext used | not ready |
+| Phone preview launch exists | not ready |
+| ProjectedContext.createProjectedActivityOptions used | pass |
+| ProjectedContext.createProjectedDeviceContext used | pass |
 | Jetpack XR dependency configured | pass |
 | Compose Glimmer dependency configured | pass |
+| Real Android XR runtime evidence ready | not ready |
 | Android XR stub adapter active | pass |
 | Platform freshness summary ok | pass |
 
@@ -32,15 +33,13 @@ The local project is a phone-hosted projected preview with an Android XR stub ad
 
 ## Strict Android XR Missing Items
 
-- ProjectedContext.createProjectedActivityOptions is not used by the app launch path.
-- ProjectedContext.createProjectedDeviceContext is not used for projected-device hardware access.
 - AndroidXrDisplayStubAdapter is still active in AndroidListeningEngineFactory.
+- Real Android XR runtime evidence is not collected.
 
 ## Warnings
 
-- Current Android XR path is phone-hosted preview plus stub adapter; it is valid workflow evidence, not real XR runtime proof.
-- Real projected launch must use ProjectedContext.createProjectedActivityOptions before Android XR alpha claims.
-- Real glasses microphone/camera access must use ProjectedContext.createProjectedDeviceContext or a documented Bluetooth fallback before Android XR hardware claims.
+- Android XR adapter remains stubbed; do not claim Android XR support before adapter replacement and runtime evidence.
+- Real Android XR runtime evidence is not collected.
 
 ## Errors
 

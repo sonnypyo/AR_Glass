@@ -12,9 +12,11 @@ const files = {
   projectedActivity: "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/app/GlassesProjectedActivity.kt",
   mainActivity: "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/app/MainActivity.kt",
   stubAdapter: "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/devices/AndroidXrDisplayStubAdapter.kt",
+  androidXrAdapter: "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/devices/AndroidXrDisplayStubAdapter.kt",
   engineFactory: "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/session/AndroidListeningEngineFactory.kt",
   appGradle: "apps/voice-direction-glass/app/build.gradle.kts",
   versionCatalog: "apps/voice-direction-glass/gradle/libs.versions.toml",
+  glassesEvidenceManifest: "apps/voice-direction-glass/glasses-evidence/manifest.json",
   platformFreshnessJson: PLATFORM_FRESHNESS_JSON,
 };
 
@@ -140,14 +142,65 @@ function loadPlatformFreshness() {
   }
 }
 
+function loadGlassesEvidenceManifest() {
+  if (!exists(files.glassesEvidenceManifest)) {
+    return {
+      exists: false,
+      androidXrProjectedReady: false,
+      errors: ["Glasses evidence manifest is missing."],
+    };
+  }
+
+  try {
+    const parsed = JSON.parse(readIfExists(files.glassesEvidenceManifest));
+    const androidXr = parsed.androidXrProjected ?? {};
+    const privacy = parsed.privacy ?? {};
+    const privacyOk = privacy.rawAudioSaved === false &&
+      privacy.pcmSaved === false &&
+      privacy.transcriptsIncluded === false &&
+      privacy.speakerNamesIncluded === false &&
+      privacy.voiceEmbeddingsIncluded === false &&
+      privacy.bluetoothOwnerNamesIncluded === false &&
+      privacy.bluetoothProductNamesIncluded === false &&
+      privacy.macAddressesIncluded === false &&
+      privacy.privateAlertTextIncluded === false &&
+      privacy.privateLocationsIncluded === false;
+    const androidXrProjectedReady = androidXr.runtimeAvailable === true &&
+      androidXr.jetpackProjectedDependenciesResolved === true &&
+      androidXr.projectedActivityLaunched === true &&
+      androidXr.projectedContextUsed === true &&
+      androidXr.cueVisibleOnProjectedDisplay === true &&
+      privacyOk;
+    return {
+      exists: true,
+      path: files.glassesEvidenceManifest,
+      androidXrProjectedReady,
+      runtimeAvailable: androidXr.runtimeAvailable === true,
+      projectedActivityLaunched: androidXr.projectedActivityLaunched === true,
+      projectedContextUsed: androidXr.projectedContextUsed === true,
+      cueVisibleOnProjectedDisplay: androidXr.cueVisibleOnProjectedDisplay === true,
+      privacyOk,
+      errors: privacyOk ? [] : ["Glasses evidence privacy flags are not all safe."],
+    };
+  } catch (error) {
+    return {
+      exists: true,
+      androidXrProjectedReady: false,
+      errors: [`Could not parse glasses evidence manifest: ${error.message}`],
+    };
+  }
+}
+
 function buildSummary() {
   const manifest = readIfExists(files.manifest);
   const projectedActivity = readIfExists(files.projectedActivity);
   const mainActivity = readIfExists(files.mainActivity);
   const stubAdapter = readIfExists(files.stubAdapter);
+  const androidXrAdapter = readIfExists(files.androidXrAdapter);
   const engineFactory = readIfExists(files.engineFactory);
   const gradleText = `${readIfExists(files.appGradle)}\n${readIfExists(files.versionCatalog)}`;
   const platformFreshness = loadPlatformFreshness();
+  const glassesEvidence = loadGlassesEvidenceManifest();
 
   const manifestDeclaresProjectedActivity = manifest.includes(".app.GlassesProjectedActivity");
   const manifestHasProjectedCategory = manifest.includes('android:requiredDisplayCategory="xr_projected"');
@@ -160,11 +213,12 @@ function buildSummary() {
     engineFactory.includes("ProjectedContext.createProjectedActivityOptions");
   const projectedDeviceContextUsed = mainActivity.includes("ProjectedContext.createProjectedDeviceContext") ||
     projectedActivity.includes("ProjectedContext.createProjectedDeviceContext") ||
-    engineFactory.includes("ProjectedContext.createProjectedDeviceContext");
+    engineFactory.includes("ProjectedContext.createProjectedDeviceContext") ||
+    androidXrAdapter.includes("ProjectedContext.createProjectedDeviceContext");
   const xrDependencyConfigured = /androidx\.xr|jetpack.*xr|xr[-.]projected/i.test(gradleText);
   const glimmerDependencyConfigured = /glimmer/i.test(gradleText);
   const stubAdapterExists = exists(files.stubAdapter) && stubAdapter.includes("class AndroidXrDisplayStubAdapter");
-  const factoryUsesStubAdapter = engineFactory.includes("AndroidXrDisplayStubAdapter()");
+  const factoryUsesStubAdapter = /AndroidXrDisplayStubAdapter\s*\(/.test(engineFactory);
   const realAdapterCandidate = xrDependencyConfigured &&
     glimmerDependencyConfigured &&
     projectedOptionsUsed &&
@@ -187,6 +241,7 @@ function buildSummary() {
     errors.push("AndroidListeningEngineFactory no longer uses the Android XR stub, but real ProjectedContext criteria are not satisfied.");
   }
   if (!platformFreshness.ok) errors.push(...platformFreshness.errors);
+  if (glassesEvidence.exists && glassesEvidence.errors.length > 0) errors.push(...glassesEvidence.errors);
 
   const strictErrors = [];
   if (!xrDependencyConfigured) strictErrors.push("Jetpack XR dependency is not configured.");
@@ -194,6 +249,7 @@ function buildSummary() {
   if (!projectedOptionsUsed) strictErrors.push("ProjectedContext.createProjectedActivityOptions is not used by the app launch path.");
   if (!projectedDeviceContextUsed) strictErrors.push("ProjectedContext.createProjectedDeviceContext is not used for projected-device hardware access.");
   if (factoryUsesStubAdapter) strictErrors.push("AndroidXrDisplayStubAdapter is still active in AndroidListeningEngineFactory.");
+  if (!glassesEvidence.androidXrProjectedReady) strictErrors.push("Real Android XR runtime evidence is not collected.");
 
   if (requireRealAndroidXr) {
     errors.push(...strictErrors);
@@ -209,6 +265,12 @@ function buildSummary() {
     ...(!projectedDeviceContextUsed
       ? ["Real glasses microphone/camera access must use ProjectedContext.createProjectedDeviceContext or a documented Bluetooth fallback before Android XR hardware claims."]
       : []),
+    ...(factoryUsesStubAdapter
+      ? ["Android XR adapter remains stubbed; do not claim Android XR support before adapter replacement and runtime evidence."]
+      : []),
+    ...(!glassesEvidence.androidXrProjectedReady
+      ? ["Real Android XR runtime evidence is not collected."]
+      : []),
   ];
 
   return {
@@ -216,16 +278,20 @@ function buildSummary() {
     generatedAt: kstTimestamp(),
     reportDir: reportDirArg,
     strictRealAndroidXrRequired: requireRealAndroidXr,
-    currentMode: realAdapterCandidate ? "real_projected_candidate" : "phone_preview_stub",
+    currentMode: realAdapterCandidate
+      ? "real_projected_candidate"
+      : (projectedOptionsUsed || projectedDeviceContextUsed ? "projected_context_stub" : "phone_preview_stub"),
     phonePreviewOnly,
-    realAndroidXrCandidate: realAdapterCandidate && strictErrors.length === 0,
+    realAndroidXrCandidate: realAdapterCandidate && glassesEvidence.androidXrProjectedReady && strictErrors.length === 0,
     platformFreshness,
+    glassesEvidence,
     localContract: {
       manifest: files.manifest,
       projectedActivity: files.projectedActivity,
       mainActivity: files.mainActivity,
       stubAdapter: files.stubAdapter,
       engineFactory: files.engineFactory,
+      androidXrAdapter: files.androidXrAdapter,
       manifestDeclaresProjectedActivity,
       manifestHasProjectedCategory,
       projectedActivityExists,
@@ -234,6 +300,7 @@ function buildSummary() {
       projectedDeviceContextUsed,
       xrDependencyConfigured,
       glimmerDependencyConfigured,
+      realRuntimeEvidenceReady: glassesEvidence.androidXrProjectedReady,
       stubAdapterExists,
       factoryUsesStubAdapter,
     },
@@ -258,6 +325,7 @@ function renderMarkdown(summary) {
     ["ProjectedContext.createProjectedDeviceContext used", summary.localContract.projectedDeviceContextUsed],
     ["Jetpack XR dependency configured", summary.localContract.xrDependencyConfigured],
     ["Compose Glimmer dependency configured", summary.localContract.glimmerDependencyConfigured],
+    ["Real Android XR runtime evidence ready", summary.localContract.realRuntimeEvidenceReady],
     ["Android XR stub adapter active", summary.localContract.factoryUsesStubAdapter],
     ["Platform freshness summary ok", summary.platformFreshness.ok],
   ];
