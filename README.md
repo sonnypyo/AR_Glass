@@ -1,50 +1,39 @@
 # AR Glass Voice Direction
 
-Meta Ray-Ban Display, Ray-Ban Meta Gen 1, and Android XR glasses experiments for a voice-direction alert app.
+AR Glass Voice Direction is an Android-first wearable companion app for voice-aware direction alerts.
 
-The product goal is to recognize a previously saved trusted voice, estimate where the caller is relative to the user, and notify the user through glasses cues, phone notifications, vibration, and TTS fallbacks.
+The app is designed for situations where a trusted person calls the user from nearby and the user needs a quick, low-distraction cue about where the call came from. It recognizes a saved speaker profile, estimates the caller direction, and delivers the cue through the best available output path: phone notification, vibration, TTS, glasses display cue, or platform-specific fallback.
 
-## Current Status
+The project targets Meta Ray-Ban Display, Ray-Ban Meta Gen 1 fallback flows, and Android XR-style projected experiences, with Android phone support as the first runtime path.
 
-- Real service readiness: 42%.
-- Internal MVP and automation foundation: 75-80%.
-- Documentation/process coverage: about 95%.
-- Android app implementation foundation: about 70%.
-- Automation and QA harness: about 85%.
-- Real phone hardware evidence: 0%.
-- Real glasses hardware evidence: 0%.
-- Controlled front/back/left/right direction rows: 0%.
+## What It Does
 
-The codebase has strong planning, Android scaffolding, and evidence automation, but it is not production-ready until real phone, glasses, Android XR, and controlled direction evidence are collected.
+- Stores trusted speaker profiles with explicit consent.
+- Detects configured call phrases such as the user's name.
+- Estimates direction as front, back, left, right, or unknown depending on available signal quality.
+- Sends clear alerts through phone notification, vibration patterns, and TTS.
+- Provides adapter boundaries for Meta Ray-Ban Display and Android XR projected cue support.
+- Keeps private voice data local-first and avoids storing raw audio by default.
 
 ## Repository Map
 
-- `apps/voice-direction-glass`: Android Kotlin app scaffold and implementation.
-- `docs`: project charter, platform research, architecture, runbooks, QA gates, service process, and next-goal handoff.
-- `scripts`: validation, privacy scan, evidence extraction, hardware runner, and service-readiness automation.
-- `data/canonical`: product plan, backend contract, and QA report.
-- `data/runs/20260528_voice_direction_mvp`: stage-by-stage implementation and evidence reports.
-- `llm-wiki`: agent-readable project wiki.
+- `apps/voice-direction-glass`: Android Kotlin app.
+- `docs`: architecture, platform notes, privacy rules, and hardware test runbooks.
+- `scripts`: local validation, evidence, privacy, and hardware-test helpers.
+- `data/canonical`: product, backend, and QA artifacts.
+- `data/runs`: implementation history and generated test artifacts.
 
-## Start Here
+## Tech Stack
 
-Read these files first:
+- Kotlin
+- Android
+- Jetpack Compose
+- Android foreground service
+- Android SpeechRecognizer/TextToSpeech
+- Local encrypted storage
+- Meta Wearables Device Access Toolkit integration boundary
+- Android XR projected experience integration boundary
 
-- `docs/60-next-goal-handoff.md`
-- `docs/README.md`
-- `data/runs/20260528_voice_direction_mvp/final-report.md`
-- `apps/voice-direction-glass/README.md`
+## Privacy
 
-## Important Guardrails
-
-Do not claim production readiness, phone alpha readiness, glasses alpha readiness, real front/back direction accuracy, Meta DAT runtime support, Android XR hardware support, or real glasses haptics support until the matching hardware evidence exists.
-
-Do not commit raw audio, transcripts, private names, exact locations, ADB serials, Bluetooth device names, MAC addresses, tokens, signing keys, or local credential files.
-
-## Next Work
-
-1. Fully integrate Stage 117 glasses-lane post-run review into QA, service audit, final report, lock file, app README, and wiki.
-2. Run the phone lane on a real Android device.
-3. Collect controlled direction evidence: 20 reviewed rows each for front, back, left, and right.
-4. Collect Meta Ray-Ban Display, Ray-Ban Gen 1 fallback, and Android XR projected runtime evidence.
-5. Re-run service-readiness, privacy, and promotion gates before making alpha or production claims.
+The app is built around explicit consent, local-first processing, redacted diagnostics, and no raw-audio persistence by default.
