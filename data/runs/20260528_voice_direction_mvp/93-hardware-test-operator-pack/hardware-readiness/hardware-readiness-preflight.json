@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T15:20:15+09:00",
+  "generatedAt": "2026-06-01T15:26:53+09:00",
   "reportDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness",
   "reportPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.md",
   "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/hardware-readiness/hardware-readiness-preflight.json",
@@ -78,9 +78,9 @@
   "glassesPreflight": {
     "available": true,
     "status": "blocked",
-    "pass": 13,
-    "manual": 5,
-    "blocked": 3
+    "pass": 15,
+    "manual": 4,
+    "blocked": 2
   },
   "runnerSummary": {
     "available": true,

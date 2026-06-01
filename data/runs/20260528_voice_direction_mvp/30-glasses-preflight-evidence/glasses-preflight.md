@@ -1,13 +1,13 @@
 # Glasses Integration Preflight
 
-Generated: 2026-06-01T15:19:51+0900
+Generated: 2026-06-01T15:26:53+0900
 
 ## Summary
 
 - Overall status: blocked
-- Pass: 13
-- Manual required: 5
-- Blocked: 3
+- Pass: 15
+- Manual required: 4
+- Blocked: 2
 
 ## Checks
 
@@ -29,8 +29,8 @@ Generated: 2026-06-01T15:19:51+0900
 | Android XR | RECORD_AUDIO permission declared | pass | Needed for phone and projected-device microphone flows. |
 | Android XR | BLUETOOTH_CONNECT permission declared | pass | Needed for Bluetooth HFP fallback testing. |
 | Android XR | MODIFY_AUDIO_SETTINGS permission declared | pass | Needed before routing communication audio to Bluetooth HFP during device tests. |
-| Android XR | Jetpack Projected dependency configured | blocked | Needed for ProjectedContext launch and projected-device hardware access. |
-| Android XR | Compose Glimmer dependency configured | manual-required | Needed for production display-glasses UI; current preview uses standard Compose. |
+| Android XR | Jetpack Projected dependency configured | pass | Needed for ProjectedContext launch and projected-device hardware access. |
+| Android XR | Compose Glimmer dependency configured | pass | Needed for production display-glasses UI; current preview uses standard Compose. |
 | Android XR | Stub adapter still active | manual-required | Replace after Jetpack Projected runtime proof. |
 | Android XR | Projected contract default validation | pass | Validates the current phone-preview/stub contract without storing page bodies or private data. |
 | Android XR | Strict real projected contract | manual-required | Expected to remain manual-required until Jetpack XR, Glimmer, ProjectedContext, real adapter, and runtime evidence exist. |
@@ -47,7 +47,7 @@ Generated: 2026-06-01T15:19:51+0900
 
 1. Add Meta credentials only in environment variables or `apps/voice-direction-glass/local.properties`.
 2. DAT Maven hook and version-catalog aliases are staged; add credentials before enabling app dependencies or replacing the stub adapter.
-3. Add Jetpack Projected/Glimmer dependencies only when Android XR preview artifacts are available in this toolchain.
+3. Jetpack Projected/Glimmer dependencies are configured; keep the stub adapter until ProjectedContext implementation and runtime evidence are available.
 4. Keep `scripts/validate-android-xr-projected-contract.mjs --json` passing before changing the projected screen, and use strict mode only when real Android XR runtime evidence should pass.
 5. Run this preflight again, then run `scripts/android-device-smoke-test.sh --write-evidence` with a physical phone.
 6. Do not mark glasses private alpha ready until a Ray-Ban Display or Android XR evidence file proves projected cue behavior.

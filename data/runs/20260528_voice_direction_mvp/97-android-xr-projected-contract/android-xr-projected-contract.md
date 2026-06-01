@@ -1,6 +1,6 @@
 # Android XR Projected Contract Validation
 
-Generated: 2026-05-28T11:13:15+09:00
+Generated: 2026-06-01T15:26:53+09:00
 Mode: phone_preview_stub
 Result: pass
 
@@ -18,8 +18,8 @@ The local project is a phone-hosted projected preview with an Android XR stub ad
 | Phone preview launch exists | pass |
 | ProjectedContext.createProjectedActivityOptions used | not ready |
 | ProjectedContext.createProjectedDeviceContext used | not ready |
-| Jetpack XR dependency configured | not ready |
-| Compose Glimmer dependency configured | not ready |
+| Jetpack XR dependency configured | pass |
+| Compose Glimmer dependency configured | pass |
 | Android XR stub adapter active | pass |
 | Platform freshness summary ok | pass |
 
@@ -32,8 +32,6 @@ The local project is a phone-hosted projected preview with an Android XR stub ad
 
 ## Strict Android XR Missing Items
 
-- Jetpack XR dependency is not configured.
-- Compose Glimmer dependency is not configured.
 - ProjectedContext.createProjectedActivityOptions is not used by the app launch path.
 - ProjectedContext.createProjectedDeviceContext is not used for projected-device hardware access.
 - AndroidXrDisplayStubAdapter is still active in AndroidListeningEngineFactory.

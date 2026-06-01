@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-05-28T11:13:15+09:00",
+  "generatedAt": "2026-06-01T15:26:53+09:00",
   "reportDir": "data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract",
   "strictRealAndroidXrRequired": false,
   "currentMode": "phone_preview_stub",
@@ -27,14 +27,12 @@
     "localPreviewLaunchExists": true,
     "projectedOptionsUsed": false,
     "projectedDeviceContextUsed": false,
-    "xrDependencyConfigured": false,
-    "glimmerDependencyConfigured": false,
+    "xrDependencyConfigured": true,
+    "glimmerDependencyConfigured": true,
     "stubAdapterExists": true,
     "factoryUsesStubAdapter": true
   },
   "strictRealAndroidXrMissing": [
-    "Jetpack XR dependency is not configured.",
-    "Compose Glimmer dependency is not configured.",
     "ProjectedContext.createProjectedActivityOptions is not used by the app launch path.",
     "ProjectedContext.createProjectedDeviceContext is not used for projected-device hardware access.",
     "AndroidXrDisplayStubAdapter is still active in AndroidListeningEngineFactory."

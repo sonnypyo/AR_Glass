@@ -37,7 +37,7 @@ val releaseSigningConfigured = listOf(
 
 android {
     namespace = "com.voicedirection.glass"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.voicedirection.glass"
@@ -88,6 +88,9 @@ dependencies {
     implementation(libs.compose.runtime)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.xr.runtime)
+    implementation(libs.xr.projected)
+    implementation(libs.xr.glimmer)
 
     debugImplementation(libs.compose.ui.tooling)
 

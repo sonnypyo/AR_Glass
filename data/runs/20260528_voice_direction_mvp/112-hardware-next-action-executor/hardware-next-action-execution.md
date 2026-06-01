@@ -1,6 +1,6 @@
 # Hardware Next Action Execution
 
-Generated: 2026-06-01T15:20:35+09:00
+Generated: 2026-06-01T15:27:34+09:00
 Source next actions: data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.json
 
 ## Decision

@@ -1,6 +1,6 @@
 # Private Alpha Hardware Readiness Preflight
 
-Generated: 2026-06-01T15:20:15+09:00
+Generated: 2026-06-01T15:26:53+09:00
 
 ## Purpose
 
@@ -37,7 +37,7 @@ This preflight checks whether the local machine is ready to run the private-alph
 - Glasses setup default validation: pass
 - Meta application id configured: no
 - GitHub Packages token configured: no
-- Glasses preflight status: blocked, pass=13, manual=5, blocked=3
+- Glasses preflight status: blocked, pass=15, manual=4, blocked=2
 - Default hardware runner summary available: yes
 - Default hardware runner summary status: pass
 

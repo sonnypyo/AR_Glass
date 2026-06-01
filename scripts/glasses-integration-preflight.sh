@@ -172,7 +172,7 @@ generate_report() {
   printf '## Next Actions\n\n'
   printf '1. Add Meta credentials only in environment variables or `apps/voice-direction-glass/local.properties`.\n'
   printf '2. DAT Maven hook and version-catalog aliases are staged; add credentials before enabling app dependencies or replacing the stub adapter.\n'
-  printf '3. Add Jetpack Projected/Glimmer dependencies only when Android XR preview artifacts are available in this toolchain.\n'
+  printf '3. Jetpack Projected/Glimmer dependencies are configured; keep the stub adapter until ProjectedContext implementation and runtime evidence are available.\n'
   printf '4. Keep `scripts/validate-android-xr-projected-contract.mjs --json` passing before changing the projected screen, and use strict mode only when real Android XR runtime evidence should pass.\n'
   printf '5. Run this preflight again, then run `scripts/android-device-smoke-test.sh --write-evidence` with a physical phone.\n'
   printf '6. Do not mark glasses private alpha ready until a Ray-Ban Display or Android XR evidence file proves projected cue behavior.\n'

@@ -4567,3 +4567,28 @@ The glasses preflight showed DAT Gradle setup as blocked even though the remaini
 - No token or application id values are stored.
 - The app build should still work without a DAT token because the aliases are not used as dependencies yet.
 - Real Meta DAT support remains blocked until account credentials, package access, and Ray-Ban Display evidence exist.
+
+## 2026-06-01 KST: Add Android XR Projected Dependencies Without Real Runtime Claim
+
+### Decision
+
+Add Android XR runtime, Projected, and Glimmer dependencies from the Android XR setup guidance while keeping the current phone-preview/stub path active.
+
+### Reasoning
+
+The preflight still had an Android XR dependency blocker before any physical phone or glasses run. Configuring the official Jetpack XR dependencies is safe local preparation, but it is not evidence of real Android XR support until the app uses ProjectedContext and a device/emulator run proves projected runtime behavior.
+
+### Implemented
+
+- Installed Android SDK Platform 37.0 locally with the bundled JDK for `sdkmanager`.
+- Raised app `compileSdk` to 37 while leaving `targetSdk` unchanged.
+- Added `xr-runtime`, `xr-projected`, and `xr-glimmer` aliases to the Gradle version catalog.
+- Added those dependencies to the app module.
+- Updated the glasses preflight next action text so it still requires ProjectedContext implementation and runtime evidence before adapter replacement or support claims.
+
+### Trial/Error Notes
+
+- First build attempt with Glimmer on `compileSdk=36` failed because `androidx.xr.glimmer:glimmer:1.0.0-alpha12` requires compile SDK 37 or later.
+- `AndroidXrDisplayStubAdapter` remains active.
+- Strict Android XR validation must still fail until ProjectedContext launch, projected-device context, adapter replacement, and runtime evidence exist.
+- No raw audio, transcript, speaker name, device id, or exact location evidence was generated.
