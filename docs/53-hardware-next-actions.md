@@ -62,12 +62,12 @@ The source dashboard already summarizes:
 Current decision:
 
 ```text
-pre_phone_workflow_ready_keep_phone_last
+pre_phone_manual_preparation_available
 ```
 
 Meaning:
 
-- Run the default no-hardware operator workflow before any real evidence lane.
+- The default no-hardware operator workflow is current when the dashboard checks and privacy scan already pass.
 - Keep controlled direction planning, glasses preflight, and support preparation current before phone hardware.
 - Keep `RUN_PHONE=1` as the final hardware step; it still needs exactly one authorized Android phone.
 - Missing phone `device-evidence.md` and direction summary are post-run evidence gaps, not pre-run blockers.

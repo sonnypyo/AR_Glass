@@ -35,7 +35,7 @@ Generated files:
 
 ## Current Behavior
 
-Default selected action when no specific action is requested:
+Default selected action when no specific action is requested and the default workflow is stale:
 
 ```text
 refresh-default-workflow
@@ -46,6 +46,8 @@ This action runs the default no-hardware operator-pack workflow:
 ```bash
 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh
 ```
+
+When the default workflow is already current, the next-action brief marks it `current`, not `ready`. In that state the executor has no automatic action to run unless a later lane becomes explicitly `ready`.
 
 The executor refuses actions that are not `ready`. With the current dashboard, this keeps the phone, glasses, controlled-direction, and support lanes from being treated as executable evidence lanes.
 
@@ -61,10 +63,11 @@ For the phone lane, the executor reads the lane status and blocker list only. Po
 
 ## Current Result
 
-The executor has two useful current checks:
+The executor has useful current checks:
 
-- `--execute --write-report --json` ran `refresh-default-workflow` successfully in no-hardware mode.
+- `--execute --write-report --json` runs `refresh-default-workflow` only when the next-action brief marks it `ready`.
 - `--action run-phone-lane --write-report --json` correctly refused the phone lane because the current environment has zero authorized ADB phones.
+- Once the default workflow is current, a dry run reports no ready action instead of rerunning the same no-hardware workflow.
 
 The successful default action is workflow evidence only. The refused phone lane is collection-readiness evidence only. Neither proves Android phone evidence, Ray-Ban Display evidence, Ray-Ban Gen 1 fallback evidence, Android XR runtime evidence, controlled direction accuracy, support drills, or private alpha readiness.
 

@@ -1,11 +1,11 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T14:55:50+09:00",
+  "generatedAt": "2026-06-01T15:02:17+09:00",
   "sourceDashboard": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.json",
   "reportDir": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions",
   "reportPath": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.md",
   "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.json",
-  "decision": "pre_phone_workflow_ready_keep_phone_last",
+  "decision": "pre_phone_manual_preparation_available",
   "currentSafeWorkflow": true,
   "privateAlphaCandidate": false,
   "counts": {
@@ -33,10 +33,10 @@
     {
       "id": "refresh-default-workflow",
       "priority": 1,
-      "status": "ready",
+      "status": "current",
       "title": "Refresh default no-hardware workflow",
       "command": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-      "reason": "Run this before attaching real evidence lanes so local workflow drift is caught early.",
+      "reason": "No-hardware workflow, service gates, controlled-direction validator, and privacy scan are already current.",
       "blockers": []
     },
     {

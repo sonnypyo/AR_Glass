@@ -111,6 +111,14 @@ function action(id, priority, status, title, command, reason, blockers = []) {
   };
 }
 
+function defaultWorkflowCurrent(dashboard) {
+  if (dashboard?.currentSafeWorkflow !== true) return false;
+  if (dashboard?.evidencePrivacyScan?.ok !== true) return false;
+  const checks = dashboard?.checks ?? [];
+  if (checks.length === 0) return false;
+  return checks.every((check) => check.ok === true);
+}
+
 function buildActions(dashboard) {
   const actions = [];
   const defaultLane = laneByLabel(dashboard, "Default no-hardware workflow");
@@ -122,10 +130,12 @@ function buildActions(dashboard) {
   actions.push(action(
     "refresh-default-workflow",
     1,
-    defaultLane?.status === "ready" ? "ready" : "blocked",
+    defaultWorkflowCurrent(dashboard) ? "current" : (defaultLane?.status === "ready" ? "ready" : "blocked"),
     "Refresh default no-hardware workflow",
     defaultLane?.command ?? "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-    "Run this before attaching real evidence lanes so local workflow drift is caught early.",
+    defaultWorkflowCurrent(dashboard)
+      ? "No-hardware workflow, service gates, controlled-direction validator, and privacy scan are already current."
+      : "Run this before attaching real evidence lanes so local workflow drift is caught early.",
     defaultLane?.blockers ?? [],
   ));
 
@@ -178,6 +188,7 @@ function summarizeDecision(dashboard, actions) {
   const manualActions = actions.filter((item) => item.status === "manual-required");
   const phoneReady = actions.find((item) => item.id === "run-phone-lane")?.status === "ready";
   const prePhoneManual = manualActions.some((item) => item.id !== "run-phone-lane");
+  if (actions.find((item) => item.id === "refresh-default-workflow")?.status === "current" && prePhoneManual) return "pre_phone_manual_preparation_available";
   if (readyActions.some((item) => item.id === "refresh-default-workflow")) return "pre_phone_workflow_ready_keep_phone_last";
   if (prePhoneManual) return "pre_phone_manual_preparation_available";
   if (phoneReady) return "phone_lane_ready_last";

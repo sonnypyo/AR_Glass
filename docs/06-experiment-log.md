@@ -4419,3 +4419,43 @@ Result:
 - Controlled direction session passed.
 - Privacy scan passed with zero violations.
 - Hardware next-action decision remains `pre_phone_workflow_ready_keep_phone_last`.
+
+## 2026-06-01 KST: Avoid Repeating Current No-Hardware Workflow
+
+### Decision
+
+Mark the default no-hardware workflow as `current` when the dashboard checks, service gates, controlled-direction validator, and privacy scan already pass.
+
+### Reasoning
+
+The next-action automation previously kept `refresh-default-workflow` as the first `ready` action even immediately after a successful refresh. That was safe, but inefficient because the executor would keep rerunning the same no-hardware workflow instead of surfacing manual pre-phone preparation.
+
+### Implemented
+
+- Updated `scripts/recommend-hardware-next-actions.mjs`.
+- Updated `docs/53-hardware-next-actions.md`.
+- Updated `docs/54-hardware-next-action-executor.md`.
+- Regenerated `data/runs/20260528_voice_direction_mvp/111-hardware-next-actions`.
+- Regenerated `data/runs/20260528_voice_direction_mvp/112-hardware-next-action-executor`.
+
+### Trial/Error Notes
+
+- Current default workflow now reports status `current`.
+- Recommendation now reports `pre_phone_manual_preparation_available`.
+- Executor dry-run now reports `No ready action found.` instead of rerunning the default workflow.
+- Phone lane remains last and blocked by authorized ADB device count `0`.
+
+### Verification
+
+From the repository root:
+
+```bash
+node --check scripts/recommend-hardware-next-actions.mjs
+node scripts/recommend-hardware-next-actions.mjs --write-report --json
+scripts/run-hardware-next-action.mjs --write-report --json
+```
+
+Result:
+
+- Next-action report generation passed.
+- Executor dry-run safely refused execution because no action is currently `ready`.
