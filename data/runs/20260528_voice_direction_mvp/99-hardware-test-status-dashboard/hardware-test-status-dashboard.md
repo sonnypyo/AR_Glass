@@ -1,6 +1,6 @@
 # Hardware Test Status Dashboard
 
-Generated: 2026-05-28T13:39:30+09:00
+Generated: 2026-06-01T12:49:23+09:00
 Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 
 ## Decision

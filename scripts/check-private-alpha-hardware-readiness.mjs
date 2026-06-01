@@ -103,7 +103,7 @@ function runNodeJson(scriptRelative, scriptArgs = []) {
     encoding: "utf8",
     env: {
       ...process.env,
-      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/.codex/toolchains/jdk-17/Contents/Home",
+      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home",
       ANDROID_HOME: process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk",
     },
   });
@@ -219,7 +219,7 @@ function adbStatus() {
 }
 
 function localToolchainStatus() {
-  const javaHome = process.env.JAVA_HOME || "/Users/sonjunpyo/.codex/toolchains/jdk-17/Contents/Home";
+  const javaHome = process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home";
   const androidHome = process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk";
   return {
     javaHomePresent: fs.existsSync(javaHome),

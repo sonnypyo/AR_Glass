@@ -87,7 +87,7 @@ function runJsonStep(label, command, commandArgs) {
     encoding: "utf8",
     env: {
       ...process.env,
-      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/.codex/toolchains/jdk-17/Contents/Home",
+      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home",
       ANDROID_HOME: process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk",
     },
   });
@@ -124,7 +124,7 @@ function executePhoneLane() {
     env: {
       ...process.env,
       RUN_PHONE: "1",
-      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/.codex/toolchains/jdk-17/Contents/Home",
+      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home",
       ANDROID_HOME: process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk",
     },
     stdio: "ignore",

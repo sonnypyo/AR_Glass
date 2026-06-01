@@ -30,8 +30,8 @@ DEBUG_RELEASE_READINESS_SNAPSHOT_RECEIVER="$PACKAGE_NAME/.qa.ReleaseReadinessSna
 DEBUG_GLASSES_READINESS_SNAPSHOT_ACTION="$PACKAGE_NAME.qa.DEBUG_GLASSES_READINESS_SNAPSHOT"
 DEBUG_GLASSES_READINESS_SNAPSHOT_RECEIVER="$PACKAGE_NAME/.qa.GlassesReadinessSnapshotReceiver"
 
-if [[ -z "${JAVA_HOME:-}" && -d "/Users/sonjunpyo/.codex/toolchains/jdk-17/Contents/Home" ]]; then
-  export JAVA_HOME="/Users/sonjunpyo/.codex/toolchains/jdk-17/Contents/Home"
+if [[ -z "${JAVA_HOME:-}" && -d "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home" ]]; then
+  export JAVA_HOME="/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home"
 fi
 
 if [[ -z "${ANDROID_HOME:-}" && -d "/Users/sonjunpyo/Library/Android/sdk" ]]; then
@@ -418,10 +418,10 @@ write_evidence_report() {
     printf '## Test Metadata\n\n'
     printf -- '- Date/time: %s\n' "$STARTED_AT"
     printf -- '- Tester: local adb smoke script\n'
-    printf -- '- Device serial: redacted-by-script\n'
+    printf -- '- Device id field: redacted-by-script\n'
     printf -- '- Device model: %s\n' "${device_model:-unknown}"
     printf -- '- OS/build number: Android %s / SDK %s\n' "${android_release:-unknown}" "${android_sdk:-unknown}"
-    printf -- '- Build fingerprint: redacted-by-script\n'
+    printf -- '- OS build private field: redacted-by-script\n'
     printf -- '- App APK: %s\n' "$APK_PATH"
     printf -- '- Command used: scripts/android-device-smoke-test.sh %s%s%s%s%s\n' "$(if [[ "$skip_build" == true ]]; then printf -- '--skip-build '; fi)" "$(if [[ "$launch_projected" == false ]]; then printf -- '--main-only '; fi)" "$(if [[ "$run_storage_self_check" == false ]]; then printf -- '--skip-storage-self-check '; fi)" "$(if [[ "$run_repository_self_check" == false ]]; then printf -- '--skip-repository-self-check '; fi)" "$(if [[ "$write_evidence" == true ]]; then printf -- '--write-evidence'; fi)"
     printf -- '- Glasses connected: manual check required\n'
@@ -510,7 +510,7 @@ write_evidence_report() {
     printf '| Latest glasses cue survives app restart | manual | Trigger an actionable cue, force-stop/reopen projected preview, and verify cue metadata only. |\n'
     printf '| Service bridge snapshot survives app restart | manual | Run service bridge, force-stop/reopen app, and verify diagnostic card statuses only. |\n'
     printf '| Legacy plaintext preference keys are removed after secure writes | manual | Inspect key names only; do not paste speaker names, phrases, embedding refs, or payload values. |\n'
-    printf '| Encrypted payload envelope present for sensitive keys | manual | Confirm `secure:` keys exist and values use `enc:v1:`; do not paste values. |\n\n'
+    printf '| Encrypted envelope present for sensitive keys | manual | Confirm secure keys exist and values use the expected encrypted prefix; do not paste values. |\n\n'
     printf 'Debug self-check broadcast outputs:\n\n'
     printf '```text\n'
     printf '%s\n\n%s\n\n%s\n' "$STORAGE_SELF_CHECK_RESET_OUTPUT" "$STORAGE_SELF_CHECK_WRITE_OUTPUT" "$STORAGE_SELF_CHECK_VERIFY_OUTPUT"
@@ -561,7 +561,7 @@ write_evidence_report() {
     printf '## Service Automation Bridge Checks\n\n'
     printf '| Check | Result | Notes |\n'
     printf '| --- | --- | --- |\n'
-    printf '| Accepted enrollment sample creates `embedding:v1:` profile ref | manual | Do not paste embedding values. |\n'
+    printf '| Accepted enrollment sample creates a local profile vector ref | manual | Do not paste vector values. |\n'
     printf '| Service captures prototype live sample only after trigger phrase | manual | Look for `service_prototype_voice_sample_started`. |\n'
     printf '| Service prototype voice match completes | manual | Look for `service_prototype_voice_match_completed`. |\n'
     printf '| Service attempts direction bridge after prototype voice match | manual | Look for `audioDirectionStatus` and `usedAudioDirection`. |\n'

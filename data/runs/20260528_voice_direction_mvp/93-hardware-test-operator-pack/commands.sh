@@ -12,7 +12,7 @@ RUN_PHONE="${RUN_PHONE:-0}"
 RUN_GLASSES="${RUN_GLASSES:-0}"
 RUN_SUPPORT="${RUN_SUPPORT:-0}"
 
-export JAVA_HOME="${JAVA_HOME:-/Users/sonjunpyo/.codex/toolchains/jdk-17/Contents/Home}"
+export JAVA_HOME="${JAVA_HOME:-/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home}"
 export ANDROID_HOME="${ANDROID_HOME:-/Users/sonjunpyo/Library/Android/sdk}"
 
 cd "$ROOT_DIR"
