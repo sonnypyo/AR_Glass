@@ -8,6 +8,21 @@ This handoff is the first file to read when the project goal is resumed.
 
 It summarizes only the current verified state, the unfinished work, and the exact next execution order for the voice-direction glasses app. It intentionally separates internal MVP progress from real service readiness so the next run does not overclaim hardware, Android XR, Meta DAT, front/back direction, or production readiness.
 
+## Scope Control
+
+As of 2026-06-01, keep the next goal narrow.
+
+Do only work that moves one of these forward:
+
+1. Real Android phone MVP run.
+2. Phone alert proof: notification, vibration, and TTS.
+3. Controlled direction evidence: front, back, left, right.
+4. Glasses evidence only after phone evidence is real.
+
+Do not spend time on new broad reports, new market research, new release paperwork, extra agent documents, extra wiki expansion, or speculative Android XR/Meta abstractions unless they directly unblock the above sequence.
+
+Reporting rule: report only changed files, commands run, pass/fail result, current blocker, and next command.
+
 ## Progress Snapshot
 
 - Real service readiness: 42%.
@@ -107,7 +122,7 @@ Stage 117 still needs integration work before it becomes the latest closed stage
 
 Start here on the next goal run.
 
-1. Close the Stage 117 integration gap.
+1. Close only the minimum Stage 117 integration gap needed to keep readiness state consistent.
 
 ```bash
 node --check scripts/review-glasses-lane-evidence.mjs
@@ -121,7 +136,7 @@ scripts/review-glasses-lane-evidence.mjs --write-report --json
 node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/52-service-readiness-audit
 ```
 
-3. Update canonical QA, implementation lock, app README, final report, experiment log, and LLM wiki for Stage 117.
+3. Update only the minimum tracking files for Stage 117: QA report, implementation lock, service audit, and this handoff if needed. Skip broad final-report/wiki expansion unless it is required by a gate.
 
 4. Run privacy scans.
 
@@ -140,7 +155,7 @@ scripts/scan-evidence-privacy.mjs \
   --json
 ```
 
-5. Only after Stage 117 is closed, move to the real phone lane.
+5. Move to the real phone lane as soon as readiness tracking is consistent.
 
 ```bash
 scripts/run-phone-lane-when-ready.mjs --execute --write-report --json

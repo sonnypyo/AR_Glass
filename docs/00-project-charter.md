@@ -9,6 +9,19 @@ Korean shorthand: **보이스 방향 알림 글래스**
 
 Build a glasses-linked app that detects when a saved person calls the user by voice/name, estimates the caller direction, and alerts the user through the least distracting available output: glasses visual cue, audio/TTS, phone notification, phone vibration, and later glasses-side haptics if an official API supports it.
 
+## Narrowed Execution Goal
+
+As of 2026-06-01, the goal is narrowed to reduce wasted work and token usage.
+
+The next goal is not "finish the whole commercial service." The next goal is:
+
+1. Make the Android phone MVP run on a real device.
+2. Prove the alert path with phone notification, vibration, and TTS.
+3. Collect controlled direction evidence for front, back, left, and right.
+4. Use Meta Ray-Ban Display, Ray-Ban Gen 1, and Android XR only after the phone lane is proven.
+
+Do not add new broad planning documents, new agent frameworks, new release paperwork, new market research, or new platform abstractions unless they directly unblock one of the four items above.
+
 ## User Problem
 
 The user may be focused on a phone, moving outside, wearing glasses, or unable to immediately tell who called them and from which direction. The app should surface only the useful signal: who called, from where, and how urgent/confident the detection is.
@@ -30,6 +43,13 @@ The MVP is successful when it can:
 4. Produce a directional result with confidence.
 5. Notify the user on phone and glasses using available platform APIs.
 6. Log enough local diagnostic data to debug false positives without storing raw audio by default.
+
+For the next execution window, success is smaller:
+
+- one Android phone build/install/run path works;
+- one saved/test speaker flow can trigger a local alert;
+- the app records redacted direction evidence;
+- the next hardware blocker is concrete and not speculative.
 
 ## MVP Boundaries
 
