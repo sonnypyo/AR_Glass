@@ -34,7 +34,6 @@ const requiredSections = [
   "Release Readiness Snapshot",
   "Glasses Readiness Snapshot",
   "Service Automation Bridge Checks",
-  "`VoiceDirectionGlass` Log Evidence",
   "Direction Bridge Notes",
   "Direction Validation Trial Counts",
   "Privacy Check",
@@ -237,6 +236,10 @@ for (const section of requiredSections) {
   if (!hasSection(section)) {
     errors.push(`Missing required section: ${section}`);
   }
+}
+
+if (!hasSection("`VoiceDirectionGlass` Log Summary") && !hasSection("`VoiceDirectionGlass` Log Evidence")) {
+  errors.push("Missing required section: `VoiceDirectionGlass` Log Summary or `VoiceDirectionGlass` Log Evidence");
 }
 
 for (const row of requiredSetupRows) {
@@ -534,8 +537,23 @@ if (!glassesReadinessBlock) {
   }
 }
 
+const logSummarySection = sectionText("`VoiceDirectionGlass` Log Summary");
 const logBlock = firstTextCodeBlock(sectionText("`VoiceDirectionGlass` Log Evidence"));
-if (!logBlock) {
+if (logSummarySection) {
+  for (const marker of ["Matching logcat line count:", "AndroidRuntime matching line count:"]) {
+    if (!logSummarySection.includes(marker)) {
+      errors.push(`Log summary is missing marker: ${marker}`);
+    }
+  }
+  for (const pattern of [...privateFieldPatterns, ...bluetoothPrivateFieldPatterns, ...privateIdentifierPatterns]) {
+    if (pattern.test(logSummarySection)) {
+      errors.push(`Log summary appears to include private field or identifier pattern: ${pattern}`);
+    }
+  }
+  if (/Matching logcat line count:\s*0\b/i.test(logSummarySection)) {
+    warnings.push("No matching VoiceDirectionGlass logcat lines were captured.");
+  }
+} else if (!logBlock) {
   warnings.push("Log evidence text code block is empty or missing.");
 } else {
   for (const pattern of privateFieldPatterns) {

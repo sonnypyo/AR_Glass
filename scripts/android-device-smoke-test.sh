@@ -376,13 +376,12 @@ echo "Collecting glasses readiness snapshot"
 GLASSES_READINESS_SNAPSHOT_OUTPUT="$(run_glasses_readiness_snapshot)"
 GLASSES_READINESS_SNAPSHOT_RESULT="script-pass"
 
-echo "Recent Voice Direction Glass logcat lines"
+echo "Summarizing recent Voice Direction Glass logcat matches"
 LOGCAT_LINES="$("${ADB_DEVICE[@]}" logcat -d -t 120 | grep -E "VoiceDirectionGlass|$PACKAGE_NAME|Voice Direction|AndroidRuntime" || true)"
-if [[ -n "$LOGCAT_LINES" ]]; then
-  printf '%s\n' "$LOGCAT_LINES"
-else
-  echo "No matching logcat lines found."
-fi
+LOGCAT_MATCH_COUNT="$(printf '%s\n' "$LOGCAT_LINES" | sed '/^$/d' | wc -l | tr -d ' ')"
+LOGCAT_RUNTIME_CRASH_COUNT="$(printf '%s\n' "$LOGCAT_LINES" | grep -c "AndroidRuntime" || true)"
+echo "Matching logcat line count: $LOGCAT_MATCH_COUNT"
+echo "AndroidRuntime matching line count: $LOGCAT_RUNTIME_CRASH_COUNT"
 
 permission_state() {
   local permission="$1"
@@ -396,7 +395,7 @@ permission_state() {
 write_evidence_report() {
   local report_dir="$1"
   local report_path="$report_dir/device-evidence.md"
-  local device_model android_release android_sdk installed_state record_audio_state post_notifications_state bluetooth_state sanitized_logcat
+  local device_model android_release android_sdk installed_state record_audio_state post_notifications_state bluetooth_state
 
   mkdir -p "$report_dir"
 
@@ -411,7 +410,6 @@ write_evidence_report() {
   record_audio_state="$(permission_state "android.permission.RECORD_AUDIO")"
   post_notifications_state="$(permission_state "android.permission.POST_NOTIFICATIONS")"
   bluetooth_state="$(permission_state "android.permission.BLUETOOTH_CONNECT")"
-  sanitized_logcat="${LOGCAT_LINES:-No matching logcat lines found.}"
 
   {
     printf '# Android Device Smoke Evidence\n\n'
@@ -570,11 +568,9 @@ write_evidence_report() {
     printf '| Service automation diagnostic card updates | manual | Reopen app and verify latest bridge statuses are visible. |\n'
     printf '| Latest glasses cue updates after actionable service event | manual | Verify projected preview shows latest cue. |\n\n'
 
-    printf '## `VoiceDirectionGlass` Log Evidence\n\n'
-    printf 'Paste only non-PII log lines or summarize them.\n\n'
-    printf '```text\n'
-    printf '%s\n' "$sanitized_logcat"
-    printf '```\n\n'
+    printf '## `VoiceDirectionGlass` Log Summary\n\n'
+    printf -- '- Matching logcat line count: %s\n' "${LOGCAT_MATCH_COUNT:-0}"
+    printf -- '- AndroidRuntime matching line count: %s\n\n' "${LOGCAT_RUNTIME_CRASH_COUNT:-0}"
     printf 'Required events to look for:\n\n'
     printf -- '- `permission_result`\n'
     printf -- '- `listening_session_start_requested`\n'
