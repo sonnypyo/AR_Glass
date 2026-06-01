@@ -41,12 +41,12 @@ The 42% number is the service-readiness estimate, not the amount of code written
 - Native Android Kotlin app exists under `apps/voice-direction-glass`.
 - The app has a foreground listening-service scaffold, consent/disclosure gates, local-only storage policies, simulated direction flow, phone notification/vibration/TTS output, glasses cue intent contracts, Android XR projected-contract stubs, release-readiness UI, and hardware-test dashboards.
 - The project has extensive runbooks and scripts for phone, glasses, support drills, direction evidence extraction, privacy scanning, service-gate assertions, and operator-pack validation.
-- The current implementation lock still says `current_stage=phone_lane_ready_watcher_added`.
-- Stage 117 glasses-lane post-run review files exist, but Stage 117 is not fully integrated into QA, implementation lock, service audit, final report, app README, and wiki yet.
+- The current implementation lock says `current_stage=glasses_lane_post_run_review_minimally_integrated`.
+- Stage 117 glasses-lane post-run review is minimally integrated into QA, implementation lock, and service audit. Final report/wiki expansion is intentionally skipped unless a later gate requires it.
 
 ## Latest Completed Stage
 
-Stage 116 is the latest fully integrated stage.
+Stage 116 is the latest broad documentation-integrated stage.
 
 Completed Stage 116 artifacts:
 
@@ -73,7 +73,7 @@ The no-phone watcher result is expected to time out safely.
 
 ## Partially Completed Stage 117
 
-Stage 117 exists but should be treated as partially integrated.
+Stage 117 exists and is minimally integrated for readiness tracking.
 
 Created Stage 117 artifacts:
 
@@ -106,23 +106,18 @@ The current Stage 117 report is correctly blocked:
 - Android XR projected runtime evidence is not ready.
 - Haptics proof or documented phone-vibration fallback is ready.
 
-Stage 117 still needs integration work before it becomes the latest closed stage:
+Stage 117 remaining work is hardware-only:
 
-- Append a Stage 117 entry to `docs/06-experiment-log.md`.
-- Update `apps/voice-direction-glass/README.md` with the glasses post-run reviewer.
-- Add Stage 117 required artifacts to `scripts/audit-service-readiness.mjs`.
-- Regenerate `data/runs/20260528_voice_direction_mvp/52-service-readiness-audit/service-readiness-audit.md`.
-- Add `glasses_lane_post_run_review` entries to `data/canonical/voice-direction-glass.qa-report.json`.
-- Update `apps/voice-direction-glass/agent-output/implementation.lock.json` from `phone_lane_ready_watcher_added` to a Stage 117 name only after the above is done.
-- Update `data/runs/20260528_voice_direction_mvp/final-report.md`.
-- Update `llm-wiki/wiki/apps/voice-direction-glass.md`.
-- Run a targeted privacy scan covering Stage 117 script/docs/reports and any files changed during integration.
+- Real Meta Ray-Ban Display evidence.
+- Real Ray-Ban Gen 1 fallback evidence.
+- Real Android XR projected runtime evidence.
+- Strict glasses-alpha promotion after the above evidence exists.
 
 ## Next Goal First Execution Order
 
 Start here on the next goal run.
 
-1. Close only the minimum Stage 117 integration gap needed to keep readiness state consistent.
+1. Confirm Stage 117 remains blocked only by missing real glasses evidence.
 
 ```bash
 node --check scripts/review-glasses-lane-evidence.mjs
@@ -130,13 +125,13 @@ scripts/review-glasses-lane-evidence.mjs --help
 scripts/review-glasses-lane-evidence.mjs --write-report --json
 ```
 
-2. Update the service-readiness audit to include Stage 117 required artifacts.
+2. Keep service-readiness audit current after evidence changes.
 
 ```bash
 node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/52-service-readiness-audit
 ```
 
-3. Update only the minimum tracking files for Stage 117: QA report, implementation lock, service audit, and this handoff if needed. Skip broad final-report/wiki expansion unless it is required by a gate.
+3. Skip broad final-report/wiki expansion unless it is required by a gate.
 
 4. Run privacy scans.
 

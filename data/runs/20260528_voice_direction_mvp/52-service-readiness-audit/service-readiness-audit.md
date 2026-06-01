@@ -1,6 +1,6 @@
 # Service Readiness Audit
 
-Generated: 2026-05-28T13:42:36+09:00
+Generated: 2026-06-01T12:45:20+09:00
 
 ## Purpose
 
@@ -134,6 +134,10 @@ This audit ties the implemented app, release checklist, glasses readiness checkl
 | Phone lane ready watcher script | present | scripts/run-phone-lane-when-ready.mjs |
 | Latest phone lane ready watcher report | present | data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher/phone-lane-ready-watcher.md |
 | Phone lane ready watcher stage | present | data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher.md |
+| Glasses lane post-run review | present | docs/59-glasses-lane-post-run-review.md |
+| Glasses lane post-run review script | present | scripts/review-glasses-lane-evidence.mjs |
+| Latest glasses lane post-run review report | present | data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review/glasses-lane-post-run-review.md |
+| Glasses lane post-run review stage | present | data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review.md |
 | Controlled direction trial session | present | docs/51-controlled-direction-trial-session.md |
 | Controlled direction trial session generator | present | scripts/create-controlled-direction-trial-session.mjs |
 | Controlled direction trial session validator | present | scripts/validate-controlled-direction-trial-session.mjs |

@@ -1,6 +1,6 @@
 {
   "slug": "voice-direction-glass",
-  "generated_at": "2026-05-28T13:44:31+09:00",
+  "generated_at": "2026-06-01T03:47:42.959+09:00",
   "status": "internal_prototype_ready_phone_alpha_manual_required",
   "verified_commands": [
     {
@@ -1512,6 +1512,26 @@
       "command": "scripts/scan-evidence-privacy.mjs scripts/run-phone-lane-when-ready.mjs docs/58-phone-lane-ready-watcher.md data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher.md data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher data/runs/20260528_voice_direction_mvp/final-report.md llm-wiki/wiki/apps/voice-direction-glass.md data/canonical/voice-direction-glass.qa-report.json apps/voice-direction-glass/README.md docs/README.md docs/06-experiment-log.md docs/12-service-readiness-audit.md --json",
       "working_directory": ".",
       "result": "passed_11_files_zero_violations_one_script_textlike_warning_after_phone_lane_ready_watcher_docs"
+    },
+    {
+      "command": "node --check scripts/review-glasses-lane-evidence.mjs",
+      "working_directory": ".",
+      "result": "passed_glasses_lane_post_run_review_syntax"
+    },
+    {
+      "command": "scripts/review-glasses-lane-evidence.mjs --help",
+      "working_directory": ".",
+      "result": "passed_glasses_lane_post_run_review_help"
+    },
+    {
+      "command": "scripts/review-glasses-lane-evidence.mjs --write-report --json",
+      "working_directory": ".",
+      "result": "expected_blocked_no_real_glasses_evidence"
+    },
+    {
+      "command": "JAVA_HOME=/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home ./gradlew test assembleDebug",
+      "working_directory": "apps/voice-direction-glass",
+      "result": "passed_local_jdk17_android_sdk"
     }
   ],
   "generated_artifacts": [
@@ -2008,7 +2028,12 @@
     "docs/58-phone-lane-ready-watcher.md",
     "data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher.md",
     "data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher/phone-lane-ready-watcher.md",
-    "data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher/phone-lane-ready-watcher.json"
+    "data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher/phone-lane-ready-watcher.json",
+    "scripts/review-glasses-lane-evidence.mjs",
+    "docs/59-glasses-lane-post-run-review.md",
+    "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review.md",
+    "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review/glasses-lane-post-run-review.md",
+    "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review/glasses-lane-post-run-review.json"
   ],
   "release_readiness": {
     "source_code": "apps/voice-direction-glass/app/src/main/kotlin/com/voicedirection/glass/qa/ReleaseReadiness.kt",
@@ -3607,5 +3632,44 @@
     "docPrivacyScanFilesScanned": 11,
     "docPrivacyScanViolationCount": 0,
     "docPrivacyScanWarningCount": 1
+  },
+  "glasses_lane_post_run_review": {
+    "generated": true,
+    "script": "scripts/review-glasses-lane-evidence.mjs",
+    "doc": "docs/59-glasses-lane-post-run-review.md",
+    "run_note": "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review.md",
+    "report_markdown": "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review/glasses-lane-post-run-review.md",
+    "report_json": "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review/glasses-lane-post-run-review.json",
+    "status": "blocked",
+    "ok": false,
+    "glassesAlphaReady": false,
+    "workflowProfileOk": true,
+    "glassesAlphaProfileOk": false,
+    "androidXrDefaultOk": true,
+    "androidXrStrictOk": false,
+    "metaRayBanDisplayReady": false,
+    "rayBanGen1FallbackReady": false,
+    "androidXrProjectedReady": false,
+    "hapticsReadyOrFallbackDocumented": true,
+    "privacyScanOk": true,
+    "privacyScanFilesScanned": 18,
+    "privacyScanViolationCount": 0,
+    "privacyScanWarningCount": 0,
+    "rawOutputPersisted": false,
+    "currentExpectedFailure": "blocked_no_real_glasses_evidence",
+    "generated_at": "2026-06-01T12:45:16+09:00",
+    "errors": [
+      "Meta Ray-Ban Display evidence is not ready.",
+      "Ray-Ban Gen 1 fallback evidence is not ready.",
+      "Android XR projected evidence is not ready.",
+      "Strict Android XR projected contract is not passing.",
+      "Strict glasses-alpha promotion profile is not passing."
+    ],
+    "nextActions": [
+      "Collect reviewed Meta Ray-Ban Display cue proof through the glasses hardware evidence session.",
+      "Collect or document Ray-Ban Gen 1 Bluetooth/TTS/phone-vibration fallback evidence without device names.",
+      "Collect Android XR projected runtime proof and keep strict Android XR contract blocked until ProjectedContext/Glimmer evidence exists.",
+      "Keep glasses alpha blocked until strict glasses-alpha promotion profile passes."
+    ]
   }
 }
