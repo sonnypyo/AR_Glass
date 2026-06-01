@@ -12,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.voicedirection.glass.alerts.AlertChannel
-import com.voicedirection.glass.alerts.AlertRouter
 import com.voicedirection.glass.alerts.DirectionCueOutputContracts
 import com.voicedirection.glass.audio.AndroidAudioCapabilityProbe
 import com.voicedirection.glass.audio.AndroidBluetoothAudioRouteProbe
@@ -44,7 +43,6 @@ import com.voicedirection.glass.model.VoiceEmbeddingRefCodec
 import com.voicedirection.glass.qa.VoiceDirectionTesterConsent
 import com.voicedirection.glass.service.ListeningForegroundService
 import com.voicedirection.glass.session.AndroidListeningEngineFactory
-import com.voicedirection.glass.session.ListeningSessionEngine
 import com.voicedirection.glass.session.ListeningSessionState
 import com.voicedirection.glass.speech.AndroidSpeechRecognitionController
 import com.voicedirection.glass.speech.SpeechRecognitionController
@@ -55,6 +53,7 @@ import com.voicedirection.glass.storage.PreferencesVoiceDirectionRepository
 import com.voicedirection.glass.storage.VoiceDirectionSettings
 import com.voicedirection.glass.storage.VoiceDirectionRepository
 import com.voicedirection.glass.ui.VoiceDirectionApp
+import kotlin.concurrent.thread
 
 class MainActivity : ComponentActivity() {
     private var state by mutableStateOf(ListeningSessionState())
@@ -102,13 +101,6 @@ class MainActivity : ComponentActivity() {
             }
             shouldStartAfterPermissionGrant = false
         }
-
-    private val engine by lazy {
-        AndroidListeningEngineFactory.create(this) { state.enabledAlertChannels }
-    }
-    private val alertRouter: AlertRouter by lazy {
-        AndroidListeningEngineFactory.createAlertRouter(this) { state.enabledAlertChannels }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -741,40 +733,57 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun evaluateAndPersist(inputState: ListeningSessionState) {
-        val result = engine.evaluate(inputState)
-        repository.appendEvent(result.event)
-        repository.saveLatestAlertDeliverySnapshot(
-            AlertDeliverySnapshot.from(
-                eventId = result.event.id,
-                deliveries = result.deliveries,
-                checkedAtMillis = System.currentTimeMillis(),
-            ),
-        )
-        val cueSaved = result.event.isActionable
-        if (cueSaved) {
-            repository.saveLatestGlassesCue(GlassesCueSnapshot.fromEvent(result.event))
+        state = inputState.copy(statusMessage = "알림 평가 중")
+        thread(name = "voice-direction-manual-evaluation") {
+            runCatching {
+                val result = AndroidListeningEngineFactory.create(applicationContext) {
+                    inputState.enabledAlertChannels
+                }.evaluate(inputState)
+                repository.appendEvent(result.event)
+                repository.saveLatestAlertDeliverySnapshot(
+                    AlertDeliverySnapshot.from(
+                        eventId = result.event.id,
+                        deliveries = result.deliveries,
+                        checkedAtMillis = System.currentTimeMillis(),
+                    ),
+                )
+                val cueSaved = result.event.isActionable
+                if (cueSaved) {
+                    repository.saveLatestGlassesCue(GlassesCueSnapshot.fromEvent(result.event))
+                }
+                DiagnosticsLogger.detection(
+                    eventName = "manual_evaluation_completed",
+                    event = result.event,
+                    deliveryCount = result.deliveries.size,
+                    cueSaved = cueSaved,
+                )
+                val snapshot = repository.loadSnapshot()
+                runOnUiThread {
+                    state = inputState.copy(
+                        lastEvent = result.event,
+                        eventHistory = snapshot.events,
+                        feedbackHistory = snapshot.feedback,
+                        falsePositiveRun = snapshot.falsePositiveRun,
+                        latestServiceAutomationBridge = snapshot.latestServiceAutomationBridge,
+                        latestAlertDeliverySnapshot = snapshot.latestAlertDeliverySnapshot,
+                        lastDeliveries = result.deliveries,
+                        statusMessage = if (result.event.isActionable) {
+                            "알림 전송 완료"
+                        } else {
+                            "조건 미충족: 문구/화자 신뢰도 확인 필요"
+                        },
+                    )
+                }
+            }.onFailure { error ->
+                DiagnosticsLogger.warn(
+                    "manual_evaluation_failed",
+                    "reason" to error::class.java.simpleName,
+                )
+                runOnUiThread {
+                    state = inputState.copy(statusMessage = "알림 평가 실패")
+                }
+            }
         }
-        DiagnosticsLogger.detection(
-            eventName = "manual_evaluation_completed",
-            event = result.event,
-            deliveryCount = result.deliveries.size,
-            cueSaved = cueSaved,
-        )
-        val snapshot = repository.loadSnapshot()
-        state = inputState.copy(
-            lastEvent = result.event,
-            eventHistory = snapshot.events,
-            feedbackHistory = snapshot.feedback,
-            falsePositiveRun = snapshot.falsePositiveRun,
-            latestServiceAutomationBridge = snapshot.latestServiceAutomationBridge,
-            latestAlertDeliverySnapshot = snapshot.latestAlertDeliverySnapshot,
-            lastDeliveries = result.deliveries,
-            statusMessage = if (result.event.isActionable) {
-                "알림 전송 완료"
-            } else {
-                "조건 미충족: 문구/화자 신뢰도 확인 필요"
-            },
-        )
     }
 
     private fun runAlertOutputTest() {
@@ -782,30 +791,48 @@ class MainActivity : ComponentActivity() {
             state = state.copy(statusMessage = "최소 1개 알림 채널이 필요합니다")
             return
         }
-        val checkedAtMillis = System.currentTimeMillis()
-        val cue = DirectionCueOutputContracts.cueForDirection(
-            direction = state.simulatedDirection,
-            confidence = state.simulatedDirectionConfidence,
-        )
-        val deliveries = alertRouter.emit(cue)
-        val deliverySnapshot = AlertDeliverySnapshot.from(
-            eventId = "alert-test-$checkedAtMillis",
-            deliveries = deliveries,
-            checkedAtMillis = checkedAtMillis,
-        )
-        repository.saveLatestAlertDeliverySnapshot(deliverySnapshot)
-        DiagnosticsLogger.info(
-            "alert_output_test_completed",
-            "direction" to state.simulatedDirection,
-            "enabledChannelCount" to state.enabledAlertChannels.size,
-            "deliveryCount" to deliveries.size,
-            "deliveredCount" to deliverySnapshot.deliveredCount,
-        )
-        state = state.copy(
-            lastDeliveries = deliveries,
-            latestAlertDeliverySnapshot = deliverySnapshot,
-            statusMessage = "알림 출력 점검 완료",
-        )
+        val inputState = state
+        state = inputState.copy(statusMessage = "알림 출력 점검 중")
+        thread(name = "voice-direction-alert-output-test") {
+            runCatching {
+                val checkedAtMillis = System.currentTimeMillis()
+                val cue = DirectionCueOutputContracts.cueForDirection(
+                    direction = inputState.simulatedDirection,
+                    confidence = inputState.simulatedDirectionConfidence,
+                )
+                val deliveries = AndroidListeningEngineFactory.createAlertRouter(applicationContext) {
+                    inputState.enabledAlertChannels
+                }.emit(cue)
+                val deliverySnapshot = AlertDeliverySnapshot.from(
+                    eventId = "alert-test-$checkedAtMillis",
+                    deliveries = deliveries,
+                    checkedAtMillis = checkedAtMillis,
+                )
+                repository.saveLatestAlertDeliverySnapshot(deliverySnapshot)
+                DiagnosticsLogger.info(
+                    "alert_output_test_completed",
+                    "direction" to inputState.simulatedDirection,
+                    "enabledChannelCount" to inputState.enabledAlertChannels.size,
+                    "deliveryCount" to deliveries.size,
+                    "deliveredCount" to deliverySnapshot.deliveredCount,
+                )
+                runOnUiThread {
+                    state = inputState.copy(
+                        lastDeliveries = deliveries,
+                        latestAlertDeliverySnapshot = deliverySnapshot,
+                        statusMessage = "알림 출력 점검 완료",
+                    )
+                }
+            }.onFailure { error ->
+                DiagnosticsLogger.warn(
+                    "alert_output_test_failed",
+                    "reason" to error::class.java.simpleName,
+                )
+                runOnUiThread {
+                    state = inputState.copy(statusMessage = "알림 출력 점검 실패")
+                }
+            }
+        }
     }
 
     private fun markEventFeedback(

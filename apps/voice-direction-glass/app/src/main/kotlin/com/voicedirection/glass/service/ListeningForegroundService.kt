@@ -40,6 +40,7 @@ import com.voicedirection.glass.storage.ServiceAutomationBridgeSnapshot
 import com.voicedirection.glass.storage.VoiceDirectionSnapshot
 import com.voicedirection.glass.storage.PreferencesVoiceDirectionRepository
 import com.voicedirection.glass.storage.VoiceDirectionRepository
+import kotlin.concurrent.thread
 
 class ListeningForegroundService : Service() {
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -50,6 +51,7 @@ class ListeningForegroundService : Service() {
     private lateinit var serviceDirectionResolver: ServiceDirectionResolver
     private lateinit var engine: ListeningSessionEngine
     private lateinit var prototypeVoiceEngine: PrototypeVoiceSessionEngine
+    @Volatile
     private var loopActive = false
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -180,16 +182,35 @@ class ListeningForegroundService : Service() {
     }
 
     private fun evaluateTranscriptSimulationAndContinue(transcript: String) {
-        val result = engine.evaluate(buildState(transcript))
-        persistResult(result)
-        DiagnosticsLogger.detection(
-            eventName = "service_evaluation_completed",
-            event = result.event,
-            deliveryCount = result.deliveries.size,
-            cueSaved = result.event.isActionable,
-        )
-        updateNotificationForEvent(result.event)
-        scheduleNextListen(LISTEN_RESTART_DELAY_MILLIS)
+        thread(name = "voice-direction-service-evaluation") {
+            runCatching {
+                val result = engine.evaluate(buildState(transcript))
+                persistResult(result)
+                DiagnosticsLogger.detection(
+                    eventName = "service_evaluation_completed",
+                    event = result.event,
+                    deliveryCount = result.deliveries.size,
+                    cueSaved = result.event.isActionable,
+                )
+                mainHandler.post {
+                    if (loopActive) {
+                        updateNotificationForEvent(result.event)
+                        scheduleNextListen(LISTEN_RESTART_DELAY_MILLIS)
+                    }
+                }
+            }.onFailure { error ->
+                DiagnosticsLogger.warn(
+                    "service_evaluation_failed",
+                    "reason" to error::class.java.simpleName,
+                )
+                mainHandler.post {
+                    if (loopActive) {
+                        updateNotification("감지 처리 실패")
+                        scheduleNextListen(LISTEN_ERROR_BACKOFF_MILLIS)
+                    }
+                }
+            }
+        }
     }
 
     private fun evaluatePrototypeVoiceAndContinue(
@@ -197,43 +218,62 @@ class ListeningForegroundService : Service() {
         snapshot: VoiceDirectionSnapshot,
         sample: VoiceEnrollmentSampleResult,
     ) {
-        val directionInput = DirectionInput(
-            simulatedDirection = snapshot.settings.simulatedDirection,
-            simulatedConfidence = snapshot.settings.simulatedDirectionConfidence,
-        )
-        val directionResolution = serviceDirectionResolver.resolve(directionInput)
-        val result = prototypeVoiceEngine.evaluate(
-            transcript = transcript,
-            triggerPhrase = snapshot.settings.triggerPhrase,
-            liveSample = sample,
-            profiles = snapshot.profiles,
-            directionInput = directionInput,
-            directionEstimate = directionResolution.estimate,
-        )
-        persistResult(result)
-        repository.saveLatestServiceAutomationBridge(
-            ServiceAutomationBridgeSnapshot.from(
-                result = result,
-                audioDirectionStatus = directionResolution.audioStatus,
-                usedAudioDirection = directionResolution.usedAudioEstimate,
-            ),
-        )
-        DiagnosticsLogger.detection(
-            eventName = "service_prototype_voice_evaluation_completed",
-            event = result.event,
-            deliveryCount = result.deliveries.size,
-            cueSaved = result.event.isActionable,
-        )
-        DiagnosticsLogger.info(
-            "service_prototype_voice_match_completed",
-            "sampleStatus" to result.sampleStatus,
-            "matchStatus" to result.match.status,
-            "similarity" to DiagnosticsLogger.confidenceBucket(result.match.similarity),
-            "audioDirectionStatus" to directionResolution.audioStatus,
-            "usedAudioDirection" to directionResolution.usedAudioEstimate,
-        )
-        updateNotificationForEvent(result.event)
-        scheduleNextListen(LISTEN_RESTART_DELAY_MILLIS)
+        thread(name = "voice-direction-service-prototype-evaluation") {
+            runCatching {
+                val directionInput = DirectionInput(
+                    simulatedDirection = snapshot.settings.simulatedDirection,
+                    simulatedConfidence = snapshot.settings.simulatedDirectionConfidence,
+                )
+                val directionResolution = serviceDirectionResolver.resolve(directionInput)
+                val result = prototypeVoiceEngine.evaluate(
+                    transcript = transcript,
+                    triggerPhrase = snapshot.settings.triggerPhrase,
+                    liveSample = sample,
+                    profiles = snapshot.profiles,
+                    directionInput = directionInput,
+                    directionEstimate = directionResolution.estimate,
+                )
+                persistResult(result)
+                repository.saveLatestServiceAutomationBridge(
+                    ServiceAutomationBridgeSnapshot.from(
+                        result = result,
+                        audioDirectionStatus = directionResolution.audioStatus,
+                        usedAudioDirection = directionResolution.usedAudioEstimate,
+                    ),
+                )
+                DiagnosticsLogger.detection(
+                    eventName = "service_prototype_voice_evaluation_completed",
+                    event = result.event,
+                    deliveryCount = result.deliveries.size,
+                    cueSaved = result.event.isActionable,
+                )
+                DiagnosticsLogger.info(
+                    "service_prototype_voice_match_completed",
+                    "sampleStatus" to result.sampleStatus,
+                    "matchStatus" to result.match.status,
+                    "similarity" to DiagnosticsLogger.confidenceBucket(result.match.similarity),
+                    "audioDirectionStatus" to directionResolution.audioStatus,
+                    "usedAudioDirection" to directionResolution.usedAudioEstimate,
+                )
+                mainHandler.post {
+                    if (loopActive) {
+                        updateNotificationForEvent(result.event)
+                        scheduleNextListen(LISTEN_RESTART_DELAY_MILLIS)
+                    }
+                }
+            }.onFailure { error ->
+                DiagnosticsLogger.warn(
+                    "service_prototype_voice_evaluation_failed",
+                    "reason" to error::class.java.simpleName,
+                )
+                mainHandler.post {
+                    if (loopActive) {
+                        updateNotification("화자 확인 처리 실패")
+                        scheduleNextListen(LISTEN_ERROR_BACKOFF_MILLIS)
+                    }
+                }
+            }
+        }
     }
 
     private fun persistResult(result: ListeningSessionResult) {

@@ -13,9 +13,28 @@ import com.voicedirection.glass.session.AndroidListeningEngineFactory
 import com.voicedirection.glass.storage.AlertDeliverySnapshot
 import com.voicedirection.glass.storage.AlertDeliveryStatus
 import com.voicedirection.glass.storage.PreferencesVoiceDirectionRepository
+import kotlin.concurrent.thread
 
 class AlertOutputTestReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        val pendingResult = goAsync()
+        thread(name = "voice-direction-alert-output-test") {
+            val result = buildResult(context)
+            DiagnosticsLogger.info(
+                "alert_output_test_completed",
+                "passed" to result.passed,
+                "enabledChannelCount" to result.enabledAlertChannelCount,
+                "deliveryCount" to result.deliveryCount,
+                "deliveredCount" to result.deliveredCount,
+                "source" to result.latestDeliverySource,
+            )
+            pendingResult.setResultCode(if (result.passed) RESULT_CODE_PASS else RESULT_CODE_FAIL)
+            pendingResult.setResultData(result.toResultData())
+            pendingResult.finish()
+        }
+    }
+
+    private fun buildResult(context: Context): AlertOutputTestResult {
         val result = runCatching {
             val repository = PreferencesVoiceDirectionRepository(context)
             val settings = repository.loadSnapshot().settings
@@ -148,17 +167,7 @@ class AlertOutputTestReceiver : BroadcastReceiver() {
                 message = error::class.java.simpleName,
             )
         }
-
-        DiagnosticsLogger.info(
-            "alert_output_test_completed",
-            "passed" to result.passed,
-            "enabledChannelCount" to result.enabledAlertChannelCount,
-            "deliveryCount" to result.deliveryCount,
-            "deliveredCount" to result.deliveredCount,
-            "source" to result.latestDeliverySource,
-        )
-        setResultCode(if (result.passed) RESULT_CODE_PASS else RESULT_CODE_FAIL)
-        setResultData(result.toResultData())
+        return result
     }
 
     private data class AlertOutputTestResult(
