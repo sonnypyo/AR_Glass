@@ -226,6 +226,6 @@ Do not claim any of the following until the matching evidence exists:
 
 The next milestone should be:
 
-`Pre-phone local workflow fully current, then phone-lane real-device run as the final hardware step.`
+`Phone-lane real-device run first, then controlled direction rows, then glasses evidence.`
 
-Reason: The user moved phone integration to the end. Keep all local workflow, controlled-direction planning, glasses preflight, support preparation, and privacy/service-readiness gates clean first, then attach a phone only for the final hardware evidence step.
+Reason: The active objective prioritizes Android phone build/install/run, phone notification/vibration/TTS proof, and controlled direction rows before Meta Ray-Ban Display, Ray-Ban Gen 1 fallback, and Android XR evidence.

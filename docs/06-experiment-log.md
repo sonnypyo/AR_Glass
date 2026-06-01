@@ -4660,3 +4660,18 @@ The active project objective prioritizes Android phone install/run, phone notifi
 - The phone lane remains blocked in this workspace until exactly one authorized ADB phone is attached.
 - No fake direction rows or device evidence were generated.
 - Meta DAT, Android XR, and glasses haptics remain unclaimed until real hardware evidence exists.
+
+## 2026-06-01 KST: Fix Handoff Milestone Phone Order
+
+### Decision
+
+Keep the next-goal handoff's recommended milestone aligned with the phone-first objective.
+
+### Reasoning
+
+The handoff scope and next execution order already said phone lane first, but the final recommended milestone still described the phone run as the final hardware step. That could send the next run toward the wrong order.
+
+### Implemented
+
+- Updated `docs/60-next-goal-handoff.md` recommended milestone to phone-lane real-device run first, controlled direction rows second, glasses evidence third.
+- Kept Meta DAT, Android XR, and glasses haptics unclaimed until hardware evidence exists.
