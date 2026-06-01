@@ -1,6 +1,6 @@
 # Hardware Next Actions
 
-Generated: 2026-06-01T15:02:17+09:00
+Generated: 2026-06-01T15:07:33+09:00
 Source dashboard: data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.json
 
 ## Decision
@@ -18,7 +18,7 @@ Source dashboard: data/runs/20260528_voice_direction_mvp/99-hardware-test-status
 | 1 | current | Refresh default no-hardware workflow | `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
 | 2 | manual-required | Prepare controlled direction rows | `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh` | observed direction rows incomplete: 0/80; production direction candidate false until aggregate evidence is reviewed |
 | 3 | blocked | Prepare glasses evidence lane | `RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | Meta application id missing; GitHub Packages token missing; glasses preflight blocked=5; real Android XR projected contract not ready; glasses private alpha candidate false |
-| 4 | manual-required | Prepare support drill lane | `RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | support strict evidence not requested or not complete |
+| 4 | manual-required | Prepare support drill lane | `RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | support strict evidence not complete |
 | 5 | blocked | Run Android phone evidence lane last | `RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | authorized ADB devices must be exactly 1, current=0 |
 
 ## Privacy Guardrail

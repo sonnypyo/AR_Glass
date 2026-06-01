@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T14:55:50+09:00",
+  "generatedAt": "2026-06-01T15:07:33+09:00",
   "packDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
   "reportDir": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard",
   "reportPath": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.md",
@@ -75,6 +75,16 @@
     "planningReady": true,
     "observedRowsComplete": false
   },
+  "support": {
+    "preparationReady": true,
+    "strictReady": false,
+    "incidentProcessOk": true,
+    "draftOk": true,
+    "sessionOk": true,
+    "strictExitCode": 1,
+    "strictErrorCount": 27,
+    "sessionDir": "data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack"
+  },
   "evidencePrivacyScan": {
     "ok": true,
     "exitCode": 0,
@@ -103,6 +113,24 @@
     },
     {
       "label": "Scan operator pack privacy",
+      "ok": true,
+      "exitCode": 0,
+      "parsedOk": true
+    },
+    {
+      "label": "Validate support incident process",
+      "ok": true,
+      "exitCode": 0,
+      "parsedOk": true
+    },
+    {
+      "label": "Validate support drill draft",
+      "ok": true,
+      "exitCode": 0,
+      "parsedOk": true
+    },
+    {
+      "label": "Validate support drill session",
       "ok": true,
       "exitCode": 0,
       "parsedOk": true
@@ -164,10 +192,10 @@
       "status": "manual-required",
       "command": "RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
       "blockers": [
-        "support strict evidence not requested or not complete"
+        "support strict evidence not complete"
       ],
       "nextActions": [
-        "Run only when deletion and mistaken-alert drill owners can fill reviewed evidence."
+        "Support incident process, draft gate, and session pack are ready; run only when deletion and mistaken-alert drill owners can fill reviewed evidence."
       ],
       "evidenceGaps": []
     },
@@ -192,12 +220,14 @@
     "promotionReport": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/promotion-validation/promotion-validation.json",
     "evidencePrivacyScan": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/evidence-privacy-scan/evidence-privacy-scan.json",
     "androidXrContract": "data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract/android-xr-projected-contract.json",
-    "controlledDirectionSession": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session"
+    "controlledDirectionSession": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session",
+    "supportDrillSession": "data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack"
   },
   "nextActions": [
     "Run the default no-hardware workflow before any real evidence lane.",
     "Keep data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/trial-plan.csv ready; recorded rows are 0/80.",
     "Prepare glasses and support evidence gates, but do not claim hardware support without real evidence.",
+    "Support drill preparation is current; strict support evidence remains blocked until real owner-reviewed drills exist.",
     "Keep `RUN_PHONE=1` last; it still needs exactly one authorized Android phone.",
     "Keep phone/glasses/support strict promotion profiles blocked until matching real evidence exists.",
     "Use `scripts/validate-hardware-test-promotion.mjs --profile workflow --json` after every operator-pack run.",

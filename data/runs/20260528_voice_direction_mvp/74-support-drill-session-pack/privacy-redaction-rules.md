@@ -10,7 +10,7 @@ These rules apply to every file in this support drill session folder.
 - Speech text from real people.
 - Person names, caller names, profile labels, or contact names.
 - Model vectors or biometric reference values.
-- Encrypted payload values such as `enc:v1:`.
+- Encrypted payload values or storage ciphertext prefixes.
 - Bluetooth owner/device names if they reveal a person.
 - Private alert message text.
 - Home/work location details.

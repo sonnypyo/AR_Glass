@@ -1,6 +1,6 @@
 # Hardware Test Status Dashboard
 
-Generated: 2026-06-01T14:55:50+09:00
+Generated: 2026-06-01T15:07:33+09:00
 Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 
 ## Decision
@@ -19,7 +19,7 @@ Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 | Default no-hardware workflow | ready | `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
 | Phone evidence | blocked | `RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | authorized ADB devices must be exactly 1, current=0 |
 | Glasses evidence | blocked | `RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | Meta application id missing; GitHub Packages token missing; glasses preflight blocked=5; real Android XR projected contract not ready; glasses private alpha candidate false |
-| Support evidence | manual-required | `RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | support strict evidence not requested or not complete |
+| Support evidence | manual-required | `RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | support strict evidence not complete |
 | Controlled direction trials | manual-required | `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh` | observed direction rows incomplete: 0/80; production direction candidate false until aggregate evidence is reviewed |
 
 ## Evidence Gaps
@@ -57,12 +57,15 @@ Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 - Controlled direction recorded rows: 0
 - Controlled direction TODO rows: 80
 - Controlled direction source/route: controlled-phone / phone-built-in-microphones
+- Support preparation: ready
+- Support strict evidence: blocked
 
 ## Next Actions
 
 - Run the default no-hardware workflow before any real evidence lane.
 - Keep data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/trial-plan.csv ready; recorded rows are 0/80.
 - Prepare glasses and support evidence gates, but do not claim hardware support without real evidence.
+- Support drill preparation is current; strict support evidence remains blocked until real owner-reviewed drills exist.
 - Keep `RUN_PHONE=1` last; it still needs exactly one authorized Android phone.
 - Keep phone/glasses/support strict promotion profiles blocked until matching real evidence exists.
 - Use `scripts/validate-hardware-test-promotion.mjs --profile workflow --json` after every operator-pack run.

@@ -4459,3 +4459,46 @@ Result:
 
 - Next-action report generation passed.
 - Executor dry-run safely refused execution because no action is currently `ready`.
+
+## 2026-06-01 KST: Support Preparation Split From Strict Evidence
+
+### Decision
+
+Track support drill preparation separately from strict support evidence in the hardware status dashboard.
+
+### Reasoning
+
+The user asked to finish pre-phone work before the final Android phone run. Support work had one combined lane, so it was hard to tell whether the support pack itself was ready or whether only real owner-reviewed support evidence was missing.
+
+### Implemented
+
+- Updated `scripts/summarize-hardware-test-status.mjs`.
+- Updated support drill privacy redaction wording in the generator and existing session pack.
+- Regenerated `data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard`.
+- Regenerated `data/runs/20260528_voice_direction_mvp/111-hardware-next-actions`.
+
+### Trial/Error Notes
+
+- `data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack/commands.sh` passes.
+- Support incident process validation passes.
+- Support drill draft gate passes with expected warnings that deletion and mistaken-alert drills have not run.
+- Strict support validation remains blocked until real owner-reviewed drill evidence exists.
+- Targeted privacy scan initially flagged the forbidden encrypted-payload marker inside the support privacy rules. The rule now describes ciphertext prefixes without embedding that marker.
+
+### Verification
+
+From the repository root:
+
+```bash
+data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack/commands.sh
+node --check scripts/summarize-hardware-test-status.mjs
+node --check scripts/create-support-drill-session.mjs
+node scripts/summarize-hardware-test-status.mjs --write-report --json
+node scripts/recommend-hardware-next-actions.mjs --write-report --json
+```
+
+Result:
+
+- Dashboard `support.preparationReady=true`.
+- Dashboard `support.strictReady=false`.
+- Support lane remains `manual-required`, not release-ready.

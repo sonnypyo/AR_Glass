@@ -9,6 +9,7 @@ const DEFAULT_PACK = "data/runs/20260528_voice_direction_mvp/93-hardware-test-op
 const DEFAULT_REPORT_DIR = "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard";
 const ANDROID_XR_CONTRACT = "data/runs/20260528_voice_direction_mvp/97-android-xr-projected-contract/android-xr-projected-contract.json";
 const DEFAULT_CONTROLLED_DIRECTION_SESSION = "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session";
+const SUPPORT_DRILL_SESSION = "data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack";
 
 const args = process.argv.slice(2);
 const wantsJson = args.includes("--json");
@@ -282,6 +283,8 @@ function renderMarkdown(summary) {
   lines.push(`- Controlled direction recorded rows: ${summary.controlledDirection.recordedRows}`);
   lines.push(`- Controlled direction TODO rows: ${summary.controlledDirection.todoRows}`);
   lines.push(`- Controlled direction source/route: ${summary.controlledDirection.source} / ${summary.controlledDirection.route}`);
+  lines.push(`- Support preparation: ${summary.support.preparationReady ? "ready" : "not-ready"}`);
+  lines.push(`- Support strict evidence: ${summary.support.strictReady ? "ready" : "blocked"}`);
   lines.push("");
   lines.push("## Next Actions");
   lines.push("");
@@ -308,6 +311,7 @@ function summarize() {
     evidencePrivacyScan: path.join(pack.relative, "evidence-privacy-scan/evidence-privacy-scan.json"),
     androidXrContract: ANDROID_XR_CONTRACT,
     controlledDirectionSession: resolveInsideWorkspace(controlledDirectionSessionArg).relative,
+    supportDrillSession: SUPPORT_DRILL_SESSION,
   };
 
   if (!fs.existsSync(pack.absolute) || !fs.statSync(pack.absolute).isDirectory()) {
@@ -343,6 +347,24 @@ function summarize() {
     pack.relative,
     "--json",
   ]);
+  const supportIncidentProcess = runJson("Validate support incident process", [
+    path.join(ROOT_DIR, "scripts/validate-support-incident-process.mjs"),
+    "--json",
+  ]);
+  const supportDraft = runJson("Validate support drill draft", [
+    path.join(ROOT_DIR, "scripts/validate-support-drill-evidence.mjs"),
+    "--json",
+  ]);
+  const supportStrict = runJson("Validate strict support drill evidence", [
+    path.join(ROOT_DIR, "scripts/validate-support-drill-evidence.mjs"),
+    "--require-drills-ready",
+    "--json",
+  ]);
+  const supportSession = runJson("Validate support drill session", [
+    path.join(ROOT_DIR, "scripts/validate-support-drill-session.mjs"),
+    SUPPORT_DRILL_SESSION,
+    "--json",
+  ]);
   const controlledDirection = controlledDirectionSessionStatus(controlledDirectionSessionArg, errors);
 
   const authorized = readiness?.adb?.attachedDeviceCount ?? 0;
@@ -357,6 +379,8 @@ function summarize() {
   const phoneDirectionManifestApplyReady = phone?.directionEvidence?.applyReady === true;
   const glassesCandidate = glasses?.glassesPrivateAlphaCandidate === true;
   const supportStrictRequested = promotion?.candidates?.supportStrictRequested === true;
+  const supportPreparationReady = supportIncidentProcess.ok && supportDraft.ok && supportSession.ok;
+  const supportStrictReady = supportStrict.ok;
   const privateAlphaCandidate = phoneCandidate && glassesCandidate && supportStrictRequested;
   const androidXrRealCandidate = androidXr?.realAndroidXrCandidate === true;
   const phoneCollectionBlockers = [
@@ -410,12 +434,19 @@ function summarize() {
     ),
     lane(
       "Support evidence",
-      statusFor(supportStrictRequested, false, true),
+      statusFor(supportStrictReady, !supportPreparationReady, supportPreparationReady),
       `RUN_SUPPORT=1 ${path.join(pack.relative, "commands.sh")}`,
       [
-        ...(supportStrictRequested ? [] : ["support strict evidence not requested or not complete"]),
+        ...(supportIncidentProcess.ok ? [] : ["support incident process validator failing"]),
+        ...(supportDraft.ok ? [] : ["support drill draft validator failing"]),
+        ...(supportSession.ok ? [] : ["support drill session validator failing"]),
+        ...(supportStrictReady ? [] : ["support strict evidence not complete"]),
       ],
-      ["Run only when deletion and mistaken-alert drill owners can fill reviewed evidence."],
+      [
+        supportPreparationReady
+          ? "Support incident process, draft gate, and session pack are ready; run only when deletion and mistaken-alert drill owners can fill reviewed evidence."
+          : "Fix support incident process, draft gate, and session pack before any support evidence run.",
+      ],
     ),
     lane(
       "Controlled direction trials",
@@ -436,6 +467,7 @@ function summarize() {
       ? [`Keep ${controlledDirection.sessionDir}/trial-plan.csv ready; recorded rows are ${controlledDirection.recordedRows}/${controlledDirection.totalPlannedRows}.`]
       : ["Generate and validate a controlled direction-trial session before the next direction hardware test."]),
     "Prepare glasses and support evidence gates, but do not claim hardware support without real evidence.",
+    ...(supportPreparationReady ? ["Support drill preparation is current; strict support evidence remains blocked until real owner-reviewed drills exist."] : ["Fix support drill preparation before the final phone hardware step."]),
     ...(canRunPhone ? ["Phone lane is technically ready, but keep `RUN_PHONE=1` as the final hardware step."] : ["Keep `RUN_PHONE=1` last; it still needs exactly one authorized Android phone."]),
     "Keep phone/glasses/support strict promotion profiles blocked until matching real evidence exists.",
     "Use `scripts/validate-hardware-test-promotion.mjs --profile workflow --json` after every operator-pack run.",
@@ -479,6 +511,16 @@ function summarize() {
       strictMissingCount: androidXr?.strictRealAndroidXrMissing?.length ?? null,
     },
     controlledDirection,
+    support: {
+      preparationReady: supportPreparationReady,
+      strictReady: supportStrictReady,
+      incidentProcessOk: supportIncidentProcess.ok,
+      draftOk: supportDraft.ok,
+      sessionOk: supportSession.ok,
+      strictExitCode: supportStrict.exitCode,
+      strictErrorCount: supportStrict.parsed?.errors?.length ?? null,
+      sessionDir: SUPPORT_DRILL_SESSION,
+    },
     evidencePrivacyScan: {
       ok: evidencePrivacyScan.ok,
       exitCode: evidencePrivacyScan.exitCode,
@@ -486,7 +528,7 @@ function summarize() {
       violationCount: evidencePrivacyScan.parsed?.violations?.length ?? null,
       warningCount: evidencePrivacyScan.parsed?.warnings?.length ?? null,
     },
-    checks: [packValidation, workflowPromotion, currentSafeGate, evidencePrivacyScan, {
+    checks: [packValidation, workflowPromotion, currentSafeGate, evidencePrivacyScan, supportIncidentProcess, supportDraft, supportSession, {
       label: "Validate controlled direction trial session",
       ok: controlledDirection.validatorOk,
       exitCode: controlledDirection.validatorExitCode,
