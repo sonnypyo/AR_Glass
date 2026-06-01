@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-05-28T11:18:30+09:00",
+  "generatedAt": "2026-06-01T16:13:31+09:00",
   "reportDir": "data/runs/20260528_voice_direction_mvp/81-private-alpha-hardware-readiness",
   "reportPath": "data/runs/20260528_voice_direction_mvp/81-private-alpha-hardware-readiness/hardware-readiness-preflight.md",
   "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/81-private-alpha-hardware-readiness/hardware-readiness-preflight.json",
@@ -73,14 +73,14 @@
     "defaultOk": true,
     "hasMetaApplicationId": false,
     "hasGithubToken": false,
-    "localPropertiesPresent": false
+    "localPropertiesPresent": true
   },
   "glassesPreflight": {
     "available": true,
     "status": "blocked",
-    "pass": 11,
-    "manual": 5,
-    "blocked": 5
+    "pass": 15,
+    "manual": 4,
+    "blocked": 2
   },
   "runnerSummary": {
     "available": true,
@@ -127,10 +127,10 @@
   },
   "recommendedRunnerCommand": "scripts/run-private-alpha-hardware-rehearsal.mjs --json",
   "nextActions": [
-    "Connect exactly one authorized Android phone over ADB before using `--run-phone`.",
+    "Run phone collection as the first real hardware lane after the no-hardware workflow is current; it needs exactly one authorized Android phone before using `--run-phone`.",
     "Configure Meta Wearables application id and GitHub Packages token outside source control before DAT work.",
     "Rerun `scripts/glasses-integration-preflight.sh --write-evidence` after credentials, dependencies, or device availability change.",
-    "Run `scripts/android-device-smoke-test.sh --write-evidence` with a connected phone to create `device-evidence.md`.",
+    "Create phone `device-evidence.md` only during a real phone hardware step with `scripts/android-device-smoke-test.sh --write-evidence`.",
     "Use the recommended runner command below, then fill only aggregate/manual rows in the linked session checklists.",
     "Regenerate `scripts/audit-service-readiness.mjs --write-report` after every evidence change."
   ]

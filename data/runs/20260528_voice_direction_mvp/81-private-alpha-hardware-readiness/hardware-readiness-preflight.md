@@ -1,6 +1,6 @@
 # Private Alpha Hardware Readiness Preflight
 
-Generated: 2026-05-28T11:18:30+09:00
+Generated: 2026-06-01T16:13:31+09:00
 
 ## Purpose
 
@@ -37,7 +37,7 @@ This preflight checks whether the local machine is ready to run the private-alph
 - Glasses setup default validation: pass
 - Meta application id configured: no
 - GitHub Packages token configured: no
-- Glasses preflight status: blocked, pass=11, manual=5, blocked=5
+- Glasses preflight status: blocked, pass=15, manual=4, blocked=2
 - Default hardware runner summary available: yes
 - Default hardware runner summary status: pass
 
@@ -49,10 +49,10 @@ scripts/run-private-alpha-hardware-rehearsal.mjs --json
 
 ## Next Actions
 
-- Connect exactly one authorized Android phone over ADB before using `--run-phone`.
+- Run phone collection as the first real hardware lane after the no-hardware workflow is current; it needs exactly one authorized Android phone before using `--run-phone`.
 - Configure Meta Wearables application id and GitHub Packages token outside source control before DAT work.
 - Rerun `scripts/glasses-integration-preflight.sh --write-evidence` after credentials, dependencies, or device availability change.
-- Run `scripts/android-device-smoke-test.sh --write-evidence` with a connected phone to create `device-evidence.md`.
+- Create phone `device-evidence.md` only during a real phone hardware step with `scripts/android-device-smoke-test.sh --write-evidence`.
 - Use the recommended runner command below, then fill only aggregate/manual rows in the linked session checklists.
 - Regenerate `scripts/audit-service-readiness.mjs --write-report` after every evidence change.
 

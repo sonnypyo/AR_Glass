@@ -257,7 +257,7 @@ function commandFor(summary) {
 function deriveNextActions(summary) {
   const actions = [];
   if (!summary.canRunPhoneSession) {
-    actions.push("Keep phone collection as the final hardware step; it will need exactly one authorized Android phone before using `--run-phone`.");
+    actions.push("Run phone collection as the first real hardware lane after the no-hardware workflow is current; it needs exactly one authorized Android phone before using `--run-phone`.");
   }
   if (!summary.local.debugApkPresent) {
     actions.push("Build the debug APK with `cd apps/voice-direction-glass && ./gradlew --no-daemon assembleDebug`.");
