@@ -23,7 +23,7 @@ This stage does not advance phone alpha, glasses alpha, beta, or production read
 
 - Stage 116 is the latest fully integrated stage.
 - Stage 117 glasses-lane post-run review exists and its report is correctly blocked, but it is not fully integrated into QA, implementation lock, app README, service audit, final report, and LLM wiki.
-- The next goal run should keep local workflow checks, controlled-direction planning, glasses/support blockers, service audit, and privacy scans current first. Direct Android phone integration is deferred to the final hardware step.
+- The next goal run should use the Android phone lane as the first real hardware step after local workflow checks. Then collect controlled direction rows, and only then move to glasses evidence.
 
 ## Output
 
@@ -31,4 +31,4 @@ This stage does not advance phone alpha, glasses alpha, beta, or production read
 
 ## Next Action
 
-Start the next goal by reading `docs/60-next-goal-handoff.md`, then refresh the no-hardware workflow and pre-phone gates. Attach exactly one authorized Android phone only for the final guarded phone lane.
+Start the next goal by reading `docs/60-next-goal-handoff.md`, then attach exactly one authorized Android phone and run the guarded phone lane when local checks are green.

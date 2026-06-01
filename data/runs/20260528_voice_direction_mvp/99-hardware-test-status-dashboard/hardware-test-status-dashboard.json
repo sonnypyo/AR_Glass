@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T16:05:02+09:00",
+  "generatedAt": "2026-06-01T15:55:36+09:00",
   "packDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
   "reportDir": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard",
   "reportPath": "data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.md",
@@ -154,16 +154,21 @@
       "evidenceGaps": []
     },
     {
-      "label": "Controlled direction trials",
-      "status": "current",
-      "command": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
-      "blockers": [],
+      "label": "Phone evidence",
+      "status": "blocked",
+      "command": "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+      "blockers": [
+        "authorized ADB devices must be exactly 1, current=0"
+      ],
       "nextActions": [
-        "Keep the session plan current before the final phone hardware run; observed rows still require real hardware evidence."
+        "Run this as the first real hardware lane after the no-hardware workflow is current.",
+        "After the run, validate device evidence, direction summary, and promotion profiles before making any alpha claim."
       ],
       "evidenceGaps": [
-        "observed direction rows incomplete: 0/80",
-        "production direction candidate false until aggregate evidence is reviewed"
+        "real phone device-evidence.md not collected yet",
+        "direction summary will be generated only after real phone device-evidence.md exists",
+        "direction manifest apply is not ready for canonical promotion",
+        "phone private alpha candidate false until manual device evidence rows pass"
       ]
     },
     {
@@ -195,21 +200,16 @@
       ]
     },
     {
-      "label": "Phone evidence",
-      "status": "blocked",
-      "command": "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-      "blockers": [
-        "authorized ADB devices must be exactly 1, current=0"
-      ],
+      "label": "Controlled direction trials",
+      "status": "current",
+      "command": "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
+      "blockers": [],
       "nextActions": [
-        "Keep this as the final hardware step after local workflow, controlled-direction planning, glasses/support preparation, and privacy scans are current.",
-        "After the run, validate device evidence, direction summary, and promotion profiles before making any alpha claim."
+        "Keep the session plan ready for phone hardware; collect observed rows after the phone app run is proven."
       ],
       "evidenceGaps": [
-        "real phone device-evidence.md not collected yet",
-        "direction summary will be generated only after real phone device-evidence.md exists",
-        "direction manifest apply is not ready for canonical promotion",
-        "phone private alpha candidate false until manual device evidence rows pass"
+        "observed direction rows incomplete: 0/80",
+        "production direction candidate false until aggregate evidence is reviewed"
       ]
     }
   ],
@@ -226,9 +226,9 @@
   "nextActions": [
     "Run the default no-hardware workflow before any real evidence lane.",
     "Keep data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/trial-plan.csv ready; recorded rows are 0/80.",
-    "Prepare glasses and support evidence gates before the final Android phone integration run.",
+    "Prepare glasses and support evidence gates, but run glasses only after the phone MVP and direction evidence path are proven.",
     "Support drill preparation is current; strict support evidence remains blocked until real owner-reviewed drills exist.",
-    "Phone lane is deferred to the final hardware step and blocked until exactly one authorized Android phone is attached.",
+    "Phone lane is next but blocked until exactly one authorized Android phone is attached.",
     "Keep phone/glasses/support strict promotion profiles blocked until matching real evidence exists.",
     "Use `scripts/validate-hardware-test-promotion.mjs --profile workflow --json` after every operator-pack run.",
     "Regenerate this dashboard after any phone, glasses, support, Android XR, or preflight evidence change."

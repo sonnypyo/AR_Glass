@@ -107,7 +107,7 @@ scripts/validate-phone-private-alpha-evidence-runner.mjs data/runs/<run>/phone-a
 
 - The runner intentionally does not persist child command stdout/stderr because ADB and Android output can include private identifiers.
 - No-device execution is useful for validating workflow shape, but it remains non-evidence.
-- The runner does not replace the broader physical session pack; it is the final phone evidence command for the phone-alpha gate.
+- The runner does not replace the broader physical session pack; it is the phone-first shortcut for the next gate.
 - The hardware test operator pack wraps this runner and keeps dry-run phone evidence inside the operator folder so day-of-test outputs stay grouped.
 - Direction extraction is default validation only. It keeps `productionDirectionCandidate=false` until strict controlled phone and wearable direction evidence exists.
 - Direction manifest apply is dry-run only inside the phone runner. It must never write the canonical direction manifest during phone evidence collection.

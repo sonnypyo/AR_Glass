@@ -77,11 +77,11 @@ Current caution:
 
 The viable project shape is:
 
-1. Build an Android-native app with phone host/fallback outputs separated from glasses claims.
-2. Keep the Meta DAT adapter boundary ready for Ray-Ban Display/Gen 1 hardware sessions.
-3. Keep the Android XR projected activity and ProjectedContext path ready for audio/display glasses.
+1. Build a phone-first native Android app.
+2. Add a Meta DAT adapter for Ray-Ban Display/Gen 1 hardware sessions.
+3. Add an Android XR projected activity for audio/display glasses.
 4. Keep voice detection and direction estimation independent of either platform.
-5. Treat exact direction, phone output proof, and glasses-side haptics as hardware validation milestones, not assumptions.
+5. Treat exact direction and glasses-side haptics as hardware validation milestones, not assumptions.
 
 ## Build Tooling Findings
 

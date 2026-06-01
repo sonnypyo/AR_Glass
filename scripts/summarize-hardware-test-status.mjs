@@ -409,17 +409,15 @@ function summarize() {
       ["Run before every hardware session."],
     ),
     lane(
-      "Controlled direction trials",
-      controlledDirection.observedRowsComplete ? "ready" : (controlledDirection.planningReady ? "current" : (controlledDirection.validatorOk ? "not-ready" : "blocked")),
-      path.join(controlledDirection.sessionDir, "commands.sh"),
+      "Phone evidence",
+      statusFor(canRunPhone, phoneCollectionBlockers.length > 0, false),
+      `RUN_PHONE=1 ${path.join(pack.relative, "commands.sh")}`,
+      phoneCollectionBlockers,
       [
-        ...(controlledDirection.validatorOk ? [] : ["controlled direction session validator failing"]),
+        "Run this as the first real hardware lane after the no-hardware workflow is current.",
+        "After the run, validate device evidence, direction summary, and promotion profiles before making any alpha claim.",
       ],
-      ["Keep the session plan current before the final phone hardware run; observed rows still require real hardware evidence."],
-      [
-        ...(controlledDirection.observedRowsComplete ? [] : [`observed direction rows incomplete: ${controlledDirection.recordedRows}/${controlledDirection.totalPlannedRows}`]),
-        ...(controlledDirection.productionDirectionCandidate ? [] : ["production direction candidate false until aggregate evidence is reviewed"]),
-      ],
+      phoneEvidenceGaps,
     ),
     lane(
       "Glasses evidence",
@@ -453,15 +451,17 @@ function summarize() {
       ],
     ),
     lane(
-      "Phone evidence",
-      statusFor(canRunPhone, phoneCollectionBlockers.length > 0, false),
-      `RUN_PHONE=1 ${path.join(pack.relative, "commands.sh")}`,
-      phoneCollectionBlockers,
+      "Controlled direction trials",
+      controlledDirection.observedRowsComplete ? "ready" : (controlledDirection.planningReady ? "current" : (controlledDirection.validatorOk ? "not-ready" : "blocked")),
+      path.join(controlledDirection.sessionDir, "commands.sh"),
       [
-        "Keep this as the final hardware step after local workflow, controlled-direction planning, glasses/support preparation, and privacy scans are current.",
-        "After the run, validate device evidence, direction summary, and promotion profiles before making any alpha claim.",
+        ...(controlledDirection.validatorOk ? [] : ["controlled direction session validator failing"]),
       ],
-      phoneEvidenceGaps,
+      ["Keep the session plan ready for phone hardware; collect observed rows after the phone app run is proven."],
+      [
+        ...(controlledDirection.observedRowsComplete ? [] : [`observed direction rows incomplete: ${controlledDirection.recordedRows}/${controlledDirection.totalPlannedRows}`]),
+        ...(controlledDirection.productionDirectionCandidate ? [] : ["production direction candidate false until aggregate evidence is reviewed"]),
+      ],
     ),
   ];
 
@@ -470,9 +470,9 @@ function summarize() {
     ...(controlledDirection.planningReady
       ? [`Keep ${controlledDirection.sessionDir}/trial-plan.csv ready; recorded rows are ${controlledDirection.recordedRows}/${controlledDirection.totalPlannedRows}.`]
       : ["Generate and validate a controlled direction-trial session before the next direction hardware test."]),
-    "Prepare glasses and support evidence gates before the final Android phone integration run.",
+    "Prepare glasses and support evidence gates, but run glasses only after the phone MVP and direction evidence path are proven.",
     ...(supportPreparationReady ? ["Support drill preparation is current; strict support evidence remains blocked until real owner-reviewed drills exist."] : ["Fix support drill preparation before promotion review."]),
-    ...(canRunPhone ? ["Phone lane is ready only as the final hardware step; run `RUN_PHONE=1` through the guarded phone-lane runner after pre-phone gates are current."] : ["Phone lane is deferred to the final hardware step and blocked until exactly one authorized Android phone is attached."]),
+    ...(canRunPhone ? ["Phone lane is ready next; run `RUN_PHONE=1` through the guarded phone-lane runner."] : ["Phone lane is next but blocked until exactly one authorized Android phone is attached."]),
     "Keep phone/glasses/support strict promotion profiles blocked until matching real evidence exists.",
     "Use `scripts/validate-hardware-test-promotion.mjs --profile workflow --json` after every operator-pack run.",
     "Regenerate this dashboard after any phone, glasses, support, Android XR, or preflight evidence change.",

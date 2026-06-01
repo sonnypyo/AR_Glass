@@ -41,7 +41,7 @@ This folder is the working instruction set for the glasses app project. Keep it 
 - [32-direction-validation-evidence-snapshot.md](32-direction-validation-evidence-snapshot.md): per-direction matched/mismatched/unknown evidence snapshot contract for controlled direction trials.
 - [33-release-readiness-ui.md](33-release-readiness-ui.md): in-app release readiness card for internal, phone alpha, glasses alpha, beta, and production gates.
 - [34-release-readiness-next-actions.md](34-release-readiness-next-actions.md): in-app phone-private-alpha blocker evidence and next-action rows for hardware testers.
-- [35-phone-private-alpha-evidence-runner.md](35-phone-private-alpha-evidence-runner.md): final phone evidence runner for build, smoke evidence, validator, service audit, and non-PII summary.
+- [35-phone-private-alpha-evidence-runner.md](35-phone-private-alpha-evidence-runner.md): phone-first runner for build, smoke evidence, validator, service audit, and non-PII summary.
 - [36-phone-private-alpha-runner-validator.md](36-phone-private-alpha-runner-validator.md): validator for phone-alpha runner summaries, privacy shape, no-device dry runs, and strict candidate claims.
 - [37-service-gate-assertions.md](37-service-gate-assertions.md): assertion profiles for current-safe, internal prototype, phone alpha, glasses alpha, and production promotion gates.
 - [38-glasses-haptics-intent-contract.md](38-glasses-haptics-intent-contract.md): app-side haptics target/intensity/pulse intent contract without claiming physical glasses haptics support.

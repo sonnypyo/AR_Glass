@@ -62,16 +62,16 @@ The source dashboard already summarizes:
 Current decision:
 
 ```text
-pre_phone_preparation_current_phone_deferred
+phone_lane_blocked_attach_phone
 ```
 
 Meaning:
 
 - The default no-hardware operator workflow is current when the dashboard checks and privacy scan already pass.
+- `RUN_PHONE=1` is the next real hardware lane, but it still needs exactly one authorized Android phone.
 - Controlled direction planning and support preparation can be `current` even though observed direction rows and strict support evidence still require real reviewed evidence.
-- Meta DAT, Ray-Ban fallback, Android XR, and haptics/fallback blockers stay explicit before any glasses hardware claim.
-- `RUN_PHONE=1` is deferred to the final hardware step and still needs exactly one authorized Android phone.
 - Missing phone `device-evidence.md` and direction summary are post-run evidence gaps, not pre-run blockers.
+- Keep glasses lane blocked until the phone MVP and direction evidence path are proven, then handle Meta application id, GitHub Packages token, glasses preflight blockers, and real Android XR proof.
 - Controlled direction trial planning is ready, but observed rows remain `0/80`.
 - Direction manifest apply is not ready for canonical promotion.
 
@@ -83,7 +83,7 @@ The report stores only booleans, counts, statuses, command recommendations, bloc
 
 - This script does not run hardware commands. It only recommends the next safe command from the latest dashboard state.
 - The executor in `docs/54-hardware-next-action-executor.md` is the only automation that runs a recommended action, and it refuses blocked/manual-required actions.
-- The phone-lane runner in `docs/56-phone-lane-hardware-runner.md` refreshes this brief before attempting the final `RUN_PHONE=1` hardware step.
+- The phone-lane runner in `docs/56-phone-lane-hardware-runner.md` refreshes this brief before attempting `RUN_PHONE=1`.
 - A ready default workflow is not release evidence.
 - `RUN_PHONE=1`, `RUN_GLASSES=1`, and `RUN_SUPPORT=1` remain gated by the matching real evidence conditions.
-- The phone lane stays last; phone alpha and direction promotion still require post-run evidence validation.
+- The phone lane becomes executable based on collection readiness; phone alpha and direction promotion still require post-run evidence validation.

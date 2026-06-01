@@ -1,6 +1,6 @@
 # Hardware Test Status Dashboard
 
-Generated: 2026-06-01T16:05:02+09:00
+Generated: 2026-06-01T15:55:36+09:00
 Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 
 ## Decision
@@ -17,20 +17,20 @@ Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 | Lane | Status | Command | Blockers |
 | --- | --- | --- | --- |
 | Default no-hardware workflow | ready | `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
-| Controlled direction trials | current | `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh` | - |
+| Phone evidence | blocked | `RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | authorized ADB devices must be exactly 1, current=0 |
 | Glasses evidence | blocked | `RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | Meta application id missing; GitHub Packages token missing; glasses preflight blocked=2; real Android XR projected contract not ready; glasses private alpha candidate false |
 | Support evidence | current | `RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | - |
-| Phone evidence | blocked | `RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh` | authorized ADB devices must be exactly 1, current=0 |
+| Controlled direction trials | current | `data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh` | - |
 
 ## Evidence Gaps
 
 | Lane | Evidence gaps after collection |
 | --- | --- |
 | Default no-hardware workflow | - |
-| Controlled direction trials | observed direction rows incomplete: 0/80; production direction candidate false until aggregate evidence is reviewed |
+| Phone evidence | real phone device-evidence.md not collected yet; direction summary will be generated only after real phone device-evidence.md exists; direction manifest apply is not ready for canonical promotion; phone private alpha candidate false until manual device evidence rows pass |
 | Glasses evidence | - |
 | Support evidence | strict support evidence not complete until real owner-reviewed drills exist |
-| Phone evidence | real phone device-evidence.md not collected yet; direction summary will be generated only after real phone device-evidence.md exists; direction manifest apply is not ready for canonical promotion; phone private alpha candidate false until manual device evidence rows pass |
+| Controlled direction trials | observed direction rows incomplete: 0/80; production direction candidate false until aggregate evidence is reviewed |
 
 ## Key Evidence
 
@@ -64,9 +64,9 @@ Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 
 - Run the default no-hardware workflow before any real evidence lane.
 - Keep data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/trial-plan.csv ready; recorded rows are 0/80.
-- Prepare glasses and support evidence gates before the final Android phone integration run.
+- Prepare glasses and support evidence gates, but run glasses only after the phone MVP and direction evidence path are proven.
 - Support drill preparation is current; strict support evidence remains blocked until real owner-reviewed drills exist.
-- Phone lane is deferred to the final hardware step and blocked until exactly one authorized Android phone is attached.
+- Phone lane is next but blocked until exactly one authorized Android phone is attached.
 - Keep phone/glasses/support strict promotion profiles blocked until matching real evidence exists.
 - Use `scripts/validate-hardware-test-promotion.mjs --profile workflow --json` after every operator-pack run.
 - Regenerate this dashboard after any phone, glasses, support, Android XR, or preflight evidence change.

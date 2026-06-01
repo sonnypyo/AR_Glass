@@ -141,43 +141,43 @@ function buildActions(dashboard) {
   ));
 
   actions.push(action(
-    "run-controlled-direction-session",
+    "run-phone-lane",
     2,
+    authorizedCount === 1 && phoneLane?.status !== "blocked" ? "ready" : "blocked",
+    "Run Android phone evidence lane",
+    phoneLane?.command ?? "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
+    "Run this as the first real hardware lane after the no-hardware workflow is current; it installs/runs the app and collects phone alert evidence.",
+    phoneLane?.blockers ?? [`authorized ADB devices must be exactly 1, current=${authorizedCount}`],
+  ));
+
+  actions.push(action(
+    "run-controlled-direction-session",
+    3,
     directionLane?.status ?? "blocked",
     "Prepare controlled direction rows",
     directionLane?.command ?? "data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh",
-    "Keep the 20-per-direction front/back/left/right evidence plan ready before the final phone hardware run; do not fake observed rows.",
+    "Keep the 20-per-direction front/back/left/right evidence plan ready; collect observed rows after the phone app run is proven.",
     directionLane?.blockers ?? [],
   ));
 
   actions.push(action(
     "run-glasses-lane",
-    3,
+    4,
     glassesLane?.status ?? "blocked",
     "Prepare glasses evidence lane",
     glassesLane?.command ?? "RUN_GLASSES=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-    "Keep Meta DAT, Ray-Ban fallback, Android XR, and haptics/fallback gates explicit before the final phone integration step; do not make hardware claims without real evidence.",
+    "Run after the phone MVP and direction evidence path are proven; keep Meta DAT, Ray-Ban fallback, Android XR, and haptics/fallback gates explicit before any hardware claim.",
     glassesLane?.blockers ?? [],
   ));
 
   actions.push(action(
     "run-support-lane",
-    4,
+    5,
     supportLane?.status ?? "manual-required",
     "Prepare support drill lane",
     supportLane?.command ?? "RUN_SUPPORT=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
     "Use when deletion and mistaken-alert drill owners can record reviewed non-PII evidence.",
     supportLane?.blockers ?? [],
-  ));
-
-  actions.push(action(
-    "run-phone-lane",
-    5,
-    authorizedCount === 1 && phoneLane?.status !== "blocked" ? "ready" : "blocked",
-    "Run final Android phone evidence lane",
-    phoneLane?.command ?? "RUN_PHONE=1 data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh",
-    "Keep this as the final hardware step after the no-hardware workflow, controlled-direction planning, glasses preflight, support preparation, and privacy scans are current.",
-    phoneLane?.blockers ?? [`authorized ADB devices must be exactly 1, current=${authorizedCount}`],
   ));
 
   return actions;
@@ -188,10 +188,9 @@ function summarizeDecision(dashboard, actions) {
   const phoneReady = actions.find((item) => item.id === "run-phone-lane")?.status === "ready";
   const phoneBlocked = actions.find((item) => item.id === "run-phone-lane")?.status === "blocked";
   const currentActions = actions.filter((item) => item.status === "current");
-  if (readyActions.some((item) => item.id === "refresh-default-workflow")) return "refresh_pre_phone_workflow";
-  if (readyActions.some((item) => item.id !== "run-phone-lane")) return "pre_phone_action_ready";
-  if (phoneReady) return "phone_lane_ready_final_step";
-  if (phoneBlocked && currentActions.length > 0 && dashboard?.ok) return "pre_phone_preparation_current_phone_deferred";
+  if (readyActions.some((item) => item.id === "refresh-default-workflow")) return "refresh_workflow_before_phone";
+  if (phoneReady) return "phone_lane_ready_next";
+  if (phoneBlocked && currentActions.length > 0 && dashboard?.ok) return "phone_lane_blocked_attach_phone";
   return dashboard?.ok ? "workflow_ok_no_hardware_lane_ready" : "workflow_attention_required";
 }
 
