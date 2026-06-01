@@ -1,6 +1,6 @@
 # Hardware Test Promotion Validation
 
-Generated: 2026-06-01T14:42:47+09:00
+Generated: 2026-06-01T14:55:49+09:00
 Profile: workflow
 Result: pass
 Pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack

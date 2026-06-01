@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-06-01T14:42:47+09:00",
+  "generatedAt": "2026-06-01T14:55:49+09:00",
   "reportDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/phone-alpha-runner",
   "evidenceDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/android-phone-smoke-dry-run",
   "deviceEvidencePath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/android-phone-smoke-dry-run/device-evidence.md",
@@ -22,8 +22,8 @@
       "label": "Android phone smoke evidence",
       "status": "fail",
       "exitCode": 2,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "scripts/android-device-smoke-test.sh --skip-build --write-evidence --evidence-dir data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/android-phone-smoke-dry-run",
       "rawOutputPersisted": false
     },
@@ -31,8 +31,8 @@
       "label": "Device evidence validator",
       "status": "skipped",
       "exitCode": null,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/validate-device-evidence.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/android-phone-smoke-dry-run/device-evidence.md --json",
       "rawOutputPersisted": false
     },
@@ -40,8 +40,8 @@
       "label": "Direction evidence summary extraction",
       "status": "skipped",
       "exitCode": null,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/extract-direction-evidence-summary.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/android-phone-smoke-dry-run/device-evidence.md --report-dir data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/phone-alpha-runner/direction-evidence --json",
       "rawOutputPersisted": false
     },
@@ -49,8 +49,8 @@
       "label": "Direction evidence summary validator",
       "status": "skipped",
       "exitCode": null,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/validate-direction-evidence-summary.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/phone-alpha-runner/direction-evidence/direction-evidence-summary.json --json",
       "rawOutputPersisted": false
     },
@@ -58,8 +58,8 @@
       "label": "Direction evidence manifest apply dry-run",
       "status": "skipped",
       "exitCode": null,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/apply-direction-evidence-summary.mjs data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/phone-alpha-runner/direction-evidence/direction-evidence-summary.json --json",
       "rawOutputPersisted": false
     },
@@ -67,8 +67,8 @@
       "label": "Service readiness audit",
       "status": "pass",
       "exitCode": 0,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/phone-alpha-runner/service-readiness-audit",
       "rawOutputPersisted": false
     }

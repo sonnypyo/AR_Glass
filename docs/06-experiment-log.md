@@ -4381,3 +4381,41 @@ Result:
 - Operator-pack workflow completed successfully.
 - Dashboard decision is `pre_phone_workflow_ready_keep_phone_last`.
 - Targeted privacy scan passed with zero violations.
+
+## 2026-06-01 KST: Pre-Phone Gate Refresh
+
+### Decision
+
+Refresh only the pre-phone gates and keep phone hardware execution deferred.
+
+### Reasoning
+
+The next useful work before a real phone run is to prove that Stage 117, controlled direction planning, service readiness, and privacy scans remain current without creating new broad planning documents or making hardware claims.
+
+### Trial/Error Notes
+
+- Stage 117 glasses-lane review still returns `blocked` because real Ray-Ban Display, Ray-Ban Gen 1 fallback, Android XR projected runtime, and strict glasses-alpha promotion evidence are missing.
+- Controlled direction session validation passes and remains ready for 80 planned rows, with observed rows still `0/80`.
+- Default operator-pack workflow passes and leaves phone/glasses private-alpha candidates false.
+- Phone evidence remains final-step-only and blocked by authorized ADB device count `0`.
+
+### Verification
+
+From the repository root:
+
+```bash
+scripts/review-glasses-lane-evidence.mjs --write-report --json
+node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/52-service-readiness-audit
+scripts/scan-evidence-privacy.mjs --write-report --json
+data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh
+data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/commands.sh
+node scripts/summarize-hardware-test-status.mjs --write-report --json
+node scripts/recommend-hardware-next-actions.mjs --write-report --json
+```
+
+Result:
+
+- No-hardware workflow passed.
+- Controlled direction session passed.
+- Privacy scan passed with zero violations.
+- Hardware next-action decision remains `pre_phone_workflow_ready_keep_phone_last`.

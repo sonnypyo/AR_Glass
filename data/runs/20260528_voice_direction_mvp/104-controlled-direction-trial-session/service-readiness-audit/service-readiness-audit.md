@@ -1,6 +1,6 @@
 # Service Readiness Audit
 
-Generated: 2026-05-28T12:14:39+09:00
+Generated: 2026-06-01T14:55:24+09:00
 
 ## Purpose
 
@@ -88,6 +88,8 @@ This audit ties the implemented app, release checklist, glasses readiness checkl
 | Direction evidence extractor | present | docs/42-direction-evidence-extractor.md |
 | Direction evidence extractor script | present | scripts/extract-direction-evidence-summary.mjs |
 | Direction evidence summary validator script | present | scripts/validate-direction-evidence-summary.mjs |
+| Direction evidence manifest apply gate | present | docs/52-direction-evidence-manifest-apply.md |
+| Direction evidence manifest apply script | present | scripts/apply-direction-evidence-summary.mjs |
 | Phone runner direction evidence integration | present | docs/43-phone-runner-direction-evidence.md |
 | Android XR projected contract | present | docs/44-android-xr-projected-contract.md |
 | Android XR projected contract validator script | present | scripts/validate-android-xr-projected-contract.mjs |
@@ -95,6 +97,7 @@ This audit ties the implemented app, release checklist, glasses readiness checkl
 | Hardware test status dashboard | present | docs/46-hardware-test-status-dashboard.md |
 | Hardware test status dashboard script | present | scripts/summarize-hardware-test-status.mjs |
 | Latest hardware test status dashboard | present | data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.md |
+| Hardware dashboard controlled direction session integration | present | data/runs/20260528_voice_direction_mvp/105-hardware-dashboard-controlled-direction-session.md |
 | Device evidence redaction | present | docs/47-device-evidence-redaction.md |
 | Evidence privacy scan | present | docs/48-evidence-privacy-scan.md |
 | Evidence privacy scanner script | present | scripts/scan-evidence-privacy.mjs |
@@ -104,6 +107,41 @@ This audit ties the implemented app, release checklist, glasses readiness checkl
 | Direction validation ADB recorder | present | docs/50-direction-validation-adb-recorder.md |
 | Direction validation ADB recorder script | present | scripts/record-direction-validation-trial.sh |
 | Direction validation ADB receiver | present | apps/voice-direction-glass/app/src/debug/kotlin/com/voicedirection/glass/qa/DirectionValidationTrialReceiver.kt |
+| Direction validation target progress UI | present | data/runs/20260528_voice_direction_mvp/106-direction-validation-target-progress-ui.md |
+| Direction target progress evidence snapshot | present | data/runs/20260528_voice_direction_mvp/107-direction-target-progress-evidence-snapshot.md |
+| Direction evidence summary target progress | present | data/runs/20260528_voice_direction_mvp/108-direction-evidence-summary-target-progress.md |
+| Direction evidence manifest apply stage | present | data/runs/20260528_voice_direction_mvp/109-direction-evidence-manifest-apply.md |
+| Phone runner direction apply dry-run stage | present | data/runs/20260528_voice_direction_mvp/110-phone-runner-direction-apply-dry-run.md |
+| Hardware next actions | present | docs/53-hardware-next-actions.md |
+| Hardware next actions script | present | scripts/recommend-hardware-next-actions.mjs |
+| Latest hardware next actions report | present | data/runs/20260528_voice_direction_mvp/111-hardware-next-actions/hardware-next-actions.md |
+| Hardware next actions stage | present | data/runs/20260528_voice_direction_mvp/111-hardware-next-actions.md |
+| Hardware next action executor | present | docs/54-hardware-next-action-executor.md |
+| Hardware next action executor script | present | scripts/run-hardware-next-action.mjs |
+| Latest hardware next action execution report | present | data/runs/20260528_voice_direction_mvp/112-hardware-next-action-executor/hardware-next-action-execution.md |
+| Hardware next action executor stage | present | data/runs/20260528_voice_direction_mvp/112-hardware-next-action-executor.md |
+| Phone lane collection readiness | present | docs/55-phone-lane-collection-readiness.md |
+| Phone lane collection readiness stage | present | data/runs/20260528_voice_direction_mvp/113-phone-lane-collection-readiness.md |
+| Phone lane hardware runner | present | docs/56-phone-lane-hardware-runner.md |
+| Phone lane hardware runner script | present | scripts/run-phone-lane-hardware.mjs |
+| Latest phone lane hardware runner report | present | data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner/phone-lane-hardware-runner.md |
+| Phone lane hardware runner stage | present | data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner.md |
+| Phone lane post-run review | present | docs/57-phone-lane-post-run-review.md |
+| Phone lane post-run review script | present | scripts/review-phone-lane-evidence.mjs |
+| Latest phone lane post-run review report | present | data/runs/20260528_voice_direction_mvp/115-phone-lane-post-run-review/phone-lane-post-run-review.md |
+| Phone lane post-run review stage | present | data/runs/20260528_voice_direction_mvp/115-phone-lane-post-run-review.md |
+| Phone lane ready watcher | present | docs/58-phone-lane-ready-watcher.md |
+| Phone lane ready watcher script | present | scripts/run-phone-lane-when-ready.mjs |
+| Latest phone lane ready watcher report | present | data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher/phone-lane-ready-watcher.md |
+| Phone lane ready watcher stage | present | data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher.md |
+| Glasses lane post-run review | present | docs/59-glasses-lane-post-run-review.md |
+| Glasses lane post-run review script | present | scripts/review-glasses-lane-evidence.mjs |
+| Latest glasses lane post-run review report | present | data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review/glasses-lane-post-run-review.md |
+| Glasses lane post-run review stage | present | data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review.md |
+| Controlled direction trial session | present | docs/51-controlled-direction-trial-session.md |
+| Controlled direction trial session generator | present | scripts/create-controlled-direction-trial-session.mjs |
+| Controlled direction trial session validator | present | scripts/validate-controlled-direction-trial-session.mjs |
+| Latest controlled direction trial session | present | data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/README.md |
 | Latest glasses preflight evidence | present | data/runs/20260528_voice_direction_mvp/30-glasses-preflight-evidence/glasses-preflight.md |
 | Latest device evidence report | missing | Run scripts/android-device-smoke-test.sh --write-evidence with a phone attached. |
 | Device evidence validator | not-run | No device-evidence.md file found under data/runs. |
@@ -156,12 +194,19 @@ This audit ties the implemented app, release checklist, glasses readiness checkl
 35. Validate the Android XR projected contract with `scripts/validate-android-xr-projected-contract.mjs --json`; use strict mode only after ProjectedContext, Glimmer, real adapter, and device evidence exist.
 36. Confirm `scripts/glasses-integration-preflight.sh --write-evidence` records Android XR default projected contract pass and strict real projected contract manual-required before adapter work.
 37. Regenerate `scripts/summarize-hardware-test-status.mjs --write-report --json` after every operator-pack, phone, glasses, support, Android XR, or preflight evidence change.
-38. Confirm generated phone `device-evidence.md` redacts `Device serial` and `Build fingerprint` before promotion review.
-39. Run `scripts/scan-evidence-privacy.mjs <evidence-or-report-dir> --write-report --json` after every generated evidence/report folder update and before promotion review.
-40. Use `scripts/record-direction-validation-trial.sh` only on installed debug APKs when controlled expected-vs-observed direction trials need repeatable ADB entry.
-41. Add Meta DAT credentials outside source control and rerun `scripts/glasses-integration-preflight.sh --write-evidence`.
-42. Replace stub glasses adapters one platform at a time only after preflight blockers close.
-43. Keep this audit report with the run artifacts after every phone/glasses/support session.
+38. Run `scripts/recommend-hardware-next-actions.mjs --write-report --json` after the hardware dashboard changes so the day-of-test command order reflects current blockers.
+39. Confirm `collectionReadiness.phoneCollectionBlockers` contains only pre-run blockers and `collectionReadiness.phoneEvidenceGaps` contains post-run promotion gaps before using the phone lane.
+40. For the next phone pass, run `scripts/run-phone-lane-hardware.mjs --write-report --json`, then add `--execute` only when it reports the phone lane ready.
+41. For unattended phone setup, run `scripts/run-phone-lane-when-ready.mjs --write-report --json`; add `--execute` only when the connected phone is the intended test device.
+42. After a phone-lane execution, run `scripts/review-phone-lane-evidence.mjs --write-report --json` before changing any phone-alpha claim.
+43. Run `scripts/run-hardware-next-action.mjs --execute --write-report --json` only when the selected action is `ready` and should be executed.
+44. Confirm generated phone `device-evidence.md` redacts `Device serial` and `Build fingerprint` before promotion review.
+45. Run `scripts/scan-evidence-privacy.mjs <evidence-or-report-dir> --write-report --json` after every generated evidence/report folder update and before promotion review.
+46. Use `scripts/record-direction-validation-trial.sh` only on installed debug APKs when controlled expected-vs-observed direction trials need repeatable ADB entry.
+47. Generate `scripts/create-controlled-direction-trial-session.mjs --json` before any 20-per-direction front/back/left/right hardware pass.
+48. Add Meta DAT credentials outside source control and rerun `scripts/glasses-integration-preflight.sh --write-evidence`.
+49. Replace stub glasses adapters one platform at a time only after preflight blockers close.
+50. Keep this audit report with the run artifacts after every phone/glasses/support session.
 
 ## Privacy Guardrail
 

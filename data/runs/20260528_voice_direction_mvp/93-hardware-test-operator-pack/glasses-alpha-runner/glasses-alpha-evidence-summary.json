@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "ok": true,
-  "generatedAt": "2026-06-01T14:42:47+09:00",
+  "generatedAt": "2026-06-01T14:55:49+09:00",
   "reportDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner",
   "reportPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/glasses-alpha-evidence-summary.md",
   "summaryJsonPath": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/glasses-alpha-evidence-summary.json",
@@ -28,8 +28,8 @@
       "label": "Validate glasses hardware session",
       "status": "pass",
       "exitCode": 0,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/validate-glasses-hardware-session.mjs data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack --json",
       "rawOutputPersisted": false
     },
@@ -37,8 +37,8 @@
       "label": "Validate glasses hardware evidence draft",
       "status": "pass",
       "exitCode": 0,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/validate-glasses-hardware-evidence.mjs --json",
       "rawOutputPersisted": false
     },
@@ -46,8 +46,8 @@
       "label": "Check strict glasses hardware validation",
       "status": "expected-fail",
       "exitCode": 1,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/validate-glasses-hardware-evidence.mjs --require-glasses-alpha-ready --json",
       "rawOutputPersisted": false,
       "expectedFailure": true
@@ -56,8 +56,8 @@
       "label": "Dry-run glasses hardware manifest apply",
       "status": "pass",
       "exitCode": 0,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/apply-glasses-hardware-session.mjs data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack --json",
       "rawOutputPersisted": false
     },
@@ -65,8 +65,8 @@
       "label": "Check glasses-alpha service gate",
       "status": "expected-fail",
       "exitCode": 1,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/assert-service-gates.mjs --profile glasses-alpha --json",
       "rawOutputPersisted": false,
       "expectedFailure": true
@@ -75,8 +75,8 @@
       "label": "Write service readiness audit",
       "status": "pass",
       "exitCode": 0,
-      "startedAt": "2026-06-01T14:42:47+09:00",
-      "endedAt": "2026-06-01T14:42:47+09:00",
+      "startedAt": "2026-06-01T14:55:49+09:00",
+      "endedAt": "2026-06-01T14:55:49+09:00",
       "command": "node scripts/audit-service-readiness.mjs --write-report --report-dir data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack/glasses-alpha-runner/service-readiness-audit",
       "rawOutputPersisted": false
     }
