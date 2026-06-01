@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const DEFAULT_JAVA_HOME = path.join(ROOT_DIR, ".toolchains/jdk-17.0.19+10/Contents/Home");
 const DEFAULT_REPORT_DIR = "data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner";
 const DASHBOARD_SCRIPT = "scripts/summarize-hardware-test-status.mjs";
 const NEXT_ACTIONS_SCRIPT = "scripts/recommend-hardware-next-actions.mjs";
@@ -87,7 +88,7 @@ function runJsonStep(label, command, commandArgs) {
     encoding: "utf8",
     env: {
       ...process.env,
-      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home",
+      JAVA_HOME: process.env.JAVA_HOME || DEFAULT_JAVA_HOME,
       ANDROID_HOME: process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk",
     },
   });
@@ -124,7 +125,7 @@ function executePhoneLane() {
     env: {
       ...process.env,
       RUN_PHONE: "1",
-      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home",
+      JAVA_HOME: process.env.JAVA_HOME || DEFAULT_JAVA_HOME,
       ANDROID_HOME: process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk",
     },
     stdio: "ignore",

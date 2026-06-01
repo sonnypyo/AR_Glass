@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="/Users/sonjunpyo/Documents/Project/glass"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 PACK_DIR="$ROOT_DIR/data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack"
 PHYSICAL_SESSION="${PHYSICAL_SESSION:-$ROOT_DIR/data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack}"
 SUPPORT_SESSION="${SUPPORT_SESSION:-$ROOT_DIR/data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack}"
@@ -12,7 +12,7 @@ RUN_PHONE="${RUN_PHONE:-0}"
 RUN_GLASSES="${RUN_GLASSES:-0}"
 RUN_SUPPORT="${RUN_SUPPORT:-0}"
 
-export JAVA_HOME="${JAVA_HOME:-/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home}"
+export JAVA_HOME="${JAVA_HOME:-$ROOT_DIR/.toolchains/jdk-17.0.19+10/Contents/Home}"
 export ANDROID_HOME="${ANDROID_HOME:-/Users/sonjunpyo/Library/Android/sdk}"
 
 cd "$ROOT_DIR"

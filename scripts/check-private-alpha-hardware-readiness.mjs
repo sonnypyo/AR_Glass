@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const DEFAULT_JAVA_HOME = path.join(ROOT_DIR, ".toolchains/jdk-17.0.19+10/Contents/Home");
 const DEFAULT_REHEARSAL_SESSION = "data/runs/20260528_voice_direction_mvp/79-private-alpha-rehearsal-pack";
 const DEFAULT_PHYSICAL_SESSION = "data/runs/20260528_voice_direction_mvp/53-physical-test-session-pack";
 const DEFAULT_SUPPORT_SESSION = "data/runs/20260528_voice_direction_mvp/74-support-drill-session-pack";
@@ -103,7 +104,7 @@ function runNodeJson(scriptRelative, scriptArgs = []) {
     encoding: "utf8",
     env: {
       ...process.env,
-      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home",
+      JAVA_HOME: process.env.JAVA_HOME || DEFAULT_JAVA_HOME,
       ANDROID_HOME: process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk",
     },
   });
@@ -219,7 +220,7 @@ function adbStatus() {
 }
 
 function localToolchainStatus() {
-  const javaHome = process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home";
+  const javaHome = process.env.JAVA_HOME || DEFAULT_JAVA_HOME;
   const androidHome = process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk";
   return {
     javaHomePresent: fs.existsSync(javaHome),

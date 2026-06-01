@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+DEFAULT_JAVA_HOME="$ROOT_DIR/.toolchains/jdk-17.0.19+10/Contents/Home"
 APP_DIR="$ROOT_DIR/apps/voice-direction-glass"
 APK_PATH="$APP_DIR/app/build/outputs/apk/debug/app-debug.apk"
 PACKAGE_NAME="com.voicedirection.glass"
@@ -30,8 +31,8 @@ DEBUG_RELEASE_READINESS_SNAPSHOT_RECEIVER="$PACKAGE_NAME/.qa.ReleaseReadinessSna
 DEBUG_GLASSES_READINESS_SNAPSHOT_ACTION="$PACKAGE_NAME.qa.DEBUG_GLASSES_READINESS_SNAPSHOT"
 DEBUG_GLASSES_READINESS_SNAPSHOT_RECEIVER="$PACKAGE_NAME/.qa.GlassesReadinessSnapshotReceiver"
 
-if [[ -z "${JAVA_HOME:-}" && -d "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home" ]]; then
-  export JAVA_HOME="/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home"
+if [[ -z "${JAVA_HOME:-}" && -d "$DEFAULT_JAVA_HOME" ]]; then
+  export JAVA_HOME="$DEFAULT_JAVA_HOME"
 fi
 
 if [[ -z "${ANDROID_HOME:-}" && -d "/Users/sonjunpyo/Library/Android/sdk" ]]; then

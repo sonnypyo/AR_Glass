@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const DEFAULT_JAVA_HOME = path.join(ROOT_DIR, ".toolchains/jdk-17.0.19+10/Contents/Home");
 const DEFAULT_REPORT_DIR = "data/runs/20260528_voice_direction_mvp/116-phone-lane-ready-watcher";
 const PHONE_RUNNER = "scripts/run-phone-lane-hardware.mjs";
 const PHONE_REVIEWER = "scripts/review-phone-lane-evidence.mjs";
@@ -104,7 +105,7 @@ function runJsonStep(label, command, commandArgs) {
     encoding: "utf8",
     env: {
       ...process.env,
-      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home",
+      JAVA_HOME: process.env.JAVA_HOME || DEFAULT_JAVA_HOME,
       ANDROID_HOME: process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk",
     },
   });

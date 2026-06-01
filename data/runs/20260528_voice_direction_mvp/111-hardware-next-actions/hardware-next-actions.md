@@ -1,6 +1,6 @@
 # Hardware Next Actions
 
-Generated: 2026-06-01T12:49:23+09:00
+Generated: 2026-06-01T12:52:29+09:00
 Source dashboard: data/runs/20260528_voice_direction_mvp/99-hardware-test-status-dashboard/hardware-test-status-dashboard.json
 
 ## Decision

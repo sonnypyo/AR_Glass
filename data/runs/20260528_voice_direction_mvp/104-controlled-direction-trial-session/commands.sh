@@ -11,7 +11,7 @@ bash -n "$ROOT_DIR/scripts/record-direction-validation-trial.sh"
 echo "2/6 Build debug APK and run unit tests"
 (
   cd "$ROOT_DIR/apps/voice-direction-glass"
-  export JAVA_HOME="${JAVA_HOME:-/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home}"
+  export JAVA_HOME="${JAVA_HOME:-$ROOT_DIR/.toolchains/jdk-17.0.19+10/Contents/Home}"
   export ANDROID_HOME="${ANDROID_HOME:-/Users/sonjunpyo/Library/Android/sdk}"
   ./gradlew --no-daemon test assembleDebug
 )

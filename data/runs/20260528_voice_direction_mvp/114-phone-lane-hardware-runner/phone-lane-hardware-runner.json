@@ -1,6 +1,6 @@
 {
   "ok": false,
-  "generatedAt": "2026-06-01T12:49:23+09:00",
+  "generatedAt": "2026-06-01T12:52:29+09:00",
   "mode": "dry-run",
   "status": "blocked",
   "reportDir": "data/runs/20260528_voice_direction_mvp/114-phone-lane-hardware-runner",
@@ -41,8 +41,8 @@
       "status": "pass",
       "exitCode": 0,
       "parseOk": true,
-      "startedAt": "2026-06-01T12:49:23+09:00",
-      "endedAt": "2026-06-01T12:49:23+09:00",
+      "startedAt": "2026-06-01T12:52:29+09:00",
+      "endedAt": "2026-06-01T12:52:29+09:00",
       "command": "node scripts/summarize-hardware-test-status.mjs --write-report --json",
       "rawOutputPersisted": false
     },
@@ -51,8 +51,8 @@
       "status": "pass",
       "exitCode": 0,
       "parseOk": true,
-      "startedAt": "2026-06-01T12:49:23+09:00",
-      "endedAt": "2026-06-01T12:49:23+09:00",
+      "startedAt": "2026-06-01T12:52:29+09:00",
+      "endedAt": "2026-06-01T12:52:29+09:00",
       "command": "node scripts/recommend-hardware-next-actions.mjs --write-report --json",
       "rawOutputPersisted": false
     }

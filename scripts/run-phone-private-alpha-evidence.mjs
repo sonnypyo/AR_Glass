@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const DEFAULT_JAVA_HOME = path.join(ROOT_DIR, ".toolchains/jdk-17.0.19+10/Contents/Home");
 const APP_DIR = "apps/voice-direction-glass";
 const DEFAULT_REPORT_DIR = "data/runs/20260528_voice_direction_mvp/88-phone-private-alpha-evidence-runner";
 const DEFAULT_EVIDENCE_DIR = `${DEFAULT_REPORT_DIR}/android-phone-smoke`;
@@ -133,7 +134,7 @@ function runStep(label, command, commandArgs, options = {}) {
     encoding: "utf8",
     env: {
       ...process.env,
-      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home",
+      JAVA_HOME: process.env.JAVA_HOME || DEFAULT_JAVA_HOME,
       ANDROID_HOME: process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk",
     },
   });
@@ -156,7 +157,7 @@ function runJsonStep(label, command, commandArgs, options = {}) {
     encoding: "utf8",
     env: {
       ...process.env,
-      JAVA_HOME: process.env.JAVA_HOME || "/Users/sonjunpyo/Documents/Project/glass/.toolchains/jdk-17.0.19+10/Contents/Home",
+      JAVA_HOME: process.env.JAVA_HOME || DEFAULT_JAVA_HOME,
       ANDROID_HOME: process.env.ANDROID_HOME || "/Users/sonjunpyo/Library/Android/sdk",
     },
   });
