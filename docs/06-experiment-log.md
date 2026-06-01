@@ -4660,3 +4660,25 @@ The active project objective prioritizes Android phone install/run, phone notifi
 - The phone lane remains blocked in this workspace until exactly one authorized ADB phone is attached.
 - No fake direction rows or device evidence were generated.
 - Meta DAT, Android XR, and glasses haptics remain unclaimed until real hardware evidence exists.
+
+## 2026-06-01 KST: Defer Phone Integration To Final Hardware Step
+
+### Decision
+
+Direct Android phone integration is again the final hardware step. Before that, keep only the local workflow, controlled-direction planning, glasses/support blockers, service audit, and privacy scans current.
+
+### Reasoning
+
+The latest user instruction moved phone linkage to the end. That avoids spending another cycle on ADB/device setup while there is still useful pre-phone validation to preserve.
+
+### Implemented
+
+- Updated the hardware next-action recommender so `run-phone-lane` is priority 5.
+- Updated the hardware status dashboard wording so phone evidence is the final hardware step.
+- Updated the current handoff, charter, platform implication, root/docs README, phone-runner docs, service audit docs, and generated next-goal handoff to remove the phone-first execution direction.
+
+### Trial/Error Notes
+
+- This does not create fake phone evidence or fake direction rows.
+- Phone evidence remains blocked until exactly one authorized Android phone is attached.
+- Meta DAT, Android XR, and glasses haptics remain unclaimed until real hardware evidence exists.

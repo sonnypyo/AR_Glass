@@ -1,6 +1,6 @@
 # Service Readiness Audit
 
-Generated: 2026-06-01T15:45:43+09:00
+Generated: 2026-06-01T16:05:02+09:00
 
 ## Purpose
 
@@ -180,7 +180,7 @@ This audit ties the implemented app, release checklist, glasses readiness checkl
 21. Keep `docs/32-direction-validation-evidence-snapshot.md` valid after every direction trial, snapshot, or validator field change.
 22. Keep `docs/33-release-readiness-ui.md` valid after every release checklist, readiness snapshot, or readiness UI change.
 23. Keep `docs/34-release-readiness-next-actions.md` valid after every phone-alpha evidence, next-action, or operator-facing release card change.
-24. Use `scripts/run-phone-private-alpha-evidence.mjs` for the phone-first evidence run before making a phone alpha claim.
+24. Use `scripts/run-phone-private-alpha-evidence.mjs` for the final phone evidence run before making a phone alpha claim.
 25. Validate phone-alpha runner summaries with `scripts/validate-phone-private-alpha-evidence-runner.mjs` and use strict mode only after real phone evidence exists.
 26. Assert promotion profiles with `scripts/assert-service-gates.mjs` before any phone alpha, glasses alpha, beta, or production claim.
 27. Keep `docs/38-glasses-haptics-intent-contract.md` valid after every haptic target, intensity, pulse, fallback, or platform-claim change.

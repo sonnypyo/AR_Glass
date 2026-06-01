@@ -10,15 +10,15 @@ It summarizes only the current verified state, the unfinished work, and the exac
 
 ## Scope Control
 
-As of 2026-06-01, keep the next goal narrow and make the Android phone lane the first real hardware step.
+As of 2026-06-01, keep the next goal narrow and defer direct Android phone integration to the final hardware step.
 
 Do only work that moves one of these forward:
 
 1. Local no-hardware workflow stays green: build, unit tests, validators, service audit, privacy scan.
 2. Stage 117/glasses-lane review remains minimally integrated and explicitly blocked only by real hardware evidence.
-3. Android phone integration, ADB install/run, phone alert proof, and phone evidence collection happen first when one authorized phone is attached.
-4. Controlled direction session tooling stays ready for front, back, left, and right rows after the phone app run is proven.
-5. Glasses/support preflight gaps stay explicit without claiming Meta DAT, Android XR, or glasses haptics support.
+3. Controlled direction session tooling stays ready for front, back, left, and right rows without fabricating observed evidence.
+4. Glasses/support preflight gaps stay explicit without claiming Meta DAT, Android XR, or glasses haptics support.
+5. Android phone integration, ADB install/run, phone alert proof, and phone evidence collection happen last when one authorized phone is attached.
 
 Do not spend time on new broad reports, new market research, new release paperwork, extra agent documents, extra wiki expansion, or speculative Android XR/Meta abstractions unless they directly unblock the above sequence.
 
@@ -151,34 +151,25 @@ scripts/scan-evidence-privacy.mjs \
   --json
 ```
 
-5. Run the real phone lane as the first hardware step.
-
-```bash
-scripts/run-phone-lane-when-ready.mjs --execute --write-report --json
-scripts/review-phone-lane-evidence.mjs --write-report --json
-```
-
-This needs exactly one attached Android phone with USB debugging authorized, the correct app build path, and operator review of the generated non-PII evidence.
-
-6. Keep the controlled direction session ready, then collect rows after the phone app run is proven.
+5. Keep controlled direction planning current before the phone run.
 
 ```bash
 data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh
 ```
 
-Target: 20 reviewed rows per direction for front, back, left, and right. Store only aggregate and redacted evidence. Do not store raw audio, private names, transcripts, exact locations, device serials, or Bluetooth identifiers.
+Target: keep the 20 reviewed rows per direction plan ready for front, back, left, and right. Store only aggregate and redacted evidence. Do not store raw audio, private names, transcripts, exact locations, device serials, or Bluetooth identifiers.
 
-7. Run the glasses lane with real hardware after the phone MVP and direction evidence path are proven.
+6. Keep glasses/support gates explicit before direct phone integration.
 
 Use the existing operator pack and glasses hardware session pack:
 
 - `data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack`
 - `data/runs/20260528_voice_direction_mvp/77-glasses-hardware-session-pack`
 
-Required evidence:
+Required evidence remains blocked until hardware/credential proof exists:
 
 - Meta Ray-Ban Display cue proof.
-- Ray-Ban Gen 1 fallback proof through phone notification/vibration/TTS or Bluetooth route evidence.
+- Ray-Ban Gen 1 fallback proof through documented fallback evidence.
 - Android XR projected runtime proof.
 - Haptics proof or explicit fallback proof.
 
@@ -187,6 +178,15 @@ Re-run:
 ```bash
 scripts/review-glasses-lane-evidence.mjs --write-report --json
 ```
+
+7. Run the real phone lane as the final hardware step.
+
+```bash
+scripts/run-phone-lane-when-ready.mjs --execute --write-report --json
+scripts/review-phone-lane-evidence.mjs --write-report --json
+```
+
+This needs exactly one attached Android phone with USB debugging authorized, the correct app build path, and operator review of the generated non-PII evidence.
 
 ## Current Gates
 

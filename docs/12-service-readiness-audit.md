@@ -140,7 +140,7 @@ Current status:
 - Phone-runner direction apply dry-run validates automation wiring only; it must never write canonical direction manifest files during phone evidence collection.
 - The release readiness UI validates local visibility of checklist status only; it does not approve a private alpha, beta, or production release without matching evidence.
 - The release readiness next-action UI validates operator guidance only; it does not prove the suggested phone evidence command was run on hardware.
-- The phone-private-alpha evidence runner validates the phone-first automation path only; no-device dry runs do not prove phone evidence.
+- The phone-private-alpha evidence runner validates the final phone evidence automation path only; no-device dry runs do not prove phone evidence.
 - The phone-private-alpha runner validator validates summary shape and privacy guardrails only; strict mode must fail until real phone evidence exists.
 - The service gate assertion command validates promotion claims only; it does not generate the evidence required to change a gate.
 - The glasses-private-alpha evidence runner validates the glasses workflow only; strict mode must fail until real phone and glasses evidence exists.

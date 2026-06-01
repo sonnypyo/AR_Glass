@@ -15,10 +15,10 @@ As of 2026-06-01, the goal is narrowed to reduce wasted work and token usage.
 
 The next goal is not "finish the whole commercial service." The next goal is:
 
-1. Make the Android phone MVP run on a real device.
-2. Prove the alert path with phone notification, vibration, and TTS.
-3. Collect controlled direction evidence for front, back, left, and right.
-4. Use Meta Ray-Ban Display, Ray-Ban Gen 1, and Android XR only after the phone lane is proven.
+1. Keep the Android app, local workflow, service gates, and privacy scans green without hardware.
+2. Keep controlled direction planning ready for front, back, left, and right without fabricating observed rows.
+3. Keep Meta Ray-Ban Display, Ray-Ban Gen 1, Android XR, support, and haptics/fallback blockers explicit.
+4. Run direct Android phone integration as the final hardware step when the pre-phone gates are current and exactly one authorized phone is attached.
 
 Do not add new broad planning documents, new agent frameworks, new release paperwork, new market research, or new platform abstractions unless they directly unblock one of the four items above.
 
@@ -46,10 +46,10 @@ The MVP is successful when it can:
 
 For the next execution window, success is smaller:
 
-- one Android phone build/install/run path works;
-- one saved/test speaker flow can trigger a local alert;
-- the app records redacted direction evidence;
-- the next hardware blocker is concrete and not speculative.
+- local build, tests, validators, service audit, and privacy scan stay current;
+- controlled-direction planning remains ready without fake observed rows;
+- glasses/support/platform blockers are concrete and not speculative;
+- the final Android phone run is the only remaining direct integration step.
 
 ## MVP Boundaries
 

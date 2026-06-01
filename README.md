@@ -4,7 +4,7 @@ AR Glass Voice Direction is an Android-first wearable companion app for voice-aw
 
 The app is designed for situations where a trusted person calls the user from nearby and the user needs a quick, low-distraction cue about where the call came from. It recognizes a saved speaker profile, estimates the caller direction, and delivers the cue through the best available output path: phone notification, vibration, TTS, glasses display cue, or platform-specific fallback.
 
-The project targets Meta Ray-Ban Display, Ray-Ban Meta Gen 1 fallback flows, and Android XR-style projected experiences. Android phone install/run and alert proof are the first real hardware milestone; phone outputs are still not proof of glasses support.
+The project targets Meta Ray-Ban Display, Ray-Ban Meta Gen 1 fallback flows, and Android XR-style projected experiences. Android phone outputs are treated as a host/fallback channel and validation path, not as proof of glasses support.
 
 ## What It Does
 
