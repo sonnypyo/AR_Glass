@@ -151,7 +151,7 @@ function deriveNextActions(summary) {
     next.push("Collect or document Ray-Ban Gen 1 Bluetooth/TTS/phone-vibration fallback evidence without device names.");
   }
   if (!summary.glassesEvidence.androidXrProjectedReady) {
-    next.push("Collect Android XR projected runtime proof and keep strict Android XR contract blocked until ProjectedContext/Glimmer evidence exists.");
+    next.push("Collect Android XR projected runtime proof, including runtime availability, ProjectedContext launch/device-context use, cue/empty-state visibility, and microphone or Bluetooth fallback evidence.");
   }
   if (!summary.glassesEvidence.hapticsReadyOrFallbackDocumented) {
     next.push("Record official glasses haptics proof or keep phone vibration as the documented MVP fallback.");

@@ -1,6 +1,6 @@
 # Glasses Private Alpha Evidence Runner Summary
 
-Generated: 2026-06-01T15:06:21+09:00
+Generated: 2026-06-01T15:44:32+09:00
 
 ## Purpose
 
@@ -43,7 +43,7 @@ This report summarizes the glasses-private-alpha evidence workflow. It records c
 - Run this script with `--run-session` only when the Ray-Ban Display, Ray-Ban Gen 1, or Android XR hardware evidence can actually be collected.
 - Configure Meta DAT credentials outside source control, replace the Meta stub adapter, and collect Ray-Ban Display cue proof.
 - Pair Ray-Ban Meta Gen 1, run Bluetooth route proof, and record TTS or phone-vibration fallback evidence without device names.
-- Run Android XR projected runtime proof and record projected cue visibility plus microphone or Bluetooth fallback status.
+- Run Android XR projected runtime proof and record runtime availability, ProjectedContext launch/device-context use, cue/empty-state visibility, and microphone or Bluetooth fallback status.
 - Do not claim glasses private alpha until strict glasses hardware validation and the glasses-alpha service gate both pass.
 - Regenerate the service readiness audit after every reviewed hardware evidence change.
 

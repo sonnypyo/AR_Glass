@@ -151,24 +151,15 @@ scripts/scan-evidence-privacy.mjs \
   --json
 ```
 
-5. Keep the real phone lane as the final hardware step.
-
-```bash
-scripts/run-phone-lane-when-ready.mjs --execute --write-report --json
-scripts/review-phone-lane-evidence.mjs --write-report --json
-```
-
-Do not run this until local workflow, controlled-direction planning, glasses preflight, support drill preparation, privacy scan, and service-readiness tracking are current. It then needs an attached Android phone with USB debugging, the correct app build path, and operator review of the generated non-PII evidence.
-
-6. Then collect controlled direction evidence.
+5. Keep the controlled direction session ready, but do not collect real phone-hosted rows yet.
 
 ```bash
 data/runs/20260528_voice_direction_mvp/104-controlled-direction-trial-session/commands.sh
 ```
 
-Target: 20 reviewed rows per direction for front, back, left, and right. Store only aggregate and redacted evidence. Do not store raw audio, private names, transcripts, exact locations, device serials, or Bluetooth identifiers.
+Target after the final phone step: 20 reviewed rows per direction for front, back, left, and right. Store only aggregate and redacted evidence. Do not store raw audio, private names, transcripts, exact locations, device serials, or Bluetooth identifiers.
 
-7. Then run the glasses lane with real hardware.
+6. Run the glasses lane with real hardware before direct phone integration.
 
 Use the existing operator pack and glasses hardware session pack:
 
@@ -187,6 +178,15 @@ Re-run:
 ```bash
 scripts/review-glasses-lane-evidence.mjs --write-report --json
 ```
+
+7. Keep the real phone lane as the final hardware step.
+
+```bash
+scripts/run-phone-lane-when-ready.mjs --execute --write-report --json
+scripts/review-phone-lane-evidence.mjs --write-report --json
+```
+
+Do not run this until local workflow, controlled-direction planning, glasses preflight, support drill preparation, privacy scan, service-readiness tracking, and available glasses-lane evidence review are current. It then needs an attached Android phone with USB debugging, the correct app build path, and operator review of the generated non-PII evidence.
 
 ## Current Gates
 

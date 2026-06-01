@@ -1,6 +1,6 @@
 # Service Readiness Audit
 
-Generated: 2026-06-01T15:06:21+09:00
+Generated: 2026-06-01T15:44:32+09:00
 
 ## Purpose
 
@@ -145,7 +145,7 @@ This audit ties the implemented app, release checklist, glasses readiness checkl
 | Latest glasses preflight evidence | present | data/runs/20260528_voice_direction_mvp/30-glasses-preflight-evidence/glasses-preflight.md |
 | Latest device evidence report | missing | Run scripts/android-device-smoke-test.sh --write-evidence with a phone attached. |
 | Device evidence validator | not-run | No device-evidence.md file found under data/runs. |
-| Latest glasses preflight | blocked | pass=11, manual=5, blocked=5 |
+| Latest glasses preflight | blocked | pass=15, manual=4, blocked=2 |
 
 ## Current Promotion Decision
 

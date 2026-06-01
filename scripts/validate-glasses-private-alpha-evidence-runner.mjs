@@ -114,6 +114,9 @@ if (summary) {
   }
 
   if (summary.manifest?.privacyGuardrailsClear !== true) errors.push("Manifest privacy guardrails must be clear.");
+  if (summary.manifest?.androidXrProjectedReady === true && summary.strictHardwareValidationOk !== true) {
+    errors.push("androidXrProjectedReady cannot be true before strict glasses hardware validation passes.");
+  }
   if (typeof summary.glassesHardwareEvidenceCandidate !== "boolean") errors.push("glassesHardwareEvidenceCandidate must be boolean.");
   if (typeof summary.glassesPrivateAlphaCandidate !== "boolean") errors.push("glassesPrivateAlphaCandidate must be boolean.");
   if (summary.glassesPrivateAlphaCandidate && !summary.glassesHardwareEvidenceCandidate) {

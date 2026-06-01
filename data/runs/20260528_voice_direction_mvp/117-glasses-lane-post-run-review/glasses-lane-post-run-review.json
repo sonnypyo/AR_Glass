@@ -1,6 +1,6 @@
 {
   "ok": false,
-  "generatedAt": "2026-06-01T14:53:56+09:00",
+  "generatedAt": "2026-06-01T15:45:34+09:00",
   "packDir": "data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack",
   "reportDir": "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review",
   "reportPath": "data/runs/20260528_voice_direction_mvp/117-glasses-lane-post-run-review/glasses-lane-post-run-review.md",
@@ -109,7 +109,7 @@
   "nextActions": [
     "Collect reviewed Meta Ray-Ban Display cue proof through the glasses hardware evidence session.",
     "Collect or document Ray-Ban Gen 1 Bluetooth/TTS/phone-vibration fallback evidence without device names.",
-    "Collect Android XR projected runtime proof and keep strict Android XR contract blocked until ProjectedContext/Glimmer evidence exists.",
+    "Collect Android XR projected runtime proof, including runtime availability, ProjectedContext launch/device-context use, cue/empty-state visibility, and microphone or Bluetooth fallback evidence.",
     "Keep glasses alpha blocked until strict glasses-alpha promotion profile passes."
   ],
   "rawOutputPersisted": false,

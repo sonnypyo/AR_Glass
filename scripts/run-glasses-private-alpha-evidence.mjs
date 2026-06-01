@@ -156,7 +156,7 @@ function deriveNextActions(summary) {
     actions.push("Pair Ray-Ban Meta Gen 1, run Bluetooth route proof, and record TTS or phone-vibration fallback evidence without device names.");
   }
   if (!summary.manifest.androidXrProjectedReady) {
-    actions.push("Run Android XR projected runtime proof and record projected cue visibility plus microphone or Bluetooth fallback status.");
+    actions.push("Run Android XR projected runtime proof and record runtime availability, ProjectedContext launch/device-context use, cue/empty-state visibility, and microphone or Bluetooth fallback status.");
   }
   if (!summary.manifest.hapticsReadyOrFallbackDocumented) {
     actions.push("Keep phone vibration as the MVP fallback until an official glasses haptics API or documented unavailable status is recorded.");
@@ -271,9 +271,17 @@ const metaRayBanDisplayReady = template.metaRayBanDisplay?.status === "passed" &
   template.metaRayBanDisplay?.cueRenderedOnDisplay === true;
 const rayBanGen1FallbackReady = template.rayBanGen1BluetoothFallback?.status === "passed" ||
   template.rayBanGen1BluetoothFallback?.status === "documented_unavailable";
-const androidXrProjectedReady = template.androidXrProjected?.status === "passed" &&
-  template.androidXrProjected?.adapterStatus === "real_adapter" &&
-  template.androidXrProjected?.cueVisibleOnProjectedDisplay === true;
+const androidXr = template.androidXrProjected ?? {};
+const androidXrProjectedReady = androidXr.status === "passed" &&
+  androidXr.adapterStatus === "real_adapter" &&
+  androidXr.runtimeAvailable === true &&
+  androidXr.jetpackProjectedDependenciesResolved === true &&
+  androidXr.projectedActivityLaunched === true &&
+  androidXr.projectedContextUsed === true &&
+  androidXr.cueVisibleOnProjectedDisplay === true &&
+  androidXr.emptyStateVisible === true &&
+  (androidXr.microphoneAccessTested === true || androidXr.bluetoothFallbackTested === true) &&
+  androidXr.failureStateDocumented === true;
 const hapticsReadyOrFallbackDocumented = template.haptics?.status === "passed" ||
   (template.haptics?.status === "documented_not_available" && template.haptics?.phoneVibrationFallbackRemainsMvp === true);
 const glassesHardwareEvidenceCandidate = strictHardwareValidationOk &&

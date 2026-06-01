@@ -1,6 +1,6 @@
 # Glasses Lane Post-Run Review
 
-Generated: 2026-06-01T14:53:56+09:00
+Generated: 2026-06-01T15:45:34+09:00
 Operator pack: data/runs/20260528_voice_direction_mvp/93-hardware-test-operator-pack
 
 ## Purpose
@@ -45,7 +45,7 @@ This report reviews the glasses evidence lane after `RUN_GLASSES=1`. It does not
 
 - Collect reviewed Meta Ray-Ban Display cue proof through the glasses hardware evidence session.
 - Collect or document Ray-Ban Gen 1 Bluetooth/TTS/phone-vibration fallback evidence without device names.
-- Collect Android XR projected runtime proof and keep strict Android XR contract blocked until ProjectedContext/Glimmer evidence exists.
+- Collect Android XR projected runtime proof, including runtime availability, ProjectedContext launch/device-context use, cue/empty-state visibility, and microphone or Bluetooth fallback evidence.
 - Keep glasses alpha blocked until strict glasses-alpha promotion profile passes.
 
 ## Privacy Guardrail

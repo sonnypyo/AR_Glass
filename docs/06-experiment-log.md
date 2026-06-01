@@ -4615,3 +4615,26 @@ The app can prepare the Android XR launch and device-context code path before ha
 - The Android XR adapter is still explicitly a stub.
 - Strict Android XR validation remains expected to fail without runtime evidence and adapter replacement.
 - No private device identifiers or audio data were generated.
+
+## 2026-06-01 KST: Keep Phone Lane Last And Tighten Android XR Glasses Readiness
+
+### Decision
+
+Keep direct Android phone integration as the final hardware step, and make the glasses-private-alpha runner's Android XR ready boolean match the stricter ProjectedContext/runtime evidence gate.
+
+### Reasoning
+
+The next-action workflow already ranks phone evidence last, but the handoff sequence still placed a phone run before the glasses lane. Also, the glasses runner only required Android XR status, real adapter, and projected cue visibility for its readiness boolean. That could make a generated summary look more ready than the strict Android XR and glasses hardware validators.
+
+### Implemented
+
+- Reordered `docs/60-next-goal-handoff.md` so controlled-direction tooling stays ready, glasses evidence runs before direct phone integration, and the phone lane remains last.
+- Updated `scripts/run-glasses-private-alpha-evidence.mjs` so Android XR projected readiness requires runtime availability, Jetpack Projected dependencies, projected activity launch, projected-device context use, cue/empty-state visibility, microphone-or-Bluetooth fallback evidence, and failure-state documentation.
+- Updated `scripts/validate-glasses-private-alpha-evidence-runner.mjs` so `androidXrProjectedReady=true` cannot pass without strict glasses hardware validation.
+- Updated the root `README.md` to describe phone output as host/fallback instead of the proof of glasses support.
+
+### Trial/Error Notes
+
+- This does not claim real Meta DAT, Android XR, or glasses haptics support.
+- Actual Android XR readiness remains blocked until a real runtime/device or emulator session supplies non-PII evidence.
+- No raw audio, transcript, speaker name, device id, token, or exact location evidence was generated.
