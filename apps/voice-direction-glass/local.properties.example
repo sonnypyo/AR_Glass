@@ -3,7 +3,11 @@
 
 # Meta Wearables DAT.
 # Required before replacing MetaDatDisplayStubAdapter.
+# The current Android build reads meta_wearables_application_id.
+# Some Meta samples/docs may also refer to mwdat_application_id and mwdat_client_token.
 meta_wearables_application_id=
+mwdat_application_id=
+mwdat_client_token=
 github_token=
 
 # Optional Play upload signing.

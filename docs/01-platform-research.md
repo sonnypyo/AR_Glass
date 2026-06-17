@@ -5,7 +5,10 @@ Updated: 2026-05-28 KST
 ## Sources Checked
 
 - Meta Wearables developer entry point: https://wearables.developer.meta.com/docs/develop
+- Meta display glasses developer blog: https://developers.meta.com/blog/build-for-display-glasses/
+- Meta Wearables Web App toolkit: https://github.com/facebookincubator/meta-wearables-webapp
 - Meta DAT Android GitHub: https://github.com/facebook/meta-wearables-dat-android
+- Meta DAT iOS GitHub: https://github.com/facebook/meta-wearables-dat-ios
 - Meta DAT Android `AGENTS.md`: https://raw.githubusercontent.com/facebook/meta-wearables-dat-android/main/AGENTS.md
 - Meta DAT session lifecycle: https://wearables.developer.meta.com/docs/develop/dat/lifecycle-events/
 - Meta DAT Mock Device Kit: https://wearables.developer.meta.com/docs/mock-device-kit/
@@ -29,7 +32,9 @@ Updated: 2026-05-28 KST
 
 ## Meta Wearables Findings
 
-Meta's Android DAT repository says the toolkit enables hands-free wearable experiences in mobile apps and is in Developer Preview. The Android SDK is pulled from GitHub Packages and currently uses Maven artifacts under `com.meta.wearable`.
+Meta now exposes two public developer-preview paths for Meta Ray-Ban Display: native mobile integrations through the Meta Wearables Device Access Toolkit and Web Apps rendered directly on the glasses display.
+
+DAT is the native mobile path. The Android DAT repository says the toolkit enables hands-free wearable experiences in mobile apps and is in Developer Preview. The Android SDK is pulled from GitHub Packages and currently uses Maven artifacts under `com.meta.wearable`. The iOS DAT repository is also public and uses Swift Package Manager, so an iPhone companion is technically possible after the Android phone-first MVP proves the core flow.
 
 Important DAT modules for this project:
 
@@ -48,6 +53,18 @@ Current caution:
 - Some Meta docs are login-gated.
 - DAT is Developer Preview, so distribution and API stability are not production-grade.
 - The public Android DAT agent file emphasizes camera/display/session APIs, but does not provide a confirmed raw multi-microphone direction API. Directional audio must be proven on actual hardware before claiming the final feature.
+- Web Apps are useful for a Ray-Ban Display cue layer, but the public toolkit does not prove raw microphone access, speaker verification, or direction-of-arrival support. Treat Web Apps as display output unless authenticated docs and hardware evidence prove more.
+
+## Meta Ray-Ban Display Web Apps Findings
+
+Meta's public display-glasses blog describes Web Apps as a standard HTML/CSS/JavaScript path for Ray-Ban Display. The public toolkit says browser testing can use arrow keys to simulate D-pad input, and glasses deployment requires a publicly available HTTPS URL. It also lists display constraints that matter for this project: 600x600 viewport, D-pad navigation, dark backgrounds, high contrast, and `.focusable` elements.
+
+MVP implication:
+
+- Add a small static Web App that renders only non-PII direction cue enums.
+- Do not move voice detection, speaker profiles, microphone capture, or direction estimation into the Web App.
+- Do not add a network bridge until the privacy boundary is reviewed.
+- Use Web Apps for fast Ray-Ban Display proof while keeping DAT native as the deeper hardware integration path.
 
 ## Android XR Findings
 
@@ -78,10 +95,11 @@ Current caution:
 The viable project shape is:
 
 1. Build a phone-first native Android app.
-2. Add a Meta DAT adapter for Ray-Ban Display/Gen 1 hardware sessions.
-3. Add an Android XR projected activity for audio/display glasses.
-4. Keep voice detection and direction estimation independent of either platform.
-5. Treat exact direction and glasses-side haptics as hardware validation milestones, not assumptions.
+2. Add a Meta Ray-Ban Display Web App cue prototype for display-only proof.
+3. Add a Meta DAT adapter for deeper Ray-Ban Display/Gen 1 hardware sessions after credentials and logged-in docs are confirmed.
+4. Add an Android XR projected activity for audio/display glasses.
+5. Keep voice detection and direction estimation independent of every display platform.
+6. Treat exact direction and glasses-side haptics as hardware validation milestones, not assumptions.
 
 ## Build Tooling Findings
 
@@ -109,6 +127,7 @@ Key implications:
 
 - Does Meta DAT expose usable microphone frames or only system-mediated audio/voice paths in the current account/dev mode?
 - Can Ray-Ban Display show our directional cue through DAT display preview in Korea with the user's account and device firmware?
+- Can a Ray-Ban Display Web App be added from the user's Meta AI app account and region, and can it receive a non-PII cue without a backend?
 - Can Android XR projected context provide enough microphone/channel data for direction estimation, or only ASR-level text?
 - Is any side-specific haptic output available on the glasses or Neural Band through official APIs?
 - What are the background recording limits for each target phone OS and release channel?

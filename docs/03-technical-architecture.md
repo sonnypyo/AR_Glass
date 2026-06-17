@@ -27,6 +27,7 @@ flowchart LR
   Fusion --> Alert["Alert Router"]
   Alert --> PhoneOut["Phone Notification/Vibration"]
   Alert --> MetaOut["Meta DAT Display Adapter"]
+  Alert --> WebOut["Meta Ray-Ban Web App Cue"]
   Alert --> XrOut["Android XR Projected Adapter"]
   Fusion --> CueStore["Latest Glasses Cue Store"]
   CueStore --> Projected["Projected Glasses Activity"]
@@ -131,6 +132,7 @@ Current service baseline:
 Phase 3: Glasses hardware proof
 
 - Meta DAT: test whether current DAT/dev mode exposes audio data usable for speaker/direction detection.
+- Meta Ray-Ban Web Apps: test display-only cue rendering through a public HTTPS URL without voice, transcript, speaker-name, Bluetooth, location, or token data.
 - Android XR: use projected context and Android audio APIs where documented; test whether microphone source/channel information is enough for direction.
 
 ## Direction Estimation Strategy
@@ -159,9 +161,21 @@ Phone:
 
 Meta Ray-Ban Display:
 
-- DAT display card/overlay where supported.
+- Web App display cue prototype for fast 600x600 direction rendering without phone hardware.
+- DAT display card/overlay where supported after credentials, logged-in docs, and package access are configured.
 - DAT session state handling via `RUNNING`, `PAUSED`, `STOPPED`.
 - MockDeviceKit coverage for display and session states.
+- iOS DAT is a later companion option because the user's Ray-Ban devices are currently paired to iPhone.
+
+Current Meta Web App cue path:
+
+- `apps/meta-rayban-display-webapp` is a static HTML/CSS/JavaScript app.
+- It renders only `FRONT`, `BACK`, `LEFT`, `RIGHT`, or `UNKNOWN`.
+- It accepts optional URL parameters for `direction`, `confidence`, and `source`.
+- It supports browser arrow-key input that maps to D-pad style direction selection.
+- It stores only the latest non-PII cue in browser local storage.
+- It does not request microphone, camera, Bluetooth, contacts, location, account, or raw sensor permissions.
+- It does not prove actual Ray-Ban Display runtime behavior until deployed to HTTPS and added through the Meta AI app on real hardware.
 
 Android XR:
 

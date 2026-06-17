@@ -6,6 +6,8 @@ The app is designed for situations where a trusted person calls the user from ne
 
 The project targets Meta Ray-Ban Display, Ray-Ban Meta Gen 1 fallback flows, and Android XR-style projected experiences. Android phone install/run and alert proof are the first real hardware milestone; phone outputs are still not proof of glasses support.
 
+Meta Ray-Ban Display now has two tracked output lanes in this repository: native DAT mobile integration for deeper hardware access, and a static Web Apps cue prototype for fast display-only proof.
+
 ## What It Does
 
 - Stores trusted speaker profiles with explicit consent.
@@ -18,6 +20,7 @@ The project targets Meta Ray-Ban Display, Ray-Ban Meta Gen 1 fallback flows, and
 ## Repository Map
 
 - `apps/voice-direction-glass`: Android Kotlin app.
+- `apps/meta-rayban-display-webapp`: Static Ray-Ban Display Web App prototype for non-PII direction cues.
 - `docs`: architecture, platform notes, privacy rules, and hardware test runbooks.
 - `scripts`: local validation, evidence, privacy, and hardware-test helpers.
 - `data/canonical`: product, backend, and QA artifacts.

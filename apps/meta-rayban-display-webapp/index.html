@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <title>Voice Direction Cue</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="glass-frame" aria-live="polite">
+      <section class="cue-surface" data-direction="UNKNOWN">
+        <div class="status-row">
+          <span class="status-pill" id="sourceLabel">LOCAL</span>
+          <span class="status-time" id="cueTime">READY</span>
+        </div>
+
+        <div class="direction-compass" aria-hidden="true">
+          <div class="axis axis-front" id="axisFront"></div>
+          <div class="axis axis-back" id="axisBack"></div>
+          <div class="axis axis-left" id="axisLeft"></div>
+          <div class="axis axis-right" id="axisRight"></div>
+          <div class="center-dot"></div>
+        </div>
+
+        <div class="cue-copy">
+          <p class="cue-kicker">CALL DIRECTION</p>
+          <h1 id="directionLabel">UNKNOWN</h1>
+          <p id="confidenceLabel">CONFIDENCE WAITING</p>
+        </div>
+
+        <nav class="dpad" aria-label="Direction controls">
+          <button class="focusable dpad-button dpad-front" type="button" data-direction="FRONT" aria-label="Front cue">F</button>
+          <button class="focusable dpad-button dpad-left" type="button" data-direction="LEFT" aria-label="Left cue">L</button>
+          <button class="focusable dpad-button dpad-center" type="button" data-direction="UNKNOWN" aria-label="Unknown cue">O</button>
+          <button class="focusable dpad-button dpad-right" type="button" data-direction="RIGHT" aria-label="Right cue">R</button>
+          <button class="focusable dpad-button dpad-back" type="button" data-direction="BACK" aria-label="Back cue">B</button>
+        </nav>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

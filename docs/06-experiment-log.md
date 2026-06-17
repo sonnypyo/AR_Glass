@@ -4675,3 +4675,28 @@ The handoff scope and next execution order already said phone lane first, but th
 
 - Updated `docs/60-next-goal-handoff.md` recommended milestone to phone-lane real-device run first, controlled direction rows second, glasses evidence third.
 - Kept Meta DAT, Android XR, and glasses haptics unclaimed until hardware evidence exists.
+
+## 2026-06-17 KST: Add Phone-Independent Ray-Ban Display Web App Lane
+
+### Decision
+
+Keep Android phone-first as the core processing lane, but add a separate Meta Ray-Ban Display Web App prototype for display-only direction cue proof while ADB phone connection is blocked.
+
+### Reasoning
+
+Meta's current public materials describe two Ray-Ban Display developer-preview paths: native mobile DAT integrations and Web Apps. The Android app is still the right place for microphone permission, foreground service behavior, local voice profile handling, notification, vibration, TTS, and direction evidence. A Web App is a better phone-independent artifact for quickly testing a 600x600 glasses display cue, as long as it receives only non-PII cue data and does not claim voice detection or direction accuracy.
+
+### Implemented
+
+- Added `apps/meta-rayban-display-webapp` with static `index.html`, `styles.css`, `app.js`, and `README.md`.
+- Added `docs/61-meta-rayban-webapps-mvp.md` to define the Web Apps MVP boundary, deployment gate, and privacy rules.
+- Updated `docs/01-platform-research.md` with Meta Web Apps, DAT Android, and DAT iOS source implications.
+- Updated `docs/03-technical-architecture.md` so Meta Ray-Ban Display output is split into Web App cue and DAT native lanes.
+- Updated `docs/24-glasses-setup-readiness.md`, `docs/README.md`, root `README.md`, and `apps/voice-direction-glass/local.properties.example`.
+
+### Trial/Error Notes
+
+- No Android phone evidence was generated because ADB still does not list an authorized device.
+- The Web App does not request microphone, camera, Bluetooth, location, account, or raw sensor permissions.
+- The Web App stores only the latest non-PII cue enum locally in browser storage.
+- This does not claim Meta DAT native integration, Ray-Ban Display runtime proof, phone alpha readiness, glasses alpha readiness, real direction accuracy, or glasses haptics support.
